@@ -1,6 +1,6 @@
 class ReportsController < ApplicationController
   def index
-    # render json: Report.where('owner_id = ?', @user.id)
+    # render json: Report.where('owner_id = ?', @project.name)
   end
 
   def show

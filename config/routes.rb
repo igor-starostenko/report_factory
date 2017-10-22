@@ -3,10 +3,18 @@ Rails.application.routes.draw do
   # see http://guides.rubyonrails.org/routing.html
    scope '/api' do
     scope '/v1' do
-      scope '/reports' do
-        get '/' => 'reports#index'
-        post '/' => 'reports#create'
-        get '/:id' => 'reports#show'
+      scope '/projects' do
+        get '/' => 'projects#index'
+        post '/' => 'projects#create'
+        scope '/:name' do
+          get '/' => 'projects#show'
+          put '/' => 'projects#update'
+          scope '/reports' do
+            get '/' => 'reports#index'
+            post '/' => 'reports#create'
+            get '/:id' => 'reports#show'
+          end
+        end
       end
     end
   end 
