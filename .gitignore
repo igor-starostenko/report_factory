@@ -22,3 +22,6 @@
 !/tmp/.keep
 
 .byebug_history
+
+# Ignore test results and logs
+/spec/examples.txt
