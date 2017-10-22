@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       scope '/projects' do
         get '/' => 'projects#index'
         post '/' => 'projects#create'
-        scope '/:name' do
+        scope '/:project_name' do
           get '/' => 'projects#show'
           put '/' => 'projects#update'
           scope '/reports' do

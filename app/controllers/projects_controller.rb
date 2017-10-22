@@ -20,4 +20,8 @@ class ProjectsController < ApplicationController
     #   end
     # end
   end
+
+  def update
+    # TODO: add logic
+  end
 end
