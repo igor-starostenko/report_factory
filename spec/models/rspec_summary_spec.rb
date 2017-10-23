@@ -47,13 +47,21 @@ RSpec.describe RspecSummary, :rspec_summary, type: :model do
     expect(rspec_summary).to_not be_valid
   end
 
-  it 'is not valid without :errors_outside_of_examples_count' do
+  it 'is valid without :errors_outside_of_examples_count' do
     rspec_summary.errors_outside_of_examples_count = nil
-    expect(rspec_summary).to_not be_valid
+    expect(rspec_summary).to be_valid
   end
 
   it 'belongs to one :rspec_report' do
     expect(rspec_summary.rspec_report).to be_instance_of(RspecReport)
     expect(rspec_summary.rspec_report.id).to eq(rspec_report.id)
+  end
+
+  it 'is not valid if :rspec_report_id is not unique' do
+    rspec_summary.save
+    expect(RspecSummary.new(rspec_report_id: rspec_report.id,
+                            example_count: 8,
+                            failure_count: 1,
+                            pending_count: 0)).to_not be_valid
   end
 end
