@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022074112) do
+ActiveRecord::Schema.define(version: 20171023043858) do
 
   create_table "projects", force: :cascade do |t|
     t.string "project_name"
@@ -28,9 +28,32 @@ ActiveRecord::Schema.define(version: 20171022074112) do
     t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable_type_and_reportable_id"
   end
 
+  create_table "rspec_examples", force: :cascade do |t|
+    t.integer "rspec_report_id"
+    t.string "spec_id"
+    t.text "description"
+    t.text "full_description"
+    t.string "status"
+    t.string "file_path"
+    t.integer "line_number"
+    t.float "run_time"
+    t.string "pending_message"
+    t.index ["rspec_report_id"], name: "index_rspec_examples_on_rspec_report_id"
+  end
+
   create_table "rspec_reports", force: :cascade do |t|
     t.string "version"
     t.string "summary_line"
+  end
+
+  create_table "rspec_summaries", force: :cascade do |t|
+    t.integer "rspec_report_id"
+    t.float "duration"
+    t.integer "example_count"
+    t.integer "failure_count"
+    t.integer "pending_count"
+    t.integer "errors_outside_of_examples_count"
+    t.index ["rspec_report_id"], name: "index_rspec_summaries_on_rspec_report_id"
   end
 
 end
