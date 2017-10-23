@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'routing', :routing, type: :routing do
@@ -11,7 +13,7 @@ RSpec.describe 'routing', :routing, type: :routing do
     end
   end
 
-  context '/projects', :projects do
+  context '/api/v1/projects', :projects do
     it 'routes GET /api/v1/projects to projects#index' do
       expect(get: '/api/v1/projects').to route_to(
         controller: 'projects',
@@ -41,42 +43,45 @@ RSpec.describe 'routing', :routing, type: :routing do
         project_name: 'web_project'
       )
     end
+  end
 
-    context '/reports', :reports do
-      it 'routes GET /api/v1/projects/:project_name/reports to reports#index' do
-        expect(get: '/api/v1/projects/web_project/reports').to route_to(
-          controller: 'reports',
-          action: 'index',
-          project_name: 'web_project'
-        )
-      end
+  context '/api/v1/projects/:project_name/reports', :reports do
+    it 'routes GET /api/v1/projects/:project_name/reports to reports#index' do
+      expect(get: '/api/v1/projects/web_project/reports').to route_to(
+        controller: 'reports',
+        action: 'index',
+        project_name: 'web_project'
+      )
+    end
+  end
 
-      context '/rspec', :rspec_reports do
-        it 'routes GET /api/v1/projects/:project_name/reports/rspec to reports#index' do
-          expect(get: '/api/v1/projects/web_project/reports/rspec').to route_to(
-            controller: 'rspec_reports',
-            action: 'index',
-            project_name: 'web_project'
-          )
-        end
+  context '/api/v1/projects/:project_name/reports/rspec', :rspec_reports do
+    it 'routes GET /api/v1/projects/:project_name/reports/rspec'\
+      'to rspec_reports#index' do
+      expect(get: '/api/v1/projects/web_project/reports/rspec').to route_to(
+        controller: 'rspec_reports',
+        action: 'index',
+        project_name: 'web_project'
+      )
+    end
 
-        it 'routes POST /api/v1/projects/:project_name/reports/rspec to reports#create' do
-          expect(post: '/api/v1/projects/web_project/reports/rspec').to route_to(
-            controller: 'rspec_reports',
-            action: 'create',
-            project_name: 'web_project'
-          )
-        end
+    it 'routes POST /api/v1/projects/:project_name/reports/rspec'\
+      'to reports#create' do
+      expect(post: '/api/v1/projects/web_project/reports/rspec').to route_to(
+        controller: 'rspec_reports',
+        action: 'create',
+        project_name: 'web_project'
+      )
+    end
 
-        it 'routes GET /api/v1/projects/:project_name/reports/:id to reports#show' do
-          expect(get: '/api/v1/projects/web_project/reports/rspec/1').to route_to(
-            controller: 'rspec_reports',
-            action: 'show',
-            project_name: 'web_project',
-            id: '1'
-          )
-        end
-      end
+    it 'routes GET /api/v1/projects/:project_name/reports/:id'\
+      'to reports#show' do
+      expect(get: '/api/v1/projects/web_project/reports/rspec/1').to route_to(
+        controller: 'rspec_reports',
+        action: 'show',
+        project_name: 'web_project',
+        id: '1'
+      )
     end
   end
 end
