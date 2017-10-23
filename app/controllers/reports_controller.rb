@@ -6,18 +6,4 @@ class ReportsController < ApplicationController
   def show
     # render json: @report
   end
-
-  def create
-    # if @report.present?
-    #   render nothing: true, status: :conflict
-    # else
-    #   @report = Report.new
-    #   @report.assign_attributes(@json['report']
-    #   if @report.save
-    #     render json: @report
-    #   else
-    #      render nothing: true, status: :bad_request
-    #   end
-    # end
-  end
 end

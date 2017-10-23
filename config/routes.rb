@@ -11,8 +11,11 @@ Rails.application.routes.draw do
           put '/' => 'projects#update'
           scope '/reports' do
             get '/' => 'reports#index'
-            post '/' => 'reports#create'
-            get '/:id' => 'reports#show'
+            scope '/rspec' do
+              get '/' => 'rspec_reports#index'
+              post '/' => 'rspec_reports#create'
+              get '/:id' => 'rspec_reports#show'
+            end
           end
         end
       end
