@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Project, :project, type: :model do
   let :project { FactoryBot.create(:project, project_name: 'Web App') }
 
-  it 'has :project_name' do
+  it 'is valid' do
     expect(project).to be_valid
   end
 
