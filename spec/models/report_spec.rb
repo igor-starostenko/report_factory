@@ -25,6 +25,11 @@ RSpec.describe Report, :report, type: :model do
     expect(report.updated_at).to be_truthy
   end
 
+  it 'is not valid without :project_id' do
+    report.project_id = nil
+    expect(report).to_not be_valid
+  end
+
   it 'is not valid without :reportable_type' do
     report.reportable_type = nil
     expect(report).to_not be_valid
