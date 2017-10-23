@@ -4,4 +4,6 @@ FactoryBot.define do
   factory :project
   factory :report
   factory :rspec_report
+  factory :rspec_summary
+  factory :rspec_example
 end

@@ -40,12 +40,12 @@ RSpec.describe Report, :report, type: :model do
     expect(report).to_not be_valid
   end
 
-  it 'has one :project' do
+  it 'belongs to one :project' do
     expect(report.project).to be_instance_of(Project)
     expect(report.project.id).to eq(project.id)
   end
 
-  it 'has one :rspec_report' do
+  it 'can have one :rspec_report' do
     expect(report.reportable).to be_instance_of(RspecReport)
     expect(report.reportable.id).to eq(rspec_report.id)
   end
