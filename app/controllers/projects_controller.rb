@@ -1,24 +1,35 @@
 class ProjectsController < ApplicationController
   def index
-    # render json: Project.all
+    @projects = Project.all
+    render jsonapi: @projects
   end
 
   def show
-    # render json: @project
+    @project = Project.find_by(project_name: project_name)
+    render jsonapi: @project
   end
 
   def create
-    # if @project.present?
-    #   render nothing: true, status: :conflict
-    # else
-    #   @project = Project.new
-    #   @project.assign_attributes(@json['project']
-    #   if @project.save
-    #     render json: @project
-    #   else
-    #      render nothing: true, status: :bad_request
-    #   end
-    # end
+    @project = Project.new(project_attributes)
+
+    if @project.save
+      render jsonapi: @project, status: :created
+    else
+      render jsonapi_errors: @project.errors
+    end
+  end
+
+  private
+
+  def project_attributes
+    project_params.fetch(:attributes, {})
+  end
+
+  def project_params
+    # params.require(:project).permit(:project_name)
+    params.require(:data).permit(:type, {
+      attributes: %i[project_name]
+    })
   end
 
   def update
