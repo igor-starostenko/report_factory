@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Provides logic and interface for Projects API
 class ProjectsController < ApplicationController
   def index
     @projects = Project.all
@@ -26,10 +29,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    # params.require(:project).permit(:project_name)
-    params.require(:data).permit(:type, {
-      attributes: %i[project_name]
-    })
+    params.require(:data).permit(:type, attributes: %i[project_name])
   end
 
   def update

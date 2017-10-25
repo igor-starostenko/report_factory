@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Provides logic and interface for Rspec Reports API
 class RspecReportsController < ApplicationController
   def index
     # render json: RspecReport.where('owner_id = ?', @project.name)
