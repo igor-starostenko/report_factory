@@ -9,10 +9,12 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find_by(project_name: project_name)
+    return render_not_found unless @project
     render jsonapi: @project
   end
 
   def create
+    logger.info(project_attributes)
     @project = Project.new(project_attributes)
 
     if @project.save
@@ -34,5 +36,14 @@ class ProjectsController < ApplicationController
 
   def update
     # TODO: add logic
+  end
+
+  def project_name
+    params.fetch(:project_name).split('_').map(&:capitalize).join(' ')
+  end
+
+  def render_not_found
+    render json: { message: 'Project Not Found' },
+                   status: :not_found
   end
 end

@@ -7,4 +7,7 @@ class Project < ActiveRecord::Base
             presence: true,
             uniqueness: { case_sensitive: false },
             length: { minimum: 3, maximum: 10 }
+  # before_save do
+  #   project_name.tr('_', ' ').downcase.capitalize
+  # end
 end
