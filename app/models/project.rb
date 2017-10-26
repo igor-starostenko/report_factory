@@ -3,11 +3,15 @@
 # DB model that represents a Project under test
 class Project < ActiveRecord::Base
   has_many :reports, dependent: :destroy
+  VALID_PROJECT_REGEX = /\A[a-zA-Z\d\s]*\z/
   validates :project_name,
             presence: true,
             uniqueness: { case_sensitive: false },
-            length: { minimum: 3, maximum: 11 }
+            length: { minimum: 3, maximum: 11 },
+            format: { with: VALID_PROJECT_REGEX }
   before_save do
-    project_name.tr('_', ' ').downcase.capitalize
+    words = project_name.downcase.split(' ')
+    new_name = words.map(&:capitalize).join(' ')
+    self.project_name = new_name
   end
 end

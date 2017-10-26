@@ -24,6 +24,11 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    if @project.update(project_attributes)
+      render jsonapi: @project, status: :ok
+    else
+      render jsonapi_errors: @project.errors, status: :bad_request
+    end
   end
 
   private

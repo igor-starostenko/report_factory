@@ -21,12 +21,24 @@ RSpec.describe 'Projects', :projects_api, type: :request do
         data: {
           type: 'project',
           attributes: {
-            project_name: 'test_app'
+            project_name: 'test app'
           }
         }
       }
       expect(response.status).to eq(201)
       expect(response.body).to be_json_response_for('project')
+    end
+
+    it 'cannot create a duplicate project' do
+      post '/api/v1/projects', params: {
+        data: {
+          type: 'project',
+          attributes: {
+            project_name: 'Web App'
+          }
+        }
+      }
+      expect(response.status).to eq(400)
     end
   end
 
@@ -39,19 +51,20 @@ RSpec.describe 'Projects', :projects_api, type: :request do
   end
 
   describe 'PUT update' do
-    it 'updates a project', skip: 'todo' do
+    it 'updates a project' do
       put '/api/v1/projects/Web_App', params: {
         data: {
           type: 'project',
           attributes: {
-            project_name: 'web_app'
+            project_name: 'New Name'
           }
         }
       }
-      expect(response.status).to eq(201)
+      expect(response.status).to eq(200)
       expect(response.body).to be_json_response_for('project')
-      project_name = response.dig('data', 'attributes', 'project_name')
-      expect(project_name).to eq('web_app')
+      response_data = JSON.parse(response.body).fetch('data')
+      project_name = response_data.dig('attributes', 'project_name')
+      expect(project_name).to eq('New Name')
     end
   end
 end
