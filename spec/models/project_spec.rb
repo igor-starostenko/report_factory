@@ -24,8 +24,8 @@ RSpec.describe Project, :project, type: :model do
     expect(project).to_not be_valid
   end
 
-  it 'is not valid with :project_name > 10' do
-    project.project_name = '12345678901'
+  it 'is not valid with :project_name > 11' do
+    project.project_name = '123456789012'
     expect(project).to_not be_valid
   end
 end

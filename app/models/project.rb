@@ -6,8 +6,8 @@ class Project < ActiveRecord::Base
   validates :project_name,
             presence: true,
             uniqueness: { case_sensitive: false },
-            length: { minimum: 3, maximum: 10 }
-  # before_save do
-  #   project_name.tr('_', ' ').downcase.capitalize
-  # end
+            length: { minimum: 3, maximum: 11 }
+  before_save do
+    project_name.tr('_', ' ').downcase.capitalize
+  end
 end

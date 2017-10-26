@@ -21,7 +21,7 @@ RSpec.describe 'Projects', :projects_api, type: :request do
         data: {
           type: 'project',
           attributes: {
-            project_name: 'test_project'
+            project_name: 'test_app'
           }
         }
       }
@@ -32,9 +32,8 @@ RSpec.describe 'Projects', :projects_api, type: :request do
 
   describe 'GET show' do
     it 'shows a project' do
-      get '/api/v1/projects/web_app'
+      get '/api/v1/projects/Web_App'
       expect(response.status).to eq(200)
-      puts response.body
       expect(response.body).to be_json_response_for('project')
     end
   end
