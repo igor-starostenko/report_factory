@@ -28,24 +28,24 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
         data: {
           type: 'rspec_report',
           attributes: {
-            "version": "3.7.0",
+            "version": '3.7.0',
             "examples": [
               {
-                "id": "./spec/models/project_spec.rb[1:1]",
-                "description": "is valid",
-                "full_description": "Project is valid",
-                "status": "passed",
-                "file_path": "./spec/models/project_spec.rb",
+                "id": './spec/models/project_spec.rb[1:1]',
+                "description": 'is valid',
+                "full_description": 'Project is valid',
+                "status": 'passed',
+                "file_path": './spec/models/project_spec.rb',
                 "line_number": 8,
                 "run_time": 0.012945,
                 "pending_message": null
               },
               {
-                "id": "./spec/models/project_spec.rb[1:2]",
-                "description": "has :timestamps",
-                "full_description": "Project has :timestamps",
-                "status": "passed",
-                "file_path": "./spec/models/project_spec.rb",
+                "id": './spec/models/project_spec.rb[1:2]',
+                "description": 'has :timestamps',
+                "full_description": 'Project has :timestamps',
+                "status": 'passed',
+                "file_path": './spec/models/project_spec.rb',
                 "line_number": 12,
                 "run_time": 0.004452,
                 "pending_message": null
@@ -58,7 +58,7 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
               "pending_count": 0,
               "errors_outside_of_examples_count": 0
             },
-            "summary_line": "2 examples, 0 failures"
+            "summary_line": '2 examples, 0 failures'
           }
         }
       }
