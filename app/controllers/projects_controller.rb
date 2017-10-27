@@ -52,6 +52,6 @@ class ProjectsController < ApplicationController
 
   def render_not_found
     render json: { message: 'Project Not Found' },
-                   status: :not_found
+           status: :not_found
   end
 end
