@@ -33,25 +33,11 @@ class ProjectsController < ApplicationController
 
   private
 
-  def set_project
-    @project = Project.find_by(project_name: project_name)
-    return render_not_found unless @project
-  end
-
   def project_attributes
     project_params.fetch(:attributes, {})
   end
 
   def project_params
     params.require(:data).permit(:type, attributes: %i[project_name])
-  end
-
-  def project_name
-    params.fetch(:project_name).split('_').map(&:capitalize).join(' ')
-  end
-
-  def render_not_found
-    render json: { message: 'Project Not Found' },
-           status: :not_found
   end
 end
