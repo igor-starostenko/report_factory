@@ -2,25 +2,45 @@
 
 # Provides logic and interface for Rspec Reports API
 class RspecReportsController < ApplicationController
+  before_action :set_project
+
+  RSPEC_ATTRIBUTES = %i[version summary_line].freeze
+
   def index
-    # render json: RspecReport.where('owner_id = ?', @project.name)
+    @reports = Report.includes(:reportable)
+                     .where(project_id: @project.id,
+                            reportable_type: 'RspecReport')
+    @rspec_reports = @reports.collect(&:reportable)
+    render jsonapi: @rspec_reports, status: :ok
   end
 
   def show
-    # render json: @rspec_report
+    @rspec_report = RspecReport.find(params.fetch(:id))
+    render jsonapi: @rspec_report, status: :ok
   end
 
   def create
-    # if @rspec_report.present?
-    #   render nothing: true, status: :conflict
-    # else
-    #   @rspec_report = RspecReport.new
-    #   @rspec_report.assign_attributes(@json['rspec_report']
-    #   if @report.save
-    #     render json: @rspec_report
-    #   else
-    #      render nothing: true, status: :bad_request
-    #   end
-    # end
+    @rspec_report = RspecReport.new(rspec_report_attributes)
+    if @rspec_report.save && new_report.save
+      render jsonapi: @rspec_report, status: :created
+    else
+      render jsonapi_errors: @rspec_report.errors, status: :bad_request
+    end
+  end
+
+  private
+
+  def new_report
+    @report = Report.new(project_id: @project.id,
+                         reportable_type: RspecReport,
+                         reportable_id: @rspec_report.id)
+  end
+
+  def rspec_report_attributes
+    rspec_report_params.fetch(:attributes, {})
+  end
+
+  def rspec_report_params
+    params.require(:data).permit(attributes: RSPEC_ATTRIBUTES)
   end
 end

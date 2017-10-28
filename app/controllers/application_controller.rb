@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Main abstract class that owns common behavior
 class ApplicationController < ActionController::API
   private
 

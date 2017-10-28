@@ -38,7 +38,7 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
                 "file_path": './spec/models/project_spec.rb',
                 "line_number": 8,
                 "run_time": 0.012945,
-                "pending_message": null
+                "pending_message": nil
               },
               {
                 "id": './spec/models/project_spec.rb[1:2]',
@@ -48,7 +48,7 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
                 "file_path": './spec/models/project_spec.rb',
                 "line_number": 12,
                 "run_time": 0.004452,
-                "pending_message": null
+                "pending_message": nil
               }
             ],
             "summary": {
