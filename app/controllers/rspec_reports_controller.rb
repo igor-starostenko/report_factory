@@ -4,7 +4,12 @@
 class RspecReportsController < ApplicationController
   before_action :set_project
 
-  RSPEC_ATTRIBUTES = %i[version summary_line].freeze
+  RSPEC_REPORT_ATTRIBUTES = %i[version summary_line].freeze
+  RSPEC_SUMMARY_ATTRIBUTES = {
+    summary: %i[duration example_count failure_count
+                errors_outside_of_examples_count
+                pending_count]
+  }
 
   def index
     @reports = Report.includes(:reportable)
@@ -21,8 +26,8 @@ class RspecReportsController < ApplicationController
   end
 
   def create
-    @rspec_report = RspecReport.new(rspec_report_attributes)
-    if @rspec_report.save && new_report.save
+    @rspec_report = RspecReport.new(attributes(:rspec_report))
+    if @rspec_report.save && new_report.save && new_rspec_summary.save
       render jsonapi: @rspec_report, status: :created
     else
       render jsonapi_errors: @rspec_report.errors, status: :bad_request
@@ -37,11 +42,9 @@ class RspecReportsController < ApplicationController
                          reportable_id: @rspec_report.id)
   end
 
-  def rspec_report_attributes
-    rspec_report_params.fetch(:attributes, {})
-  end
-
-  def rspec_report_params
-    params.require(:data).permit(attributes: RSPEC_ATTRIBUTES)
+  def new_rspec_summary
+    args = { rspec_report_id: @rspec_report.id }
+      .merge(attributes(:rspec_summary, [:summary]))
+    @rspec_summary = RspecSummary.new(args)
   end
 end

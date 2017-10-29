@@ -13,8 +13,8 @@ class ApplicationController < ActionController::API
     params.fetch(:project_name).split('_').map(&:capitalize).join(' ')
   end
 
-  def attributes(type)
-    fetch_params(type).fetch(:attributes, {})
+  def attributes(type, nested = [])
+    fetch_params(type).dig(*([:attributes] +  nested))
   end
 
   def fetch_params(type)

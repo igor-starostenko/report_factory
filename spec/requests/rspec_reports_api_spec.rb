@@ -12,6 +12,11 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
                       project_id: project.id,
                       reportable_type: RspecReport,
                       reportable_id: rspec_report.id)
+    FactoryBot.create(:rspec_summary,
+                      rspec_report_id: rspec_report.id,
+                      example_count: 53,
+                      failure_count: 0,
+                      pending_count: 2)
   end
 
   describe 'GET index' do
