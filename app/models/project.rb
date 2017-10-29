@@ -5,7 +5,8 @@ class Project < ActiveRecord::Base
   has_many :reports, dependent: :destroy
   has_many :rspec_reports, through: :reports,
                            source: :reportable,
-                           source_type: 'RspecReport'
+                           source_type: 'RspecReport',
+                           dependent: :destroy
   VALID_PROJECT_REGEX = /\A[a-zA-Z\d\s]*\z/
   validates :project_name,
             presence: true,
