@@ -4,15 +4,11 @@
 class SerializableRspecReport < JSONAPI::Serializable::Resource
   type 'rspec_report'
 
-  belongs_to :project do
-    {
-      project_name: @object.report.project.project_name,
-      project_id: @object.report.project_id
-    }
-  end
-
-  attribute :report_type { 'RSpec' }
   attributes :id
+  attribute :project_name { @object.project.project_name }
+  attribute :project_id { @object.project.id }
+  attribute :report_id { @object.report.id }
+  attribute :report_type { 'RSpec' }
   attribute :date do
     {
       created_at: @object.report.created_at,
