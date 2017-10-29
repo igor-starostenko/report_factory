@@ -4,6 +4,7 @@
 # report submitted for a project
 class RspecReport < ActiveRecord::Base
   has_one :report, as: :reportable
+  has_one :project, through: :report
   has_many :rspec_examples
   has_one :rspec_summary
 end

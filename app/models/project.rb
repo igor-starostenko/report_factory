@@ -3,6 +3,9 @@
 # DB model that represents a Project under test
 class Project < ActiveRecord::Base
   has_many :reports, dependent: :destroy
+  has_many :rspec_reports, through: :reports,
+                           source: :reportable,
+                           source_type: 'RspecReport'
   VALID_PROJECT_REGEX = /\A[a-zA-Z\d\s]*\z/
   validates :project_name,
             presence: true,

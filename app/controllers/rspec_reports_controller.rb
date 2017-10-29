@@ -15,7 +15,8 @@ class RspecReportsController < ApplicationController
   end
 
   def show
-    @rspec_report = RspecReport.find(params.fetch(:id))
+    @rspec_report = RspecReport.includes(:report)
+                               .find(params.fetch(:id))
     render jsonapi: @rspec_report, status: :ok
   end
 
