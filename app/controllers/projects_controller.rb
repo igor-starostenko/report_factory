@@ -4,6 +4,8 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update]
 
+  PROJECT_ATTRIBUTES = %i[project_name]
+
   def index
     @projects = Project.all
     render jsonapi: @projects, status: :ok
@@ -14,7 +16,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(project_attributes)
+    @project = Project.new(attributes(:project))
 
     if @project.save
       render jsonapi: @project, status: :created
@@ -24,20 +26,10 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    if @project.update(project_attributes)
+    if @project.update(attributes(:project))
       render jsonapi: @project, status: :ok
     else
       render jsonapi_errors: @project.errors, status: :bad_request
     end
-  end
-
-  private
-
-  def project_attributes
-    project_params.fetch(:attributes, {})
-  end
-
-  def project_params
-    params.require(:data).permit(:type, attributes: %i[project_name])
   end
 end

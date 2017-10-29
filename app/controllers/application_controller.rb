@@ -13,6 +13,15 @@ class ApplicationController < ActionController::API
     params.fetch(:project_name).split('_').map(&:capitalize).join(' ')
   end
 
+  def attributes(type)
+    fetch_params(type).fetch(:attributes, {})
+  end
+
+  def fetch_params(type)
+    type_attrs = self.class.const_get("#{type.to_s.upcase}_ATTRIBUTES")
+    params.require(:data).permit(:type, attributes: type_attrs)
+  end
+
   def render_not_found(type)
     error_message = "#{type.capitalize} Not Found"
     render json: { message: error_message }, status: :not_found
