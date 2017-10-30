@@ -5,6 +5,6 @@
 class RspecReport < ActiveRecord::Base
   has_one :report, as: :reportable
   has_one :project, through: :report
-  has_many :rspec_examples, dependent: :destroy
-  has_one :rspec_summary, dependent: :destroy
+  has_many :examples, class_name: 'RspecExample', dependent: :destroy
+  has_one :summary, class_name: 'RspecSummary', dependent: :destroy
 end
