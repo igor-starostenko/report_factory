@@ -10,7 +10,9 @@ class SerializableRspecReport < JSONAPI::Serializable::Resource
   attribute :report_type { 'RSpec' }
   attribute :version
   attribute :rspec_examples
-  attribute :summary { @object.rspec_summary.serializable_hash }
+  attribute :summary do
+    @object.rspec_summary&.serializable_hash(except: :rspec_report_id)
+  end
   attribute :summary_line
   attribute :date do
     {

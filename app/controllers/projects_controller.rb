@@ -4,7 +4,7 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update]
 
-  PROJECT_ATTRIBUTES = %i[project_name]
+  PROJECT_ATTRIBUTES = %i[project_name].freeze
 
   def index
     @projects = Project.all

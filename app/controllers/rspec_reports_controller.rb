@@ -9,7 +9,7 @@ class RspecReportsController < ApplicationController
     summary: %i[duration example_count failure_count
                 errors_outside_of_examples_count
                 pending_count]
-  }
+  }.freeze
 
   def index
     @reports = Report.includes(:reportable)
@@ -44,7 +44,7 @@ class RspecReportsController < ApplicationController
 
   def new_rspec_summary
     args = { rspec_report_id: @rspec_report.id }
-      .merge(attributes(:rspec_summary, [:summary]))
+           .merge(attributes(:rspec_summary, [:summary]))
     @rspec_summary = RspecSummary.new(args)
   end
 end

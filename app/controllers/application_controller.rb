@@ -14,7 +14,7 @@ class ApplicationController < ActionController::API
   end
 
   def attributes(type, nested = [])
-    fetch_params(type).dig(*([:attributes] +  nested))
+    fetch_params(type).dig(*([:attributes] + nested))
   end
 
   def fetch_params(type)
