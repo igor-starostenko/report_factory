@@ -2,23 +2,25 @@
 
 *Report Factory* is a storage for your test reports with intuitive API to manage all your projects test results.
 
-## Preconditions
+The provided API are based on the [JSON API](http://jsonapi.org) convention.
 
-The provided API are based on the <a href="http://jsonapi.org">JSON API</a> convention.
+## Preconditions
 
 - Add `Content-Type` header with `application/vnd.api+json`
 
 ## Available API
 
-To return all available projects
-```json
-GET  /api/v1/projects
-```
+To return all available projects:
 
-To create a new project
-```json
-POST /api/v1/projects
+_GET_  `/api/v1/projects`
 
+---
+
+To create a new project:
+
+_POST_ `/api/v1/projects`
+
+```json
 {
     "data":{
         "type":"project",
@@ -29,15 +31,19 @@ POST /api/v1/projects
 }
 ```
 
-To get project by name
-```json
-GET  /api/v1/projects/:project_name
-```
+---
 
-To update a project
-```json
-PUT  /api/v1/projects/:project_name  # => Updates project
+To get project by name:
 
+_GET_  `/api/v1/projects/:project_name`
+
+---
+
+To update a project:
+
+_PUT_  `/api/v1/projects/:project_name`
+
+```json
 {
     "data":{
         "type":"project",
@@ -48,34 +54,33 @@ PUT  /api/v1/projects/:project_name  # => Updates project
 }
 ```
 
+---
+
 To return all reports within a project:
-```json
-GET  /api/v1/projects/:project_name/reports
-```
+
+_GET_  `/api/v1/projects/:project_name/reports`
+
+---
 
 To get all RSpec reports within a project:
-```json
-GET  /api/v1/projects/:project_name/reports/rspec
-```
+
+_GET_  `/api/v1/projects/:project_name/reports/rspec`
+
+---
 
 To submit an RSpec report:
-```json
-POST /api/v1/projects/:project_name/reports/rspec
 
+_POST_ `/api/v1/projects/:project_name/reports/rspec`
+
+```json
 {
   "data": {
-    "id": "75",
     "type": "rspec_report",
     "attributes": {
-      "project_name": "Webapp",
-      "project_id": 1,
-      "report_id": 71,
-      "report_type": "RSpec",
       "version": "3.7.0",
       "examples": [
         {
-          "id": 70,
-          "spec_id": "./spec/routing/routes_spec.rb[1:4:1]",
+          "id": "./spec/routing/routes_spec.rb[1:4:1]",
           "description": "routes GET /api/v1/projects/:project_name/reports/rspecto rspec_reports#index",
           "full_description": "routing /api/v1/projects/:project_name/reports/rspec routes GET /api/v1/projects/:project_name/reports/rspecto rspec_reports#index",
           "status": "passed",
@@ -83,29 +88,44 @@ POST /api/v1/projects/:project_name/reports/rspec
           "line_number": 59,
           "run_time": 0.001341,
           "pending_message": null,
-          "exception": null
         },
-        ...
+        {
+          "id": "./spec/requests/rspec_reports_api_spec.rb[1:1:1]",
+          "description": "gets all rspec reports within project",
+          "full_description": "RspecReports GET index gets all rspec reports within project",
+          "status": "failed",
+          "file_path": "./spec/requests/rspec_reports_api_spec.rb",
+          "line_number": 11,
+          "run_time": 0.032876,
+          "pending_message": null,
+          "exception": {
+            "class": "RSpec::Expectations::ExpectationNotMetError",
+            "message": "\nexpected: 200\n     got: 204\n\n(compared using ==)\n",
+            "backtrace": [
+              "./gems/rspec-support-3.7.0/lib/rspec/support.rb:97:in `block in \u003cmodule:Support\u003e'",
+              "./gems/rspec-support-3.7.0/lib/rspec/support.rb:106:in `notify_failure'",
+              "./gems/rspec-expectations-3.7.0/lib/rspec/expectations/fail_with.rb:35:in `fail_with'",
+              "./gems/rspec-expectations-3.7.0/lib/rspec/expectations/handler.rb:38:in `handle_failure'",
+              "./gems/rspec-expectations-3.7.0/lib/rspec/expectations/handler.rb:50:in `block in handle_matcher'",
+            ]
+          }
+        }
       ]
       "summary": {
-        "id": 66,
         "duration": 0.747558,
-        "example_count": 53,
-        "failure_count": 3,
+        "example_count": 2,
+        "failure_count": 1,
         "pending_count": 0,
         "errors_outside_of_examples_count": 0
       },
-      "summary_line": "53 examples, 3 failures",
-      "date": {
-        "created_at": "2017-10-31T05:47:14.161Z",
-        "updated_at": "2017-10-31T05:47:14.161Z"
-      }
+      "summary_line": "2 examples, 1 failures",
     }
   }
 }
 ```
 
+---
+
 To view an existing RSpec report:
-```json
-GET  /api/v1/projects/:project_name/reports/rspec/:id
-```
+
+_GET_  `/api/v1/projects/:project_name/reports/rspec/:id`
