@@ -14,8 +14,12 @@ RSpec.describe RspecExample, :rspec_example, type: :model do
                       status: 'passed')
   end
   let :exception_class { 'RSpec::Expectations::ExpectationNotMetError' }
-  let :exception_message { '\nexpected: 200\n     got: 204\n\n(compared using ==)\n' }
-  let :exception_backtrace { ['/support.rb:97', '/support.rb:106', '/fail_with.rb:35'] }
+  let :exception_message do
+    '\nexpected: 200\n     got: 204\n\n(compared using ==)\n'
+  end
+  let :exception_backtrace do
+    ['/support.rb:97', '/support.rb:106', '/fail_with.rb:35']
+  end
   let :rspec_exception do
     FactoryBot.create(:rspec_exception,
                       rspec_example_id: rspec_example.id,

@@ -64,12 +64,13 @@ class RspecReportsController < ApplicationController
       formatted_args = args.merge(example_args).except('id', 'exception')
       @rspec_example = RspecExample.new(formatted_args)
       @rspec_example.save
-      save_exception(example_args[:exception]) if example_args[:exception]
+      save_exception(example_args['exception']) if example_args['exception']
     end
   end
 
   def save_exception(exception)
-    args = { rspec_example_id: @rspec_example.id, classname: exception[:class] }
+    args = { rspec_example_id: @rspec_example.id,
+             classname: exception['class'] }
     RspecException.new(args.merge(exception).except('class')).save
   end
 end

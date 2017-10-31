@@ -46,6 +46,32 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
                 "pending_message": nil
               },
               {
+                "id": './spec/requests/rspec_reports_api_spec.rb[1:1:1]',
+                "description": 'gets all rspec reports within project',
+                "full_description": 'RspecReports GET index gets all '\
+                'rspec reports within project',
+                "status": 'failed',
+                "file_path": './spec/requests/rspec_reports_api_spec.rb',
+                "line_number": 11,
+                "run_time": 0.032876,
+                "pending_message": nil,
+                "exception": {
+                  "class": 'RSpec::Expectations::ExpectationNotMetError',
+                  "message": "\nexpected: 200\n    "\
+                  "got: 204\n\n(compared using ==)\n",
+                  "backtrace": [
+                    "./support.rb:97:in `block in \u003cmodule:Support\u003e'",
+                    "./support.rb:106:in `notify_failure'",
+                    "./expectations/fail_with.rb:35:in `fail_with'",
+                    "./expectations/handler.rb:38:in `handle_failure'",
+                    "./expectations/handler.rb:50:in `block in handle_matcher'",
+                    "./expectations/handler.rb:27:in `with_matcher'",
+                    "./expectations/handler.rb:48:in `handle_matcher'",
+                    "./expectations/expectation_target.rb:65:in `to'"
+                  ]
+                }
+              },
+              {
                 "id": './spec/models/project_spec.rb[1:2]',
                 "description": 'has :timestamps',
                 "full_description": 'Project has :timestamps',
@@ -58,12 +84,12 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
             ],
             "summary": {
               "duration": 0.747558,
-              "example_count": 2,
-              "failure_count": 0,
+              "example_count": 3,
+              "failure_count": 1,
               "pending_count": 0,
               "errors_outside_of_examples_count": 0
             },
-            "summary_line": '2 examples, 0 failures'
+            "summary_line": '3 examples, 1 failures'
           }
         }
       }
