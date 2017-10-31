@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023043858) do
+ActiveRecord::Schema.define(version: 20171031024318) do
 
   create_table "projects", force: :cascade do |t|
     t.string "project_name"
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 20171023043858) do
     t.float "run_time"
     t.string "pending_message"
     t.index ["rspec_report_id"], name: "index_rspec_examples_on_rspec_report_id"
+  end
+
+  create_table "rspec_exceptions", force: :cascade do |t|
+    t.integer "rspec_example_id"
+    t.string "classname"
+    t.string "message"
+    t.text "backtrace", default: "--- []\n"
+    t.index ["rspec_example_id"], name: "index_rspec_exceptions_on_rspec_example_id"
   end
 
   create_table "rspec_reports", force: :cascade do |t|
