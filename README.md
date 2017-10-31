@@ -64,17 +64,11 @@ POST /api/v1/projects/:project_name/reports/rspec
 
 {
   "data": {
-    "id": "75",
     "type": "rspec_report",
     "attributes": {
-      "project_name": "Webapp",
-      "project_id": 1,
-      "report_id": 71,
-      "report_type": "RSpec",
       "version": "3.7.0",
       "examples": [
         {
-          "id": 70,
           "spec_id": "./spec/routing/routes_spec.rb[1:4:1]",
           "description": "routes GET /api/v1/projects/:project_name/reports/rspecto rspec_reports#index",
           "full_description": "routing /api/v1/projects/:project_name/reports/rspec routes GET /api/v1/projects/:project_name/reports/rspecto rspec_reports#index",
@@ -88,7 +82,6 @@ POST /api/v1/projects/:project_name/reports/rspec
         ...
       ]
       "summary": {
-        "id": 66,
         "duration": 0.747558,
         "example_count": 53,
         "failure_count": 3,
@@ -96,10 +89,6 @@ POST /api/v1/projects/:project_name/reports/rspec
         "errors_outside_of_examples_count": 0
       },
       "summary_line": "53 examples, 3 failures",
-      "date": {
-        "created_at": "2017-10-31T05:47:14.161Z",
-        "updated_at": "2017-10-31T05:47:14.161Z"
-      }
     }
   }
 }
