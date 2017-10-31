@@ -1,0 +1,9 @@
+AllCops:
+  Exclude:
+    - 'db/**/*.rb'
+
+Style/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*_spec.rb'
