@@ -11,8 +11,9 @@ class RspecReportsController < ApplicationController
                 pending_count]
   }.freeze
   EXAMPLE_ATTRIBUTES = {
-    examples: %i[id description full_description status file_path
-                 line_number run_time pending_message].freeze
+    examples: [:id, :description, :full_description, :status, :file_path,
+               :line_number, :run_time, :pending_message,
+               { exception: [:class, :message, { backtrace: [] }] }]
   }.freeze
 
   def index
@@ -60,7 +61,15 @@ class RspecReportsController < ApplicationController
   def save_all_examples
     attributes(:example, [:examples]).each do |example_args|
       args = { rspec_report_id: @rspec_report.id, spec_id: example_args[:id] }
-      RspecExample.new(args.merge(example_args).except('id')).save
+      formatted_args = args.merge(example_args).except('id', 'exception')
+      @rspec_example = RspecExample.new(formatted_args)
+      @rspec_example.save
+      save_exception(example_args[:exception]) if example_args[:exception]
     end
+  end
+
+  def save_exception(exception)
+    args = { rspec_example_id: @rspec_example.id, classname: exception[:class] }
+    RspecException.new(args.merge(exception).except('class')).save
   end
 end
