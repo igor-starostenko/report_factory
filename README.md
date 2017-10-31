@@ -4,19 +4,19 @@
 
 ## Preconditions
 
-The API are based on the [http://jsonapi.org](JSON API) convention.
+The provided API are based on the <a href="http://jsonapi.org">JSON API</a> convention.
 
 - Add `Content-Type` header with `application/vnd.api+json`
 
 ## Available API
 
 To return all available projects
-```
+```json
 GET  /api/v1/projects
 ```
 
 To create a new project
-```
+```json
 POST /api/v1/projects
 
 {
@@ -30,12 +30,12 @@ POST /api/v1/projects
 ```
 
 To get project by name
-```
+```json
 GET  /api/v1/projects/:project_name
 ```
 
 To update a project
-```
+```json
 PUT  /api/v1/projects/:project_name  # => Updates project
 
 {
@@ -49,17 +49,17 @@ PUT  /api/v1/projects/:project_name  # => Updates project
 ```
 
 To return all reports within a project:
-```
+```json
 GET  /api/v1/projects/:project_name/reports
 ```
 
 To get all RSpec reports within a project:
-```
+```json
 GET  /api/v1/projects/:project_name/reports/rspec
 ```
 
 To submit an RSpec report:
-```
+```json
 POST /api/v1/projects/:project_name/reports/rspec
 
 {
@@ -106,6 +106,6 @@ POST /api/v1/projects/:project_name/reports/rspec
 ```
 
 To view an existing RSpec report:
-```
+```json
 GET  /api/v1/projects/:project_name/reports/rspec/:id
 ```
