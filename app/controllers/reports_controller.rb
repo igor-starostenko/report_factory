@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Provides logic and interface for Reports API
-class ReportsController < ApplicationController
+class ReportsController < BaseProjectsController
   before_action :set_project
 
   def index

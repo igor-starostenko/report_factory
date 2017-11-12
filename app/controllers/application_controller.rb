@@ -4,15 +4,6 @@
 class ApplicationController < ActionController::API
   private
 
-  def set_project
-    @project = Project.find_by(project_name: project_name)
-    return render_not_found(:project) unless @project
-  end
-
-  def project_name
-    params.fetch(:project_name).split('_').map(&:capitalize).join(' ')
-  end
-
   def attributes(type, nested = [])
     fetch_params(type).dig(*([:attributes] + nested))
   end
