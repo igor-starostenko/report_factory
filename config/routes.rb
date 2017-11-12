@@ -5,6 +5,13 @@ Rails.application.routes.draw do
   # see http://guides.rubyonrails.org/routing.html
   scope '/api' do
     scope '/v1' do
+      scope '/users' do
+        get '/' => 'users#index'
+        post '/create' => 'users#create'
+        put ':id' => 'users#update'
+        get ':id' => 'users#show'
+        delete ':id' => 'users#destroy'
+      end
       scope '/projects' do
         get '/' => 'projects#index'
         post '/' => 'projects#create'
