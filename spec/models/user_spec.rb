@@ -8,7 +8,7 @@ RSpec.describe User, :user, type: :model do
                       name: 'Tester',
                       email: 'test@mailinator.com',
                       password: 'Qwerty12',
-                      type: 'tester')
+                      type: 'Tester')
   end
 
   it 'is valid' do
@@ -20,17 +20,17 @@ RSpec.describe User, :user, type: :model do
     expect(user.updated_at).to be_truthy
   end
 
-  it' is not valid without :name' do
+  it 'is not valid without :name' do
     user.name = nil
     expect(user).to_not be_valid
   end
 
-  it' is not valid without :email' do
+  it 'is not valid without :email' do
     user.email = nil
     expect(user).to_not be_valid
   end
 
-  it' is not valid without :name' do
+  it 'is not valid without :name' do
     user.name = nil
     expect(user).to_not be_valid
   end

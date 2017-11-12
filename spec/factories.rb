@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :user
+  factory :tester
   factory :project
   factory :report
   factory :rspec_report
