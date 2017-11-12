@@ -3,8 +3,8 @@
 # Provides logic and interface for Users API
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
-  before_action :require_admin, only: %i[index create destroy]
   before_action :require_same_user, only: %i[show update]
+  before_action :require_admin, only: %i[index create destroy]
 
   def index
     @users = User.all
@@ -51,7 +51,12 @@ class UsersController < ApplicationController
   end
 
   def require_same_user
-    return if current_user == @user
+    return if @auth_user == @user
     require_admin
+  end
+
+  def require_admin
+    return if @auth_user.type == 'Admin'
+    render_unauthorized
   end
 end
