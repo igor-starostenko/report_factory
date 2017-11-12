@@ -13,9 +13,16 @@ class Project < ActiveRecord::Base
             uniqueness: { case_sensitive: false },
             length: { minimum: 3, maximum: 11 },
             format: { with: VALID_PROJECT_REGEX }
-  before_save do
+  before_create :set_formatted_project_name
+
+  private
+
+  def set_formatted_project_name
+    self.project_name = format_project_name
+  end
+
+  def format_project_name
     words = project_name.downcase.split(' ')
-    new_name = words.map(&:capitalize).join(' ')
-    self.project_name = new_name
+    words.map(&:capitalize).join(' ')
   end
 end
