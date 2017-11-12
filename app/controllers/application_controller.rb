@@ -6,8 +6,8 @@ class ApplicationController < ActionController::API
 
   private
 
-  def attributes(type, nested = [])
-    fetch_params(type).dig(*([:attributes] + nested))
+  def attributes(type, *nested)
+    fetch_params(type).dig(:attributes, *nested)
   end
 
   def fetch_params(type)

@@ -54,12 +54,12 @@ class RspecReportsController < BaseProjectsController
 
   def new_rspec_summary
     args = { rspec_report_id: @rspec_report.id }
-           .merge(attributes(:summary, [:summary]))
+           .merge(attributes(:summary, :summary))
     @rspec_summary = RspecSummary.new(args)
   end
 
   def save_all_examples
-    attributes(:example, [:examples]).each do |example_args|
+    attributes(:example, :examples).each do |example_args|
       args = { rspec_report_id: @rspec_report.id, spec_id: example_args[:id] }
       formatted_args = args.merge(example_args).except('id', 'exception')
       @rspec_example = RspecExample.new(formatted_args)
