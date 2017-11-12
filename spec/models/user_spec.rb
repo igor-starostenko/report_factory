@@ -12,7 +12,7 @@ RSpec.describe User, :user, type: :model do
   end
 
   it 'is valid' do
-    expect(user).to be valid
+    expect(user).to be_valid
   end
 
   it 'has :timestamps' do
@@ -42,6 +42,11 @@ RSpec.describe User, :user, type: :model do
 
   it 'is not valid with :name > 11' do
     user.name = '123456789012'
+    expect(user).to_not be_valid
+  end
+
+  it 'is not valid without :type' do
+    user.type = nil
     expect(user).to_not be_valid
   end
 
@@ -77,8 +82,7 @@ RSpec.describe User, :user, type: :model do
     expect(user).to_not be_valid
   end
 
-  it 'is not valid without :type' do
-    user.type = nil
-    expect(user).to_not be_valid
+  it 'has :api_key' do
+    expect(user.api_key ).to be_truthy
   end
 end
