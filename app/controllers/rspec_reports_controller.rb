@@ -42,14 +42,19 @@ class RspecReportsController < BaseProjectsController
   private
 
   def save_rspec_report
-    @rspec_report.save && new_report.save &&
-      new_rspec_summary.save && save_all_examples
+    @rspec_report.save && new_report.save && new_rspec_summary &&
+      save_all_examples && new_user_report.save
   end
 
   def new_report
     @report = Report.new(project_id: @project.id,
                          reportable_type: RspecReport,
                          reportable_id: @rspec_report.id)
+  end
+
+  def new_user_report
+    @user_report = UserReport.new(user_id: @auth_user.id,
+                                  report_id: @report.id)
   end
 
   def new_rspec_summary

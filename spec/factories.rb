@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :user_report do
-    
-  end
   factory :user
   factory :tester
   factory :admin
+  factory :user_report
   factory :project
   factory :report
   factory :rspec_report
