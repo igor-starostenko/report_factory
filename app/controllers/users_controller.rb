@@ -3,23 +3,28 @@
 # Provides logic and interface for Users API
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
-  before_action :require_same_user, only: %i[show update]
-  before_action :require_admin, only: %i[index create destroy]
+  before_action :require_same_user, only: %i[show]
+  before_action :require_admin, only: %i[create update destroy]
+
+  USER_ATTRIBUTES = %i[name email password type].freeze
 
   def index
     @users = User.all
-    render jsonapi: @users, status: :ok
+    render jsonapi: @users, status: :ok,
+           fields: { user: %i[name email type date] }
   end
 
   def show
-    render jsonapi: @user, status: :ok
+    render jsonapi: @user, status: :ok,
+           fields: { user: %i[name email type api_key date] }
   end
 
   def create
-    @user = User.new(attributes(:user))
+    @user = Tester.new(attributes(:user))
 
     if @user.save
-      render jsonapi: @user, status: :created
+      render jsonapi: @user, status: :created,
+             fields: { user: %i[name email type date] }
     else
       render jsonapi_errors: @user.errors, status: :bad_request
     end
@@ -27,7 +32,8 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(attributes(:user))
-      render jsonapi: @user, status: :ok
+      render jsonapi: @user, status: :ok,
+             fields: { user: %i[name email type date] }
     else
       render jsonapi_errors: @user.errors, status: :bad_request
     end
@@ -51,12 +57,7 @@ class UsersController < ApplicationController
   end
 
   def require_same_user
-    return if @auth_user == @user
-    require_admin
-  end
-
-  def require_admin
-    return if @auth_user.type == 'Admin'
+    return if @auth_user == @user && @user
     render_unauthorized
   end
 end

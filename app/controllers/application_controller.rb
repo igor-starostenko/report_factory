@@ -2,7 +2,7 @@
 
 # Main abstract class that owns common behavior
 class ApplicationController < ActionController::API
-  # before_action :require_log_in, except: %i[login]
+  before_action :require_log_in, except: %i[login]
 
   private
 
@@ -35,6 +35,6 @@ class ApplicationController < ActionController::API
   end
 
   def render_unauthorized
-    render json: 'Bad credentials', status: 401
+    render json: { message: 'Not authorized' }, status: 401
   end
 end
