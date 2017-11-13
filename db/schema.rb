@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171031024318) do
+ActiveRecord::Schema.define(version: 20171113064656) do
 
   create_table "projects", force: :cascade do |t|
     t.string "project_name"
@@ -62,6 +62,21 @@ ActiveRecord::Schema.define(version: 20171031024318) do
     t.integer "pending_count"
     t.integer "errors_outside_of_examples_count"
     t.index ["rspec_report_id"], name: "index_rspec_summaries_on_rspec_report_id"
+  end
+
+  create_table "user_reports", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "report_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "type"
+    t.string "email"
+    t.string "password_digest"
+    t.string "api_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

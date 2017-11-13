@@ -7,8 +7,86 @@ The provided API are based on the [JSON API](http://jsonapi.org) convention.
 ## Preconditions
 
 - Add `Content-Type` header with `application/vnd.api+json`
+- Add your account's `X-API-KEY` to header
 
 ## Available API
+
+### Users
+
+To login and get your `X-API-KEY`:
+
+_POST_ `/api/v1/users/login`
+
+```json
+{
+    "data":{
+        "type":"users",
+        "attributes":{
+            "email":"new_user@mailinator.com",
+            "password":"Password1"
+        }
+    }
+}
+```
+
+---
+
+To return all registered users:
+
+_GET_  `/api/v1/users`
+
+---
+
+To create a user (Admin only):
+
+_POST_ `/api/v1/users/create`
+
+```json
+{
+    "data":{
+        "type":"users",
+        "attributes":{
+            "name":"UserName",
+            "email":"new_user@mailinator.com",
+            "password":"Password1"
+        }
+    }
+}
+```
+
+---
+
+To update a user (Admin only):
+
+_PUT_ `/api/v1/users/:id`
+
+```json
+{
+    "data":{
+        "type":"users",
+        "attributes":{
+            "name":"UpdatedName",
+            "email":"updated_user@mailinator.com"
+        }
+    }
+}
+```
+*Note:* You can promote user to Admin by passing `"type":"Admin"`
+
+---
+
+To get your user information:
+
+_GET_  `/api/v1/users/:id`
+
+---
+
+To delete a user (Admin only):
+
+_DELETE_  `/api/v1/users/:id`
+
+---
+### Projects
 
 To return all available projects:
 
@@ -54,7 +132,7 @@ _PUT_  `/api/v1/projects/:project_name`
 }
 ```
 
----
+### Reports
 
 To return all reports within a project:
 

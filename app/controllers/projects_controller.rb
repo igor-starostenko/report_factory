@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Provides logic and interface for Projects API
-class ProjectsController < ApplicationController
+class ProjectsController < BaseProjectsController
   before_action :set_project, only: %i[show update]
 
   PROJECT_ATTRIBUTES = %i[project_name].freeze

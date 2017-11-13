@@ -8,8 +8,55 @@ RSpec.describe 'routing', :routing, type: :routing do
       expect(get: '/api').not_to be_routable
     end
 
-    it 'does not expost /api/v1' do
+    it 'does not expose /api/v1' do
       expect(get: '/api/v1').not_to be_routable
+    end
+  end
+
+  context '/api/v1/users', :users do
+    it 'routes GET /api/v1/users to users#index' do
+      expect(get: '/api/v1/users').to route_to(
+        controller: 'users',
+        action: 'index'
+      )
+    end
+
+    it 'routes POST /api/v1/users/login to users#login' do
+      expect(post: '/api/v1/users/login').to route_to(
+        controller: 'users',
+        action: 'login'
+      )
+    end
+
+    it 'routes POST /api/v1/users/create to users#create' do
+      expect(post: '/api/v1/users/create').to route_to(
+        controller: 'users',
+        action: 'create'
+      )
+    end
+
+    it 'routes PUT /api/v1/users/:id to users#update' do
+      expect(put: '/api/v1/users/1').to route_to(
+        controller: 'users',
+        action: 'update',
+        id: '1'
+      )
+    end
+
+    it 'routes GET /api/v1/users/:id to users#show' do
+      expect(get: '/api/v1/users/1').to route_to(
+        controller: 'users',
+        action: 'show',
+        id: '1'
+      )
+    end
+
+    it 'routes DELETE /api/v1/users/:id to users#destroy' do
+      expect(delete: '/api/v1/users/1').to route_to(
+        controller: 'users',
+        action: 'destroy',
+        id: '1'
+      )
     end
   end
 

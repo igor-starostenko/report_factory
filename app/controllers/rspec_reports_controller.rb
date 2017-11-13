@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Provides logic and interface for Rspec Reports API
-class RspecReportsController < ApplicationController
+class RspecReportsController < BaseProjectsController
   before_action :set_project
 
   REPORT_ATTRIBUTES = %i[version summary_line].freeze
@@ -42,8 +42,8 @@ class RspecReportsController < ApplicationController
   private
 
   def save_rspec_report
-    @rspec_report.save && new_report.save &&
-      new_rspec_summary.save && save_all_examples
+    @rspec_report.save && new_report.save && new_rspec_summary &&
+      save_all_examples && new_user_report.save
   end
 
   def new_report
@@ -52,14 +52,19 @@ class RspecReportsController < ApplicationController
                          reportable_id: @rspec_report.id)
   end
 
+  def new_user_report
+    @user_report = UserReport.new(user_id: @auth_user.id,
+                                  report_id: @report.id)
+  end
+
   def new_rspec_summary
     args = { rspec_report_id: @rspec_report.id }
-           .merge(attributes(:summary, [:summary]))
+           .merge(attributes(:summary, :summary))
     @rspec_summary = RspecSummary.new(args)
   end
 
   def save_all_examples
-    attributes(:example, [:examples]).each do |example_args|
+    attributes(:example, :examples).each do |example_args|
       args = { rspec_report_id: @rspec_report.id, spec_id: example_args[:id] }
       formatted_args = args.merge(example_args).except('id', 'exception')
       @rspec_example = RspecExample.new(formatted_args)
