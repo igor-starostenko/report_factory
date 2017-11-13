@@ -4,6 +4,8 @@ require 'securerandom'
 
 # Top level STI model for all types of users
 class User < ApplicationRecord
+  has_many :user_reports
+  has_many :reports, through: :user_reports
   before_create :set_api_key
   validates :name,
             presence: true,
