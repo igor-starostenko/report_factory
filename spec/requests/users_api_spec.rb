@@ -78,7 +78,6 @@ RSpec.describe 'Users', :users_api, type: :request do
     end
   end
 
-
   describe 'POST create' do
     it 'is not authorized without X-API-KEY' do
       post '/api/v1/users/create', params: {
@@ -176,7 +175,7 @@ RSpec.describe 'Users', :users_api, type: :request do
 
     it 'is not authorized to be performed by Tester' do
       put '/api/v1/users/1', headers: {
-        'X-API-KEY' => tester.api_key,
+        'X-API-KEY' => tester.api_key
       }, params: {
         data: {
           type: 'user',
@@ -192,7 +191,7 @@ RSpec.describe 'Users', :users_api, type: :request do
 
     it 'updates a user' do
       put '/api/v1/users/1', headers: {
-        'X-API-KEY' => admin.api_key,
+        'X-API-KEY' => admin.api_key
       }, params: {
         data: {
           type: 'user',
@@ -231,7 +230,7 @@ RSpec.describe 'Users', :users_api, type: :request do
 
     it 'deletes a user' do
       delete '/api/v1/users/1', headers: {
-        'X-API-KEY' => admin.api_key,
+        'X-API-KEY' => admin.api_key
       }
       expect(response.status).to eq(200)
     end

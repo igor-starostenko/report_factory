@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   def login
     user_attributes = attributes(:user)
     @user = User.find_by(email: user_attributes[:email].downcase)
-    if @user && @user.authenticate(user_attributes.fetch(:password))
+    if @user&.authenticate(user_attributes.fetch(:password))
       request.headers['X-API-KEY'] = @user.api_key
       redirect_to action: 'show', id: @user.id
     else
