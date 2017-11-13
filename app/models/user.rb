@@ -18,6 +18,10 @@ class User < ApplicationRecord
   validates_presence_of :password_digest, :type
   has_secure_password
 
+  def self.type_options
+    descendants.map(&:to_s).sort
+  end
+
   private
 
   def set_api_key

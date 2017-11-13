@@ -15,6 +15,11 @@ RSpec.describe User, :user, type: :model do
     expect(user).to be_valid
   end
 
+  it 'has #type_options' do
+    type_options = %w[Tester Admin]
+    expect(described_class.type_options).to match_array(type_options)
+  end
+
   it 'has :timestamps' do
     expect(user.created_at).to be_truthy
     expect(user.updated_at).to be_truthy
