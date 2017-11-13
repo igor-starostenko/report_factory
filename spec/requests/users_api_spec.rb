@@ -41,6 +41,44 @@ RSpec.describe 'Users', :users_api, type: :request do
     end
   end
 
+  describe 'POST login' do
+    it 'is not authorized without valid credentials' do
+      post '/api/v1/users/login', params: {
+        data: {
+          type: 'user',
+          attributes: {
+            email: 'test@mailinator.com',
+            password: 'Qwerty11'
+          }
+        }
+      }
+      expect(response.status).to eq(401)
+    end
+
+    before do
+      post '/api/v1/users/login', params: {
+        data: {
+          type: 'user',
+          attributes: {
+            email: 'test@mailinator.com',
+            password: 'Qwerty12'
+          }
+        }
+      }
+    end
+
+    it 'redirects to show action' do
+      expect(response.status).to eq(302)
+      expect(response).to redirect_to('/api/v1/users/1')
+    end
+
+    it 'returns user\'s  X-API-KEY' do
+      api_key = request.headers['X-API-KEY']
+      expect(api_key).to eql(tester.api_key)
+    end
+  end
+
+
   describe 'POST create' do
     it 'is not authorized without X-API-KEY' do
       post '/api/v1/users/create', params: {

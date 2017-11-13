@@ -19,6 +19,17 @@ class UsersController < ApplicationController
            fields: { user: %i[name email type api_key date] }
   end
 
+  def login
+    user_attributes = attributes(:user)
+    @user = User.find_by(email: user_attributes[:email].downcase)
+    if @user && @user.authenticate(user_attributes.fetch(:password))
+      request.headers['X-API-KEY'] = @user.api_key
+      redirect_to action: 'show', id: @user.id
+    else
+      render_unauthorized
+    end
+  end
+
   def create
     @user = Tester.new(attributes(:user))
 
@@ -48,12 +59,8 @@ class UsersController < ApplicationController
   private
 
   def set_user
-    @user = User.find(user_id)
+    @user = User.find(params.fetch(:id))
     return render_not_found(:user) unless @user
-  end
-
-  def user_id
-    params.fetch(:id)
   end
 
   def require_same_user

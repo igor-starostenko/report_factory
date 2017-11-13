@@ -21,6 +21,13 @@ RSpec.describe 'routing', :routing, type: :routing do
       )
     end
 
+    it 'routes POST /api/v1/users/login to users#login' do
+      expect(post: '/api/v1/users/login').to route_to(
+        controller: 'users',
+        action: 'login'
+      )
+    end
+
     it 'routes POST /api/v1/users/create to users#create' do
       expect(post: '/api/v1/users/create').to route_to(
         controller: 'users',

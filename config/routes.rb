@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     scope '/v1' do
       scope '/users' do
         get '/' => 'users#index'
+        post '/login' => 'users#login'
         post '/create' => 'users#create'
         put ':id' => 'users#update'
         get ':id' => 'users#show'
