@@ -83,6 +83,6 @@ RSpec.describe User, :user, type: :model do
   end
 
   it 'has :api_key' do
-    expect(user.api_key ).to be_truthy
+    expect(user.api_key).to be_truthy
   end
 end

@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :user
   factory :tester
+  factory :admin
   factory :project
   factory :report
   factory :rspec_report
