@@ -2,6 +2,8 @@
 
 # Formats User Reports JSON API
 class SerializableUserReport < JSONAPI::Serializable::Resource
+  include RspecReportSerializers
+
   type 'user_report'
 
   attribute :user_id { @object.user.id }
@@ -23,18 +25,5 @@ class SerializableUserReport < JSONAPI::Serializable::Resource
                 updated_at: report.updated_at }
       }
     end
-  end
-
-  def serialize_examples(reportable)
-    reportable.examples&.map do |example|
-      example.serializable_hash(except: :rspec_report_id).tap do |e|
-        e[:exception] = example.exception&.
-          serializable_hash(except: :rspec_example_id)
-      end
-    end
-  end
-
-  def serialize_summary(reportable)
-    reportable.summary&.serializable_hash(except: :rspec_report_id)
   end
 end
