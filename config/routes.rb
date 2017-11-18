@@ -11,9 +11,12 @@ Rails.application.routes.draw do
         get '/' => 'users#index'
         post '/login' => 'users#login'
         post '/create' => 'users#create'
-        put ':id' => 'users#update'
-        get ':id' => 'users#show'
-        delete ':id' => 'users#destroy'
+        scope '/:id' do
+          put '/' => 'users#update'
+          get '/' => 'users#show'
+          delete '/' => 'users#destroy'
+          get '/reports' => 'user_reports#index'
+        end
       end
       scope '/projects' do
         get '/' => 'projects#index'

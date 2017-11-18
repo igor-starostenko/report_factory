@@ -58,6 +58,14 @@ RSpec.describe 'routing', :routing, type: :routing do
         id: '1'
       )
     end
+
+    it 'routes GET /api/v1/users/:id to user_reports#index' do
+      expect(get: '/api/v1/users/1/reports').to route_to(
+        controller: 'user_reports',
+        action: 'index',
+        id: '1'
+      )
+    end
   end
 
   context '/api/v1/projects', :projects do
