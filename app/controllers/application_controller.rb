@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate_api_key
-    api_key = request.headers['X-Api-Key']
+    api_key = request.headers['X-API-KEY']
     @auth_user = User.find_by(api_key: api_key)
   end
 

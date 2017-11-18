@@ -2,6 +2,8 @@
 
 # Formats Rspec Reports JSON API
 class SerializableRspecReport < JSONAPI::Serializable::Resource
+  include RspecReportSerializers
+
   type 'rspec_report'
 
   attribute :project_name { @object.project.project_name }
@@ -9,17 +11,8 @@ class SerializableRspecReport < JSONAPI::Serializable::Resource
   attribute :report_id { @object.report.id }
   attribute :report_type { 'RSpec' }
   attribute :version
-  attribute :examples do
-    @object.examples&.map do |example|
-      example.serializable_hash(except: :rspec_report_id).tap do |e|
-        e[:exception] = example.exception&.
-          serializable_hash(except: :rspec_example_id)
-      end
-    end
-  end
-  attribute :summary do
-    @object.summary&.serializable_hash(except: :rspec_report_id)
-  end
+  attribute :examples { serialize_examples(@object) }
+  attribute :summary { serialize_summary(@object) }
   attribute :summary_line
   attribute :date do
     {

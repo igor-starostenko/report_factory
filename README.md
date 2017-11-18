@@ -81,6 +81,12 @@ _GET_  `/api/v1/users/:id`
 
 ---
 
+To get all reports of a user:
+
+_GET_  `/api/v1/users/:id/reports`
+
+---
+
 To delete a user (Admin only):
 
 _DELETE_  `/api/v1/users/:id`

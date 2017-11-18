@@ -42,7 +42,7 @@ class RspecReportsController < BaseProjectsController
   private
 
   def save_rspec_report
-    @rspec_report.save && new_report.save && new_rspec_summary &&
+    @rspec_report.save && new_report.save && new_rspec_summary.save &&
       save_all_examples && new_user_report.save
   end
 

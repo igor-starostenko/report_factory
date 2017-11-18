@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Provides logic and interface for Users API
-class UsersController < ApplicationController
+class UsersController < BaseUsersController
   before_action :set_user, only: %i[show update destroy]
   before_action :require_same_user, only: %i[show]
   before_action :require_admin, only: %i[create update destroy]
@@ -54,17 +54,5 @@ class UsersController < ApplicationController
     @user.destroy
     message = { message: "User #{@user.name} was deleted successfully" }
     render json: message, status: :ok
-  end
-
-  private
-
-  def set_user
-    @user = User.find(params.fetch(:id))
-    return render_not_found(:user) unless @user
-  end
-
-  def require_same_user
-    return if @auth_user == @user && @user
-    render_unauthorized
   end
 end
