@@ -15,6 +15,8 @@ gem 'puma', '~> 3.7'
 gem 'jsonapi-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
+# Provides support for CORS for web applications
+gem 'rack-cors', require: 'rack/cors'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
