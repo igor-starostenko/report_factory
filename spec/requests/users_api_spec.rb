@@ -67,13 +67,13 @@ RSpec.describe 'Users', :users_api, type: :request do
       }
     end
 
-    it 'redirects to show action' do
-      expect(response.status).to eq(302)
-      expect(response).to redirect_to('/api/v1/users/1')
+    it 'shows user' do
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('user')
     end
 
     it 'returns user\'s  X-API-KEY' do
-      api_key = request.headers['X-API-KEY']
+      api_key = response.headers['X-API-KEY']
       expect(api_key).to eql(tester.api_key)
     end
   end

@@ -23,8 +23,8 @@ class UsersController < BaseUsersController
     user_attributes = attributes(:user)
     @user = User.find_by(email: user_attributes[:email].downcase)
     if @user&.authenticate(user_attributes.fetch(:password))
-      request.headers['X-API-KEY'] = @user.api_key
-      redirect_to action: 'show', id: @user.id
+      response.headers['X-API-KEY'] = @user.api_key
+      show
     else
       render_unauthorized
     end
