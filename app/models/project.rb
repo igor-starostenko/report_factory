@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
             length: { minimum: 3, maximum: 11 },
             format: { with: VALID_PROJECT_REGEX }
   before_create :set_formatted_project_name
+  before_update :set_formatted_project_name
 
   private
 
