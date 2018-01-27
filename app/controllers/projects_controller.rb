@@ -2,7 +2,8 @@
 
 # Provides logic and interface for Projects API
 class ProjectsController < BaseProjectsController
-  before_action :set_project, only: %i[show update]
+  before_action :set_project, only: %i[show update destroy]
+  before_action :require_admin, only: %i[destroy]
 
   PROJECT_ATTRIBUTES = %i[project_name].freeze
 
@@ -31,5 +32,11 @@ class ProjectsController < BaseProjectsController
     else
       render jsonapi_errors: @project.errors, status: :bad_request
     end
+  end
+
+  def destroy
+    @project.destroy
+    text = "Project #{@project.project_name} was deleted successfully"
+    render json: { message: text }, status: :ok
   end
 end

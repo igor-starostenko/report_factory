@@ -24,6 +24,7 @@ Rails.application.routes.draw do
         scope '/:project_name' do
           get '/' => 'projects#show'
           put '/' => 'projects#update'
+          delete '/' => 'projects#destroy'
           scope '/reports' do
             get '/' => 'reports#index'
             scope '/rspec' do

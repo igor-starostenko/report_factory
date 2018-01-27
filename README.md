@@ -138,6 +138,12 @@ _PUT_  `/api/v1/projects/:project_name`
 }
 ```
 
+---
+
+To delete a project (Admin only):
+
+_DELETE_  `/api/v1/projects/:project_name`
+
 ### Reports
 
 To return all reports within a project:
