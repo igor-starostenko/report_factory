@@ -17,7 +17,7 @@ class ApplicationController < ActionController::API
 
   def render_not_found(type)
     error_message = "#{type.capitalize} Not Found"
-    render json: { message: error_message }, status: :not_found
+    render json: errors_payload(error_message), status: :not_found
   end
 
   def require_log_in
@@ -35,6 +35,10 @@ class ApplicationController < ActionController::API
   end
 
   def render_unauthorized
-    render json: { message: 'Not authorized' }, status: 401
+    render json: errors_payload('Not authorized'), status: 401
+  end
+
+  def errors_payload(*details)
+    { errors: details.map { |str| { detail: str } } }
   end
 end
