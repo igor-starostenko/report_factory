@@ -98,6 +98,14 @@ RSpec.describe 'routing', :routing, type: :routing do
         project_name: 'web_project'
       )
     end
+
+    it 'routes DELETE /api/v1/projects/:project_name to projects#destroy' do
+      expect(delete: '/api/v1/projects/web_project').to route_to(
+        controller: 'projects',
+        action: 'destroy',
+        project_name: 'web_project'
+      )
+    end
   end
 
   context '/api/v1/projects/:project_name/reports', :reports do
