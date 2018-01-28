@@ -19,6 +19,11 @@ class UsersController < BaseUsersController
            fields: { user: %i[name email type api_key date] }
   end
 
+  def auth
+    render jsonapi: @auth_user, status: :ok,
+           fields: { user: %i[name email type date] }
+  end
+
   def login
     user_attributes = attributes(:user)
     @user = User.find_by(email: user_attributes[:email].downcase)

@@ -13,6 +13,13 @@ RSpec.describe 'routing', :routing, type: :routing do
     end
   end
 
+  it 'routes GET /api/v1/user to users#auth' do
+    expect(get: '/api/v1/user').to route_to(
+      controller: 'users',
+      action: 'auth'
+    )
+  end
+
   context '/api/v1/users', :users do
     it 'routes GET /api/v1/users to users#index' do
       expect(get: '/api/v1/users').to route_to(

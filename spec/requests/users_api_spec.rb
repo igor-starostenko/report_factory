@@ -16,6 +16,21 @@ RSpec.describe 'Users', :users_api, type: :request do
   let(:tester) { Tester.first }
   let(:admin) { Admin.first }
 
+  describe 'GET auth' do
+    it 'is not authorized without X-API-KEY' do
+      get '/api/v1/user'
+      expect(response.status).to eq(401)
+    end
+
+    it 'shows the user' do
+      get '/api/v1/user', headers: {
+        'X-API-KEY' => tester.api_key
+      }
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('user')
+    end
+  end
+
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
       get '/api/v1/users'
