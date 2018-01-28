@@ -157,16 +157,16 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.status).to eq(401)
     end
 
-    it 'is not authorized to be performed by others' do
+    it 'is not authorized to be performed by Tester' do
       get '/api/v1/users/1', headers: {
-        'X-API-KEY' => admin.api_key
+        'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(401)
     end
 
     before do
       get '/api/v1/users/1', headers: {
-        'X-API-KEY' => tester.api_key
+        'X-API-KEY' => admin.api_key
       }
     end
     let(:body) { JSON.parse(response.body).fetch('data') }

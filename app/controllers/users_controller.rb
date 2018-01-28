@@ -3,8 +3,7 @@
 # Provides logic and interface for Users API
 class UsersController < BaseUsersController
   before_action :set_user, only: %i[show update destroy]
-  before_action :require_same_user, only: %i[show]
-  before_action :require_admin, only: %i[create update destroy]
+  before_action :require_admin, only: %i[create show update destroy]
 
   USER_ATTRIBUTES = %i[name email password type].freeze
 
