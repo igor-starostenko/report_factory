@@ -54,7 +54,8 @@ _POST_ `/api/v1/users/create`
         "attributes":{
             "name":"UserName",
             "email":"new_user@mailinator.com",
-            "password":"Password1"
+            "password":"Password1",
+            "type":"Tester"
         }
     }
 }
