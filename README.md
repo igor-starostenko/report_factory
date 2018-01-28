@@ -31,6 +31,12 @@ _POST_ `/api/v1/users/login`
 
 ---
 
+To return your user:
+
+_GET_  `/api/v1/user`
+
+---
+
 To return all registered users:
 
 _GET_  `/api/v1/users`
@@ -75,7 +81,7 @@ _PUT_ `/api/v1/users/:id`
 
 ---
 
-To get your user information:
+To get user information (Admin only):
 
 _GET_  `/api/v1/users/:id`
 

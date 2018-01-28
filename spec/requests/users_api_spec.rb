@@ -110,7 +110,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New User',
             email: 'new_user@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Tester'
           }
         }
       }
@@ -126,7 +127,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New User',
             email: 'new_user@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Tester'
           }
         }
       }
@@ -142,7 +144,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New User',
             email: 'new_user@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Tester'
           }
         }
       }

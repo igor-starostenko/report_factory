@@ -27,6 +27,7 @@ class User < ApplicationRecord
   private
 
   def set_api_key
+    logger.info(self.type)
     self.api_key = generate_api_key
   end
 

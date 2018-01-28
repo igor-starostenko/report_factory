@@ -35,7 +35,7 @@ class UsersController < BaseUsersController
   end
 
   def create
-    @user = Tester.new(attributes(:user))
+    @user = User.new(attributes(:user))
 
     if @user.save
       render jsonapi: @user, status: :created,
