@@ -22,10 +22,19 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.status).to eq(401)
     end
 
-    it 'shows the user' do
+    before do
       get '/api/v1/user', headers: {
         'X-API-KEY' => tester.api_key
       }
+    end
+    let(:body) { JSON.parse(response.body).fetch('data') }
+
+    it 'doesn\'t expose X-API-KEY' do
+      api_key = body.dig('attributes', 'api_key')
+      expect(api_key).to be_nil
+    end
+
+    it 'shows the user' do
       expect(response.status).to eq(200)
       expect(response.body).to be_json_response_for('user')
     end
@@ -162,9 +171,9 @@ RSpec.describe 'Users', :users_api, type: :request do
     end
     let(:body) { JSON.parse(response.body).fetch('data') }
 
-    it 'returns user\'s  X-API-KEY' do
+    it 'doesn\'t expose X-API-KEY' do
       api_key = body.dig('attributes', 'api_key')
-      expect(api_key).to eql(tester.api_key)
+      expect(api_key).to be_nil
     end
 
     it 'shows a user' do

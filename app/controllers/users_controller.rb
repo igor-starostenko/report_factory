@@ -16,7 +16,7 @@ class UsersController < BaseUsersController
 
   def show
     render jsonapi: @user, status: :ok,
-           fields: { user: %i[name email type api_key date] }
+           fields: { user: %i[name email type date] }
   end
 
   def auth
