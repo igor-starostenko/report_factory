@@ -96,7 +96,13 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.body).to be_json_response_for('user')
     end
 
-    it 'returns user\'s  X-API-KEY' do
+    it 'returns user\'s  X-API-KEY in body' do
+      body = JSON.parse(response.body)
+      api_key = body.dig('data', 'attributes', 'api_key')
+      expect(api_key).to eql(tester.api_key)
+    end
+
+    it 'returns user\'s  X-API-KEY in headers' do
       api_key = response.headers['X-API-KEY']
       expect(api_key).to eql(tester.api_key)
     end

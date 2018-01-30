@@ -28,7 +28,8 @@ class UsersController < BaseUsersController
     @user = User.find_by(email: user_attributes[:email].downcase)
     if @user&.authenticate(user_attributes.fetch(:password))
       response.headers['X-API-KEY'] = @user.api_key
-      show
+      render jsonapi: @user, status: :ok,
+             fields: { user: %i[name email api_key type date] }
     else
       render_unauthorized
     end
