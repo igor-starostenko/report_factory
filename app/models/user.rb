@@ -17,6 +17,13 @@ class User < ApplicationRecord
             length: { maximum: 105 },
             format: { with: VALID_EMAIL_REGEX }
   before_save { self.email = email.downcase }
+  VALID_PASSWORD_REGEX = /\A
+    (?=.{8,105})       # Must contain 8 or more characters
+    (?=.*\d)           # Must contain a digit
+    (?=.*[a-z])        # Must contain a lower case character
+    (?=.*[A-Z])        # Must contain an upper case character
+  /x
+  validates :password, format: { with: VALID_PASSWORD_REGEX }
   validates_presence_of :password_digest, :type
   has_secure_password
 
