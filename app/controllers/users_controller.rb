@@ -47,7 +47,7 @@ class UsersController < BaseUsersController
   end
 
   def update
-    if @user.update(attributes(:user))
+    if @user.update_attributes(attributes(:user))
       render jsonapi: @user, status: :ok,
              fields: { user: %i[name email type date] }
     else
