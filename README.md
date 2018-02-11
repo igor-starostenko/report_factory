@@ -82,7 +82,7 @@ _PUT_ `/api/v1/users/:id`
 
 ---
 
-To get user information (Admin only):
+To get user information:
 
 _GET_  `/api/v1/users/:id`
 
@@ -107,7 +107,7 @@ _GET_  `/api/v1/projects`
 
 ---
 
-To create a new project:
+To create a new project (Admin only):
 
 _POST_ `/api/v1/projects`
 

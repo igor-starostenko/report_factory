@@ -3,7 +3,7 @@
 # Provides logic and interface for Projects API
 class ProjectsController < BaseProjectsController
   before_action :set_project, only: %i[show update destroy]
-  before_action :require_admin, only: %i[destroy]
+  before_action :require_admin, only: %i[create destroy]
 
   PROJECT_ATTRIBUTES = %i[project_name].freeze
 

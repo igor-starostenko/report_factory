@@ -18,7 +18,7 @@ class User < ApplicationRecord
             format: { with: VALID_EMAIL_REGEX }
   before_save { self.email = email.downcase }
   VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,105}\z/
-  validates :password, 
+  validates :password,
             allow_nil: true,
             format: { with: VALID_PASSWORD_REGEX }
   validates_presence_of :password_digest, :type

@@ -33,12 +33,14 @@ RSpec.describe 'Projects', :projects_api, type: :request do
   end
 
   describe 'POST create' do
-    it 'is not authorized without X-API-KEY' do
-      post '/api/v1/projects', params: {
+    it 'is not authorized to be performed by Tester' do
+      post '/api/v1/projects', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
         data: {
           type: 'project',
           attributes: {
-            project_name: 'test app'
+            project_name: 'testapp'
           }
         }
       }
@@ -47,7 +49,7 @@ RSpec.describe 'Projects', :projects_api, type: :request do
 
     it 'creates a project' do
       post '/api/v1/projects', headers: {
-        'X-API-KEY' => tester.api_key
+        'X-API-KEY' => admin.api_key
       }, params: {
         data: {
           type: 'project',
@@ -62,7 +64,7 @@ RSpec.describe 'Projects', :projects_api, type: :request do
 
     it 'cannot create a duplicate project' do
       post '/api/v1/projects', headers: {
-        'X-API-KEY' => tester.api_key
+        'X-API-KEY' => admin.api_key
       }, params: {
         data: {
           type: 'project',
