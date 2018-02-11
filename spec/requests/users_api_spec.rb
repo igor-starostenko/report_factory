@@ -199,7 +199,22 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.status).to eq(401)
     end
 
-    it 'is not authorized to be performed by Tester' do
+    it 'can\'t update other users by Tester' do
+      put '/api/v1/users/2', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
+        data: {
+          type: 'user',
+          attributes: {
+            name: 'New Name',
+            email: 'new_email@mailinator.com',
+          }
+        }
+      }
+      expect(response.status).to eq(401)
+    end
+
+    it 'can\'t change type by Tester' do
       put '/api/v1/users/1', headers: {
         'X-API-KEY' => tester.api_key
       }, params: {
@@ -208,7 +223,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New Name',
             email: 'new_email@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Admin'
           }
         }
       }

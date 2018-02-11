@@ -10,8 +10,11 @@ class BaseUsersController < ApplicationController
     return render_not_found(:user) unless @user
   end
 
+  def same_user?
+    @auth_user == @user && @user
+  end
+
   def require_same_user
-    return if @auth_user == @user && @user
-    render_unauthorized
+    same_user? || render_unauthorized
   end
 end
