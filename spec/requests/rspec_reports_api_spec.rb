@@ -26,12 +26,12 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/projects/web_app/reports/rspec'
+      get '/api/v1/projects/web-app/reports/rspec'
       expect(response.status).to eq(401)
     end
 
     it 'gets all rspec reports within project' do
-      get '/api/v1/projects/web_app/reports/rspec', headers: {
+      get '/api/v1/projects/web-app/reports/rspec', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)
@@ -41,7 +41,7 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
 
   describe 'POST create' do
     it 'is not authorized without X-API-KEY' do
-      post '/api/v1/projects/web_app/reports/rspec', params: {
+      post '/api/v1/projects/web-app/reports/rspec', params: {
         data: {
           type: 'rspec_report',
           attributes: {
@@ -73,7 +73,7 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
     end
 
     it 'creates an rspec report' do
-      post '/api/v1/projects/web_app/reports/rspec', headers: {
+      post '/api/v1/projects/web-app/reports/rspec', headers: {
         'X-API-KEY' => tester.api_key
       }, params: {
         data: {
@@ -146,12 +146,12 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
 
   describe 'GET show' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/projects/Web_App/reports/rspec/1'
+      get '/api/v1/projects/Web-App/reports/rspec/1'
       expect(response.status).to eq(401)
     end
 
     it 'shows a project' do
-      get '/api/v1/projects/Web_App/reports/rspec/1', headers: {
+      get '/api/v1/projects/Web-App/reports/rspec/1', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)

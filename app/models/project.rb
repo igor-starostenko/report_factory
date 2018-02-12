@@ -7,14 +7,13 @@ class Project < ActiveRecord::Base
                            source: :reportable,
                            source_type: 'RspecReport',
                            dependent: :destroy
-  VALID_PROJECT_REGEX = /\A[a-zA-Z\d\s]*\z/
+  VALID_PROJECT_REGEX = /\A[-a-zA-Z\d\s]*\z/
   validates :project_name,
             presence: true,
             uniqueness: { case_sensitive: false },
-            length: { minimum: 3, maximum: 11 },
+            length: { minimum: 3, maximum: 15 },
             format: { with: VALID_PROJECT_REGEX }
-  before_create :set_formatted_project_name
-  before_update :set_formatted_project_name
+  before_validation :set_formatted_project_name
 
   private
 
@@ -23,7 +22,6 @@ class Project < ActiveRecord::Base
   end
 
   def format_project_name
-    words = project_name.downcase.split(' ')
-    words.map(&:capitalize).join(' ')
+    project_name&.tr(' ', '-')
   end
 end
