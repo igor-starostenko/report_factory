@@ -31,6 +31,12 @@ _POST_ `/api/v1/users/login`
 
 ---
 
+To return your user:
+
+_GET_  `/api/v1/user`
+
+---
+
 To return all registered users:
 
 _GET_  `/api/v1/users`
@@ -48,7 +54,8 @@ _POST_ `/api/v1/users/create`
         "attributes":{
             "name":"UserName",
             "email":"new_user@mailinator.com",
-            "password":"Password1"
+            "password":"Password1",
+            "type":"Tester"
         }
     }
 }
@@ -75,7 +82,7 @@ _PUT_ `/api/v1/users/:id`
 
 ---
 
-To get your user information:
+To get user information:
 
 _GET_  `/api/v1/users/:id`
 
@@ -100,7 +107,7 @@ _GET_  `/api/v1/projects`
 
 ---
 
-To create a new project:
+To create a new project (Admin only):
 
 _POST_ `/api/v1/projects`
 

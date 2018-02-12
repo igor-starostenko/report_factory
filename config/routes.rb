@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   # see http://guides.rubyonrails.org/routing.html
   scope '/api' do
     scope '/v1' do
+      get '/user' => 'users#auth'
       scope '/users' do
         get '/' => 'users#index'
         post '/login' => 'users#login'

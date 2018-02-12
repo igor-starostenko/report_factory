@@ -8,7 +8,7 @@ RSpec.describe 'Reports', :reports_api, type: :request do
                       name: 'user',
                       email: 'test@mailinator.com',
                       password: 'Qwerty12')
-    project = FactoryBot.create(:project, project_name: 'Web App')
+    project = FactoryBot.create(:project, project_name: 'Web-App')
     rspec_report = FactoryBot.create(:rspec_report,
                                      version: '1.0.0',
                                      summary_line: '8 examples, 0 failures')
@@ -21,12 +21,12 @@ RSpec.describe 'Reports', :reports_api, type: :request do
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/projects/web_app/reports'
+      get '/api/v1/projects/web-app/reports'
       expect(response.status).to eq(401)
     end
 
     it 'gets all reports within a project' do
-      get '/api/v1/projects/web_app/reports', headers: {
+      get '/api/v1/projects/web-app/reports', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)

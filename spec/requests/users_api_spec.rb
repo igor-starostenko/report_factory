@@ -16,6 +16,30 @@ RSpec.describe 'Users', :users_api, type: :request do
   let(:tester) { Tester.first }
   let(:admin) { Admin.first }
 
+  describe 'GET auth' do
+    it 'is not authorized without X-API-KEY' do
+      get '/api/v1/user'
+      expect(response.status).to eq(401)
+    end
+
+    before do
+      get '/api/v1/user', headers: {
+        'X-API-KEY' => tester.api_key
+      }
+    end
+    let(:body) { JSON.parse(response.body).fetch('data') }
+
+    it 'doesn\'t expose X-API-KEY' do
+      api_key = body.dig('attributes', 'api_key')
+      expect(api_key).to be_nil
+    end
+
+    it 'shows the user' do
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('user')
+    end
+  end
+
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
       get '/api/v1/users'
@@ -72,7 +96,13 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.body).to be_json_response_for('user')
     end
 
-    it 'returns user\'s  X-API-KEY' do
+    it 'returns user\'s  X-API-KEY in body' do
+      body = JSON.parse(response.body)
+      api_key = body.dig('data', 'attributes', 'api_key')
+      expect(api_key).to eql(tester.api_key)
+    end
+
+    it 'returns user\'s  X-API-KEY in headers' do
       api_key = response.headers['X-API-KEY']
       expect(api_key).to eql(tester.api_key)
     end
@@ -86,7 +116,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New User',
             email: 'new_user@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Tester'
           }
         }
       }
@@ -102,7 +133,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New User',
             email: 'new_user@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Tester'
           }
         }
       }
@@ -118,7 +150,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New User',
             email: 'new_user@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Tester'
           }
         }
       }
@@ -133,23 +166,16 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.status).to eq(401)
     end
 
-    it 'is not authorized to be performed by others' do
-      get '/api/v1/users/1', headers: {
-        'X-API-KEY' => admin.api_key
-      }
-      expect(response.status).to eq(401)
-    end
-
     before do
       get '/api/v1/users/1', headers: {
-        'X-API-KEY' => tester.api_key
+        'X-API-KEY' => admin.api_key
       }
     end
     let(:body) { JSON.parse(response.body).fetch('data') }
 
-    it 'returns user\'s  X-API-KEY' do
+    it 'doesn\'t expose X-API-KEY' do
       api_key = body.dig('attributes', 'api_key')
-      expect(api_key).to eql(tester.api_key)
+      expect(api_key).to be_nil
     end
 
     it 'shows a user' do
@@ -173,7 +199,22 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.status).to eq(401)
     end
 
-    it 'is not authorized to be performed by Tester' do
+    it 'can\'t update other users by Tester' do
+      put '/api/v1/users/2', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
+        data: {
+          type: 'user',
+          attributes: {
+            name: 'New Name',
+            email: 'new_email@mailinator.com',
+          }
+        }
+      }
+      expect(response.status).to eq(401)
+    end
+
+    it 'can\'t change type by Tester' do
       put '/api/v1/users/1', headers: {
         'X-API-KEY' => tester.api_key
       }, params: {
@@ -182,7 +223,8 @@ RSpec.describe 'Users', :users_api, type: :request do
           attributes: {
             name: 'New Name',
             email: 'new_email@mailinator.com',
-            password: 'Password1'
+            password: 'Password1',
+            type: 'Admin'
           }
         }
       }

@@ -33,12 +33,14 @@ RSpec.describe 'Projects', :projects_api, type: :request do
   end
 
   describe 'POST create' do
-    it 'is not authorized without X-API-KEY' do
-      post '/api/v1/projects', params: {
+    it 'is not authorized to be performed by Tester' do
+      post '/api/v1/projects', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
         data: {
           type: 'project',
           attributes: {
-            project_name: 'test app'
+            project_name: 'testapp'
           }
         }
       }
@@ -47,7 +49,7 @@ RSpec.describe 'Projects', :projects_api, type: :request do
 
     it 'creates a project' do
       post '/api/v1/projects', headers: {
-        'X-API-KEY' => tester.api_key
+        'X-API-KEY' => admin.api_key
       }, params: {
         data: {
           type: 'project',
@@ -62,7 +64,7 @@ RSpec.describe 'Projects', :projects_api, type: :request do
 
     it 'cannot create a duplicate project' do
       post '/api/v1/projects', headers: {
-        'X-API-KEY' => tester.api_key
+        'X-API-KEY' => admin.api_key
       }, params: {
         data: {
           type: 'project',
@@ -77,12 +79,12 @@ RSpec.describe 'Projects', :projects_api, type: :request do
 
   describe 'GET show' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/projects/Web_App'
+      get '/api/v1/projects/Web-App'
       expect(response.status).to eq(401)
     end
 
     it 'shows a project' do
-      get '/api/v1/projects/Web_App', headers: {
+      get '/api/v1/projects/Web-App', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)
@@ -92,7 +94,7 @@ RSpec.describe 'Projects', :projects_api, type: :request do
 
   describe 'PUT update' do
     it 'is not authorized without X-API-KEY' do
-      put '/api/v1/projects/Web_App', params: {
+      put '/api/v1/projects/Web-App', params: {
         data: {
           type: 'project',
           attributes: {
@@ -104,7 +106,7 @@ RSpec.describe 'Projects', :projects_api, type: :request do
     end
 
     it 'updates a project' do
-      put '/api/v1/projects/Web_App', headers: {
+      put '/api/v1/projects/Web-App', headers: {
         'X-API-KEY' => tester.api_key
       }, params: {
         data: {
@@ -118,25 +120,25 @@ RSpec.describe 'Projects', :projects_api, type: :request do
       expect(response.body).to be_json_response_for('project')
       response_data = JSON.parse(response.body).fetch('data')
       project_name = response_data.dig('attributes', 'project_name')
-      expect(project_name).to eq('New Name')
+      expect(project_name).to eq('New-Name')
     end
   end
 
   describe 'DELETE destroy' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/projects/Web_App'
+      get '/api/v1/projects/Web-App'
       expect(response.status).to eq(401)
     end
 
     it 'is not authorized to be performed by Tester' do
-      delete '/api/v1/projects/Web_App', headers: {
+      delete '/api/v1/projects/Web-App', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(401)
     end
 
     it 'deletes a project' do
-      delete '/api/v1/projects/Web_App', headers: {
+      delete '/api/v1/projects/Web-App', headers: {
         'X-API-KEY' => admin.api_key
       }
       expect(response.status).to eq(200)
