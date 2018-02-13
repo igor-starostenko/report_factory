@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: 'postgres:9.6-alpine'
+    environment:
+      POSTGRES_USER: 'report_factory'
+      POSTGRES_PASSWORD: ''
+
+  server:
+    depends_on:
+      - 'db'
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+    env_file:
+      - '.env'
