@@ -5,7 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore environment configuration
-.report_factory.env
+.env
 
 # Ignore system files
 *.swp
