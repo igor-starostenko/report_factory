@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20171113064656) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "projects", force: :cascade do |t|
     t.string "project_name"
     t.datetime "created_at"
@@ -19,9 +22,9 @@ ActiveRecord::Schema.define(version: 20171113064656) do
   end
 
   create_table "reports", force: :cascade do |t|
-    t.integer "project_id"
+    t.bigint "project_id"
     t.string "reportable_type"
-    t.integer "reportable_id"
+    t.bigint "reportable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_reports_on_project_id"
@@ -29,7 +32,7 @@ ActiveRecord::Schema.define(version: 20171113064656) do
   end
 
   create_table "rspec_examples", force: :cascade do |t|
-    t.integer "rspec_report_id"
+    t.bigint "rspec_report_id"
     t.string "spec_id"
     t.text "description"
     t.text "full_description"
@@ -42,7 +45,7 @@ ActiveRecord::Schema.define(version: 20171113064656) do
   end
 
   create_table "rspec_exceptions", force: :cascade do |t|
-    t.integer "rspec_example_id"
+    t.bigint "rspec_example_id"
     t.string "classname"
     t.string "message"
     t.text "backtrace", default: "--- []\n"
@@ -55,7 +58,7 @@ ActiveRecord::Schema.define(version: 20171113064656) do
   end
 
   create_table "rspec_summaries", force: :cascade do |t|
-    t.integer "rspec_report_id"
+    t.bigint "rspec_report_id"
     t.float "duration"
     t.integer "example_count"
     t.integer "failure_count"
