@@ -1,5 +1,5 @@
 # Use the latest and greatest version of Ruby 2.5.0.
-FROM ruby:2.4-alpine
+FROM ruby:2.5.0-alpine
 
 # Optionally set a maintainer name to let people know who made this image.
 MAINTAINER Igor Starostenko <contact.igorstar@gmail.com>
@@ -18,6 +18,6 @@ RUN bundle install --binstubs
 
 # Copy in the application code from your work station at the current directory
 # over to the working directory.
-COPY . .
+COPY . /app
 
-CMD puma -C config/puma.rb
+ENTRYPOINT ["puma", "-C", "config/puma.rb"]
