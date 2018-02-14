@@ -3,9 +3,6 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: db
-  username: report_factory
-  password:
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -70,5 +67,6 @@ test:
 production:
   <<: *default
   database: report_factory_production
-  username: report_factory
-  password: <%= ENV['REPORT_FACTORY_DATABASE_PASSWORD'] %>
+  host: db
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
