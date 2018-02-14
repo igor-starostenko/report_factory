@@ -6,13 +6,24 @@ class SerializableRspecReport < JSONAPI::Serializable::Resource
 
   type 'rspec_report'
 
-  attribute :project_name { @object.project.project_name }
-  attribute :project_id { @object.project.id }
-  attribute :report_id { @object.report.id }
-  attribute :report_type { 'RSpec' }
+  attribute :project_name do
+    @object.project.project_name
+  end
+  attribute :project_id do
+    @object.project.id
+  end
+  attribute :report_id do
+    @object.report.id
+  end
+  attribute :report_type do 'RSpec'
+  end
   attribute :version
-  attribute :examples { serialize_examples(@object) }
-  attribute :summary { serialize_summary(@object) }
+  attribute :examples do
+    serialize_examples(@object)
+  end
+  attribute :summary do
+    serialize_summary(@object)
+  end
   attribute :summary_line
   attribute :date do
     {
