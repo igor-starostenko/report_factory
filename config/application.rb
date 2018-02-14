@@ -24,6 +24,16 @@ module ReportFactory
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
+    if ENV['RAILS_ENV'] == 'production'
+      # Custom logger which logs to STDOUT.
+      # Docker expects your application to log to STDOUT/STDERR and to be ran
+      # in the foreground.
+      logger           = ActiveSupport::Logger.new(STDOUT)
+      logger.formatter = config.log_formatter
+      config.log_tags  = [:subdomain, :uuid]
+      config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    end
+
     # Settings in config/environments/*
     # take precedence over those specified here.
     # Application configuration should go into files in config/initializers

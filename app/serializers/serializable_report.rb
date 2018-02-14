@@ -4,7 +4,9 @@
 class SerializableReport < JSONAPI::Serializable::Resource
   type 'reports'
 
-  attribute :project_name { @object.project.project_name }
+  attribute :project_name do
+    @object.project.project_name
+  end
   attributes :project_id, :reportable_type, :reportable_id
 
   attribute :date do

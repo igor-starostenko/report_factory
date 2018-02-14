@@ -6,8 +6,12 @@ class SerializableUserReport < JSONAPI::Serializable::Resource
 
   type 'user_report'
 
-  attribute :user_id { @object.user.id }
-  attribute :user_name { @object.user.name }
+  attribute :user_id do
+    @object.user.id
+  end
+  attribute :user_name do
+    @object.user.name
+  end
   attribute :report do
     report = @object.report
     reportable = report.reportable
