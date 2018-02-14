@@ -25,12 +25,12 @@ RSpec.describe 'UserReports', :user_reports_api, type: :request do
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/users/1/reports'
+      get "/api/v1/users/#{user.id}/reports"
       expect(response.status).to eq(401)
     end
 
     before do
-      get '/api/v1/users/1/reports', headers: {
+      get "/api/v1/users/#{user.id}/reports", headers: {
         'X-API-KEY' => user.api_key
       }
     end

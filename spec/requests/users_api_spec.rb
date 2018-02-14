@@ -162,12 +162,12 @@ RSpec.describe 'Users', :users_api, type: :request do
 
   describe 'GET show' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/users/1'
+      get "/api/v1/users/#{tester.id}"
       expect(response.status).to eq(401)
     end
 
     before do
-      get '/api/v1/users/1', headers: {
+      get "/api/v1/users/#{tester.id}", headers: {
         'X-API-KEY' => admin.api_key
       }
     end
@@ -186,7 +186,7 @@ RSpec.describe 'Users', :users_api, type: :request do
 
   describe 'PUT update' do
     it 'is not authorized without X-API-KEY' do
-      put '/api/v1/users/1', params: {
+      put "/api/v1/users/#{tester.id}", params: {
         data: {
           type: 'user',
           attributes: {
@@ -200,7 +200,7 @@ RSpec.describe 'Users', :users_api, type: :request do
     end
 
     it 'can\'t update other users by Tester' do
-      put '/api/v1/users/2', headers: {
+      put "/api/v1/users/#{admin.id}", headers: {
         'X-API-KEY' => tester.api_key
       }, params: {
         data: {
@@ -215,7 +215,7 @@ RSpec.describe 'Users', :users_api, type: :request do
     end
 
     it 'can\'t change type by Tester' do
-      put '/api/v1/users/1', headers: {
+      put "/api/v1/users/#{tester.id}", headers: {
         'X-API-KEY' => tester.api_key
       }, params: {
         data: {
@@ -232,7 +232,7 @@ RSpec.describe 'Users', :users_api, type: :request do
     end
 
     it 'updates a user' do
-      put '/api/v1/users/1', headers: {
+      put "/api/v1/users/#{tester.id}", headers: {
         'X-API-KEY' => admin.api_key
       }, params: {
         data: {
@@ -259,19 +259,19 @@ RSpec.describe 'Users', :users_api, type: :request do
     end
 
     it 'is not authorized without X-API-KEY' do
-      delete '/api/v1/users/1'
+      delete "/api/v1/users/#{tester.id}"
       expect(response.status).to eq(401)
     end
 
     it 'is not authorized to be performed by Tester' do
-      delete '/api/v1/users/1', headers: {
+      delete "/api/v1/users/#{tester.id}", headers: {
         'X-API-KEY' => other.api_key
       }
       expect(response.status).to eq(401)
     end
 
     it 'deletes a user' do
-      delete '/api/v1/users/1', headers: {
+      delete "/api/v1/users/#{tester.id}", headers: {
         'X-API-KEY' => admin.api_key
       }
       expect(response.status).to eq(200)

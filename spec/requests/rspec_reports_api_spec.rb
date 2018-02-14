@@ -23,6 +23,7 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
                       pending_count: 2)
   end
   let(:tester) { Tester.first }
+  let(:rspec_report) { RspecReport.first }
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
@@ -146,12 +147,12 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
 
   describe 'GET show' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/projects/Web-App/reports/rspec/1'
+      get "/api/v1/projects/Web-App/reports/rspec/#{rspec_report.id}"
       expect(response.status).to eq(401)
     end
 
     it 'shows a project' do
-      get '/api/v1/projects/Web-App/reports/rspec/1', headers: {
+      get "/api/v1/projects/Web-App/reports/rspec/#{rspec_report.id}", headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)
