@@ -72,7 +72,7 @@ Rails api are available on `http://localhost:3000`.
 You can login with admin user credentials:
 
 | email               | password     |
--------------------------------------
+|---------------------|--------------|
 | **admin@admin.com** | **Welcome1** |
 
 With admin permissions you can create other users and admins as well as projects. The initial admin user can be safely deleted later.
