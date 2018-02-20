@@ -248,6 +248,21 @@ RSpec.describe 'Users', :users_api, type: :request do
       expect(response.status).to eq(200)
       expect(response.body).to be_json_response_for('user')
     end
+
+    it 'updates user\'s password' do
+      put "/api/v1/users/#{tester.id}", headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
+        data: {
+          type: 'user',
+          attributes: {
+            password: 'Password1'
+          }
+        }
+      }
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('user')
+    end
   end
 
   describe 'DELETE destroy' do

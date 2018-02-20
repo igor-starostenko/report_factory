@@ -66,6 +66,7 @@ class UsersController < BaseUsersController
   def verify_update_permissions
     @update_attrs = attributes(:user)
     return require_admin unless same_user?
+    return unless @update_attrs.key?(:type)
     render_unauthorized if @user.type != @update_attrs[:type]
   end
 end
