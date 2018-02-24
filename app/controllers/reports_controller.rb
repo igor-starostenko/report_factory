@@ -6,4 +6,9 @@ class ReportsController < ApplicationController
     @reports = Report.all
     render jsonapi: @reports, status: :ok
   end
+
+  def show
+    @report = Report.find(params.fetch(:id))
+    render jsonapi: @report, status: :ok
+  end
 end

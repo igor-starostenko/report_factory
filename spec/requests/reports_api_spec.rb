@@ -18,6 +18,7 @@ RSpec.describe 'Reports', :reports_api, type: :request do
                       reportable_id: rspec_report.id)
   end
   let(:tester) { Tester.first }
+  let(:report) { Report.first }
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
@@ -27,6 +28,21 @@ RSpec.describe 'Reports', :reports_api, type: :request do
 
     it 'gets all reports' do
       get '/api/v1/reports', headers: {
+        'X-API-KEY' => tester.api_key
+      }
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('reports')
+    end
+  end
+
+  describe 'GET show' do
+    it 'is not authorized without X-API-KEY' do
+      get "/api/v1/reports/#{report.id}"
+      expect(response.status).to eq(401)
+    end
+
+    it 'gets all reports' do
+      get "/api/v1/reports/#{report.id}", headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)
