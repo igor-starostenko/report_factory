@@ -26,7 +26,7 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def show
     @rspec_report = RspecReport.includes(:report, :project)
-                               .where(id: params.fetch(:id))
+                               .find(params.fetch(:id))
     render jsonapi: @rspec_report, status: :ok
   end
 

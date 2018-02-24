@@ -38,6 +38,10 @@ Rails.application.routes.draw do
       end
       scope '/reports' do
         get '/' => 'reports#index'
+        scope '/rspec' do
+          get '/' => 'rspec_reports#index'
+          get '/:id' => 'rspec_reports#show'
+        end
         get '/:id' => 'reports#show'
       end
     end

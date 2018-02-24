@@ -151,7 +151,7 @@ RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api, type: :request
       expect(response.status).to eq(401)
     end
 
-    it 'shows a project' do
+    it 'shows an rspec report of a project' do
       get "/api/v1/projects/Web-App/reports/rspec/#{rspec_report.id}", headers: {
         'X-API-KEY' => tester.api_key
       }
