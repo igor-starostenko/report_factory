@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
+RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api, type: :request do
   before do
     FactoryBot.create(:tester,
                       name: 'user',

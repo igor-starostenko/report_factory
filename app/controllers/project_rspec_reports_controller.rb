@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Provides logic and interface for Rspec Reports API
-class RspecReportsController < BaseProjectsController
+# Provides logic and interface for Project Rspec Reports API
+class ProjectRspecReportsController < BaseProjectsController
   before_action :set_project
 
   REPORT_ATTRIBUTES = %i[version summary_line].freeze

@@ -29,15 +29,16 @@ Rails.application.routes.draw do
           scope '/reports' do
             get '/' => 'project_reports#index'
             scope '/rspec' do
-              get '/' => 'rspec_reports#index'
-              post '/' => 'rspec_reports#create'
-              get '/:id' => 'rspec_reports#show'
+              get '/' => 'project_rspec_reports#index'
+              post '/' => 'project_rspec_reports#create'
+              get '/:id' => 'project_rspec_reports#show'
             end
           end
         end
       end
       scope '/reports' do
         get '/' => 'reports#index'
+        get '/:id' => 'reports#show'
       end
     end
   end
