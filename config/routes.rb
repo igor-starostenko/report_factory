@@ -27,7 +27,7 @@ Rails.application.routes.draw do
           put '/' => 'projects#update'
           delete '/' => 'projects#destroy'
           scope '/reports' do
-            get '/' => 'reports#index'
+            get '/' => 'project_reports#index'
             scope '/rspec' do
               get '/' => 'rspec_reports#index'
               post '/' => 'rspec_reports#create'
@@ -35,6 +35,9 @@ Rails.application.routes.draw do
             end
           end
         end
+      end
+      scope '/reports' do
+        get '/' => 'reports#index'
       end
     end
   end

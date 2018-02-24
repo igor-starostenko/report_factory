@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 # Provides logic and interface for Reports API
-class ReportsController < BaseProjectsController
-  before_action :set_project
-
+class ReportsController < ApplicationController
   def index
-    @reports = Report.where(project_id: @project.id)
+    @reports = Report.all
     render jsonapi: @reports, status: :ok
   end
 end
