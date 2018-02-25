@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api, type: :request do
+RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api,
+               type: :request do
   before do
     FactoryBot.create(:tester,
                       name: 'user',
@@ -152,9 +153,10 @@ RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api, type: :request
     end
 
     it 'shows an rspec report of a project' do
-      get "/api/v1/projects/Web-App/reports/rspec/#{rspec_report.id}", headers: {
-        'X-API-KEY' => tester.api_key
-      }
+      get "/api/v1/projects/Web-App/reports/rspec/#{rspec_report.id}",
+          headers: {
+            'X-API-KEY' => tester.api_key
+          }
       expect(response.status).to eq(200)
       expect(response.body).to be_json_response_for('rspec_report')
     end

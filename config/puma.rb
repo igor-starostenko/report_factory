@@ -24,7 +24,7 @@ environment ENV.fetch('RAILS_ENV') { 'development' }
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 
-workers ENV.fetch("WEB_CONCURRENCY") { 1 }
+workers ENV.fetch('WEB_CONCURRENCY') { 1 }
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
@@ -53,7 +53,6 @@ preload_app!
 # on_worker_boot do
 #   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 # end
-
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart

@@ -207,7 +207,7 @@ RSpec.describe 'Users', :users_api, type: :request do
           type: 'user',
           attributes: {
             name: 'New Name',
-            email: 'new_email@mailinator.com',
+            email: 'new_email@mailinator.com'
           }
         }
       }

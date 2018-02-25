@@ -17,8 +17,8 @@ gem 'rack-cors', require: 'rack/cors'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 # Pagination for api
-gem 'will_paginate'
 gem 'api-pagination'
+gem 'will_paginate'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
