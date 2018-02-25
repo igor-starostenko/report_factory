@@ -4,7 +4,8 @@
 class RspecReportsController < ApplicationController
   def index
     per_page = params.fetch(:per_page, 30)
-    @rspec_reports = paginate(RspecReport.all, per_page: per_page)
+    reports = RspecReport.all.order('id desc')
+    @rspec_reports = paginate(reports, per_page: per_page)
     render jsonapi: @rspec_reports, status: :ok
   end
 

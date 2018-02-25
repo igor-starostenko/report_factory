@@ -18,11 +18,11 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def index
     per_page = params.fetch(:per_page, 30)
-    @reports = paginate(Report.includes(:reportable)
+    reports = Report.includes(:reportable)
                          .where(project_id: @project.id,
-                                reportable_type: 'RspecReport'),
-                        per_page: per_page)
-    @rspec_reports = @reports.collect(&:reportable)
+                                reportable_type: 'RspecReport')
+                         .order('id desc')
+    @rspec_reports = paginate(reports, per_page: per_page).collect(&:reportable)
     render jsonapi: @rspec_reports, status: :ok
   end
 
