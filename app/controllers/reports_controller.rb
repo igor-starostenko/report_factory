@@ -3,7 +3,8 @@
 # Provides logic and interface for Reports API
 class ReportsController < ApplicationController
   def index
-    @reports = Report.all
+    per_page = params.fetch(:per_page, 30)
+    @reports = paginate(Report.all, per_page: per_page)
     render jsonapi: @reports, status: :ok
   end
 

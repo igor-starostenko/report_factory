@@ -3,7 +3,8 @@
 # Provides logic and interface for Rspec Reports API
 class RspecReportsController < ApplicationController
   def index
-    @rspec_reports = RspecReport.all
+    per_page = params.fetch(:per_page, 30)
+    @rspec_reports = paginate(RspecReport.all, per_page: per_page)
     render jsonapi: @rspec_reports, status: :ok
   end
 
