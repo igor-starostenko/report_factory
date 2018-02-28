@@ -4,8 +4,9 @@
 class ReportsController < ApplicationController
   def index
     per_page = params.fetch(:per_page, 30)
-    @reports = paginate(Report.all.order('id desc'),
-                        per_page: per_page)
+    reports = paginate(Report.all.order('id desc'),
+                       per_page: per_page)
+    @reports = ensure_in_bounds(reports)
     render jsonapi: @reports, status: :ok
   end
 
