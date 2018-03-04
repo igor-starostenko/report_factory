@@ -4,7 +4,8 @@
 class ProjectRspecReportsController < BaseProjectsController
   before_action :set_project
 
-  REPORT_ATTRIBUTES = %i[version summary_line].freeze
+  REPORT_ATTRIBUTES = { tags: [] }.freeze
+  RSPEC_REPORT_ATTRIBUTES = %i[version summary_line].freeze
   SUMMARY_ATTRIBUTES = {
     summary: %i[duration example_count failure_count
                 errors_outside_of_examples_count
@@ -28,13 +29,13 @@ class ProjectRspecReportsController < BaseProjectsController
   end
 
   def show
-    @rspec_report = RspecReport.includes(:report, :project)
+    @rspec_report = RspecReport.includes(:rspec_report, :project)
                                .find(params.fetch(:id))
     render jsonapi: @rspec_report, status: :ok
   end
 
   def create
-    @rspec_report = RspecReport.new(attributes(:report))
+    @rspec_report = RspecReport.new(attributes(:rspec_report))
     if save_rspec_report
       render jsonapi: @rspec_report, status: :created
     else
@@ -50,8 +51,11 @@ class ProjectRspecReportsController < BaseProjectsController
   end
 
   def new_report
+    logger.info(params.require(:data).permit(attributes: { tags: [] }))
+    logger.info(attributes(:report).fetch(:tags))
     @report = Report.new(project_id: @project.id,
                          reportable_type: RspecReport,
+                         tags: attributes(:report).fetch(:tags),
                          reportable_id: @rspec_report.id)
   end
 

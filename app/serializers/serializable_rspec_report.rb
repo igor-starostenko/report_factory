@@ -15,6 +15,9 @@ class SerializableRspecReport < JSONAPI::Serializable::Resource
   attribute :report_id do
     @object.report.id
   end
+  attribute :report_tags do
+    @object.report.tags
+  end
   attribute :report_type do
     'RSpec'
   end
