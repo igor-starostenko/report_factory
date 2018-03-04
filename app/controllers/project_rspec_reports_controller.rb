@@ -19,17 +19,13 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def index
     per_page = params.fetch(:per_page, 30)
-    reports = Report.includes(:reportable)
-                    .where(project_id: @project.id,
-                           reportable_type: 'RspecReport')
-                    .order('id desc')
-    rspec_reports = paginate(reports, per_page: per_page)
-    @rspec_reports = ensure_in_bounds(rspec_reports).collect(&:reportable)
+    search_tags(per_page: per_page, tags: params[:tags])
+    @rspec_reports = ensure_in_bounds(@rspec_reports).collect(&:reportable)
     render jsonapi: @rspec_reports, status: :ok
   end
 
   def show
-    @rspec_report = RspecReport.includes(:rspec_report, :project)
+    @rspec_report = RspecReport.includes(:report, :project)
                                .find(params.fetch(:id))
     render jsonapi: @rspec_report, status: :ok
   end
@@ -45,17 +41,24 @@ class ProjectRspecReportsController < BaseProjectsController
 
   private
 
+  def search_tags(per_page:, tags: nil)
+    reports = tags ? Report.tags(tags) : Report.all
+    reports = reports.where(project_id: @project.id,
+                            reportable_type: 'RspecReport')
+                     .includes(:reportable)
+                     .order('id desc')
+    @rspec_reports = paginate(reports, per_page: per_page)
+  end
+
   def save_rspec_report
     @rspec_report.save && new_report.save && new_rspec_summary.save &&
       save_all_examples && new_user_report.save
   end
 
   def new_report
-    logger.info(params.require(:data).permit(attributes: { tags: [] }))
-    logger.info(attributes(:report).fetch(:tags))
     @report = Report.new(project_id: @project.id,
                          reportable_type: RspecReport,
-                         tags: attributes(:report).fetch(:tags),
+                         tags: attributes(:report).fetch(:tags, []),
                          reportable_id: @rspec_report.id)
   end
 
