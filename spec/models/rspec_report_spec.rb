@@ -22,4 +22,9 @@ RSpec.describe RspecReport, :rspec_report, type: :model do
     rspec_report.summary_line = nil
     expect(rspec_report).to be_valid
   end
+
+  it 'can by filtered by report tags' do
+    relation = described_class.tags('High')
+    expect(relation.class.to_s).to eql('RspecReport::ActiveRecord_Relation')
+  end
 end

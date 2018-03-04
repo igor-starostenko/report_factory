@@ -15,6 +15,7 @@ RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api,
                                      summary_line: '8 examples, 0 failures')
     FactoryBot.create(:report,
                       project_id: project.id,
+                      tags: %w[High Full],
                       reportable_type: RspecReport,
                       reportable_id: rspec_report.id)
     FactoryBot.create(:rspec_summary,
@@ -34,6 +35,14 @@ RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api,
 
     it 'gets all rspec reports within project' do
       get '/api/v1/projects/web-app/reports/rspec', headers: {
+        'X-API-KEY' => tester.api_key
+      }
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('rspec_report')
+    end
+
+    it 'filters rspec reports by tags within project' do
+      get '/api/v1/projects/web-app/reports/rspec?tags[]=Full&tags[]=High', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)

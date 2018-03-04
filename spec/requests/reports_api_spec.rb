@@ -15,6 +15,7 @@ RSpec.describe 'Reports', :reports_api, type: :request do
     FactoryBot.create(:report,
                       project_id: project.id,
                       reportable_type: RspecReport,
+                      tags: %w[High Full],
                       reportable_id: rspec_report.id)
   end
   let(:tester) { Tester.first }
@@ -28,6 +29,14 @@ RSpec.describe 'Reports', :reports_api, type: :request do
 
     it 'gets all reports' do
       get '/api/v1/reports', headers: {
+        'X-API-KEY' => tester.api_key
+      }
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('reports')
+    end
+
+    it 'filters reports by tags' do
+      get '/api/v1/reports?tags[]=High', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)

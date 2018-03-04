@@ -40,6 +40,16 @@ RSpec.describe Report, :report, type: :model do
     expect(report).to_not be_valid
   end
 
+  it 'can have tags' do
+    report.tags = ['High', 'Regression']
+    expect(report).to be_valid
+  end
+
+  it 'can by filtered by tags' do
+    relation = described_class.tags('High')
+    expect(relation.class.to_s).to eql('Report::ActiveRecord_Relation')
+  end
+
   it 'belongs to one :project' do
     expect(report.project).to be_instance_of(Project)
     expect(report.project.id).to eq(project.id)
