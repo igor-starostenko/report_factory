@@ -8,6 +8,12 @@ The provided API are based on the [JSON API](http://jsonapi.org) convention.
 
 Follow these [instructions](https://github.com/igor-starostenko/report_factory/blob/master/setup/INSTRUCTIONS.md) to get *Report Factory* running with *Docker*. The configuration is ready for production.
 
+The image of this project can be pulled from [Dockerhub](https://hub.docker.com/r/reportfactory/server/):
+
+```bash
+  docker pull reportfactory/server
+```
+
 ## Preconditions
 
 - Add `Content-Type` header with `application/vnd.api+json`
