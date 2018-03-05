@@ -30,7 +30,7 @@ module ReportFactory
       # in the foreground.
       logger           = ActiveSupport::Logger.new(STDOUT)
       logger.formatter = config.log_formatter
-      config.log_tags  = [:subdomain, :uuid]
+      config.log_tags  = %i[subdomain uuid]
       config.logger    = ActiveSupport::TaggedLogging.new(logger)
     end
 
@@ -43,12 +43,5 @@ module ReportFactory
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*', headers: :any, methods: %i[get post options]
-      end
-    end
   end
 end

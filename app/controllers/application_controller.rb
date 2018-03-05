@@ -15,6 +15,12 @@ class ApplicationController < ActionController::API
     params.require(:data).permit(:type, attributes: type_attrs)
   end
 
+  def ensure_in_bounds(records)
+    return records unless records.out_of_bounds?
+    response.headers['Page'] = records.total_pages
+    records.paginate(page: records.total_pages)
+  end
+
   def authenticate_api_key
     api_key = request.headers['X-API-KEY']
     @auth_user = User.find_by(api_key: api_key)

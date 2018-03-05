@@ -207,7 +207,7 @@ RSpec.describe 'Users', :users_api, type: :request do
           type: 'user',
           attributes: {
             name: 'New Name',
-            email: 'new_email@mailinator.com',
+            email: 'new_email@mailinator.com'
           }
         }
       }
@@ -242,6 +242,21 @@ RSpec.describe 'Users', :users_api, type: :request do
             email: 'new_email@mailinator.com',
             password: 'Password1',
             type: 'Admin'
+          }
+        }
+      }
+      expect(response.status).to eq(200)
+      expect(response.body).to be_json_response_for('user')
+    end
+
+    it 'updates user\'s password' do
+      put "/api/v1/users/#{tester.id}", headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
+        data: {
+          type: 'user',
+          attributes: {
+            password: 'Password1'
           }
         }
       }

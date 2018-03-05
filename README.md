@@ -8,6 +8,12 @@ The provided API are based on the [JSON API](http://jsonapi.org) convention.
 
 Follow these [instructions](https://github.com/igor-starostenko/report_factory/blob/master/setup/INSTRUCTIONS.md) to get *Report Factory* running with *Docker*. The configuration is ready for production.
 
+The image of this project can be pulled from [Dockerhub](https://hub.docker.com/r/reportfactory/server/):
+
+```bash
+  docker pull reportfactory/server
+```
+
 ## Preconditions
 
 - Add `Content-Type` header with `application/vnd.api+json`
@@ -155,7 +161,7 @@ To delete a project (Admin only):
 
 _DELETE_  `/api/v1/projects/:project_name`
 
-### Reports
+### Project Reports
 
 To return all reports within a project:
 
@@ -227,6 +233,22 @@ _POST_ `/api/v1/projects/:project_name/reports/rspec`
 
 ---
 
-To view an existing RSpec report:
+To view an existing RSpec reports within a project:
 
 _GET_  `/api/v1/projects/:project_name/reports/rspec/:id`
+
+### Reports
+
+To return all reports:
+
+_GET_  `/api/v1/reports`
+
+---
+
+To get all RSpec reports:
+
+_GET_  `/api/v1/reports/rspec`
+
+## License
+
+The application is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

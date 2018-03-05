@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Reports', :reports_api, type: :request do
+RSpec.describe 'ProjectReports', :project_reports_api, type: :request do
   before do
     FactoryBot.create(:tester,
                       name: 'user',
@@ -15,43 +15,18 @@ RSpec.describe 'Reports', :reports_api, type: :request do
     FactoryBot.create(:report,
                       project_id: project.id,
                       reportable_type: RspecReport,
-                      tags: %w[High Full],
                       reportable_id: rspec_report.id)
   end
   let(:tester) { Tester.first }
-  let(:report) { Report.first }
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
-      get '/api/v1/reports'
+      get '/api/v1/projects/web-app/reports'
       expect(response.status).to eq(401)
     end
 
-    it 'gets all reports' do
-      get '/api/v1/reports', headers: {
-        'X-API-KEY' => tester.api_key
-      }
-      expect(response.status).to eq(200)
-      expect(response.body).to be_json_response_for('reports')
-    end
-
-    it 'filters reports by tags' do
-      get '/api/v1/reports?tags[]=High', headers: {
-        'X-API-KEY' => tester.api_key
-      }
-      expect(response.status).to eq(200)
-      expect(response.body).to be_json_response_for('reports')
-    end
-  end
-
-  describe 'GET show' do
-    it 'is not authorized without X-API-KEY' do
-      get "/api/v1/reports/#{report.id}"
-      expect(response.status).to eq(401)
-    end
-
-    it 'gets all reports' do
-      get "/api/v1/reports/#{report.id}", headers: {
+    it 'gets all reports within a project' do
+      get '/api/v1/projects/web-app/reports', headers: {
         'X-API-KEY' => tester.api_key
       }
       expect(response.status).to eq(200)

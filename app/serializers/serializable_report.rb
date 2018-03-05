@@ -7,7 +7,7 @@ class SerializableReport < JSONAPI::Serializable::Resource
   attribute :project_name do
     @object.project.project_name
   end
-  attributes :project_id, :reportable_type, :reportable_id
+  attributes :project_id, :reportable_type, :reportable_id, :tags
 
   attribute :date do
     {

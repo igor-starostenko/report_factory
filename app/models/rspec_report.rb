@@ -7,4 +7,6 @@ class RspecReport < ActiveRecord::Base
   has_one :project, through: :report
   has_many :examples, class_name: 'RspecExample', dependent: :destroy
   has_one :summary, class_name: 'RspecSummary', dependent: :destroy
+
+  scope :tags, ->(tag) { joins(:report).where('reports.tags @> ARRAY[?]', tag) }
 end

@@ -115,10 +115,10 @@ RSpec.describe 'routing', :routing, type: :routing do
     end
   end
 
-  context '/api/v1/projects/:project_name/reports', :reports do
+  context '/api/v1/projects/:project_name/reports', :project_reports do
     it 'routes GET /api/v1/projects/:project_name/reports to reports#index' do
       expect(get: '/api/v1/projects/web_project/reports').to route_to(
-        controller: 'reports',
+        controller: 'project_reports',
         action: 'index',
         project_name: 'web_project'
       )
@@ -129,7 +129,7 @@ RSpec.describe 'routing', :routing, type: :routing do
     it 'routes GET /api/v1/projects/:project_name/reports/rspec'\
       'to rspec_reports#index' do
       expect(get: '/api/v1/projects/web_project/reports/rspec').to route_to(
-        controller: 'rspec_reports',
+        controller: 'project_rspec_reports',
         action: 'index',
         project_name: 'web_project'
       )
@@ -138,7 +138,7 @@ RSpec.describe 'routing', :routing, type: :routing do
     it 'routes POST /api/v1/projects/:project_name/reports/rspec'\
       'to reports#create' do
       expect(post: '/api/v1/projects/web_project/reports/rspec').to route_to(
-        controller: 'rspec_reports',
+        controller: 'project_rspec_reports',
         action: 'create',
         project_name: 'web_project'
       )
@@ -147,9 +147,47 @@ RSpec.describe 'routing', :routing, type: :routing do
     it 'routes GET /api/v1/projects/:project_name/reports/:id'\
       'to reports#show' do
       expect(get: '/api/v1/projects/web_project/reports/rspec/1').to route_to(
-        controller: 'rspec_reports',
+        controller: 'project_rspec_reports',
         action: 'show',
         project_name: 'web_project',
+        id: '1'
+      )
+    end
+  end
+
+  context '/api/v1/reports', :reports do
+    it 'routes GET /api/v1/reports'\
+      'to reports#index' do
+      expect(get: '/api/v1/reports').to route_to(
+        controller: 'reports',
+        action: 'index'
+      )
+    end
+
+    it 'routes GET /api/v1/reports/:id'\
+      'to reports#show' do
+      expect(get: '/api/v1/reports/1').to route_to(
+        controller: 'reports',
+        action: 'show',
+        id: '1'
+      )
+    end
+  end
+
+  context '/api/v1/reports/rspec', :reports do
+    it 'routes GET /api/v1/reports/rspec'\
+      'to rspec_reports#index' do
+      expect(get: '/api/v1/reports/rspec').to route_to(
+        controller: 'rspec_reports',
+        action: 'index'
+      )
+    end
+
+    it 'routes GET /api/v1/reports/rspec/:id'\
+      'to rspec_reports#show' do
+      expect(get: '/api/v1/reports/rspec/1').to route_to(
+        controller: 'rspec_reports',
+        action: 'show',
         id: '1'
       )
     end
