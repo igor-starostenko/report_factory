@@ -161,7 +161,7 @@ To delete a project (Admin only):
 
 _DELETE_  `/api/v1/projects/:project_name`
 
-### Reports
+### Project Reports
 
 To return all reports within a project:
 
@@ -233,6 +233,22 @@ _POST_ `/api/v1/projects/:project_name/reports/rspec`
 
 ---
 
-To view an existing RSpec report:
+To view an existing RSpec reports within a project:
 
 _GET_  `/api/v1/projects/:project_name/reports/rspec/:id`
+
+### Reports
+
+To return all reports:
+
+_GET_  `/api/v1/reports`
+
+---
+
+To get all RSpec reports:
+
+_GET_  `/api/v1/reports/rspec`
+
+## License
+
+The application is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
