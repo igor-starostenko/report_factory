@@ -4,7 +4,8 @@
 class ReportsController < ApplicationController
   def index
     per_page = params.fetch(:per_page, 30)
-    search_tags(per_page: per_page, tags: params[:tags])
+    search_tags(per_page: per_page,
+                tags: params[:tags]&.map(&:downcase))
     @reports = ensure_in_bounds(@reports)
     render jsonapi: @reports, status: :ok
   end
