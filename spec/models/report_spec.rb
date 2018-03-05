@@ -41,7 +41,7 @@ RSpec.describe Report, :report, type: :model do
   end
 
   it 'can have tags' do
-    report.tags = ['High', 'Regression']
+    report.tags = %w[High Regression]
     expect(report).to be_valid
   end
 

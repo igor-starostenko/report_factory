@@ -8,5 +8,5 @@ class RspecReport < ActiveRecord::Base
   has_many :examples, class_name: 'RspecExample', dependent: :destroy
   has_one :summary, class_name: 'RspecSummary', dependent: :destroy
 
-  scope :tags, -> (tag) { joins(:report).where('reports.tags @> ARRAY[?]', tag) }
+  scope :tags, ->(tag) { joins(:report).where('reports.tags @> ARRAY[?]', tag) }
 end

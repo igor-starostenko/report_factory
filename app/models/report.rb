@@ -11,5 +11,5 @@ class Report < ActiveRecord::Base
 
   before_save { self.tags = tags&.map { |tag| tag.downcase } }
 
-  scope :tags, -> (tag) { where('tags @> ARRAY[?]', tag) }
+  scope :tags, ->(tag) { where('tags @> ARRAY[?]', tag) }
 end

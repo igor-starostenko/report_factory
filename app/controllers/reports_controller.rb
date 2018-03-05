@@ -20,6 +20,6 @@ class ReportsController < ApplicationController
   def search_tags(per_page:, tags: nil)
     reports = tags ? Report.tags(tags) : Report.all
     @reports = paginate(reports.order('id desc'),
-                          per_page: per_page)
+                        per_page: per_page)
   end
 end

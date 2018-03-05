@@ -42,9 +42,10 @@ RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api,
     end
 
     it 'filters rspec reports by tags within project' do
-      get '/api/v1/projects/web-app/reports/rspec?tags[]=Full&tags[]=High', headers: {
-        'X-API-KEY' => tester.api_key
-      }
+      get '/api/v1/projects/web-app/reports/rspec?tags[]=Full&tags[]=High',
+          headers: {
+            'X-API-KEY' => tester.api_key
+          }
       expect(response.status).to eq(200)
       expect(response.body).to be_json_response_for('rspec_report')
     end
