@@ -23,4 +23,4 @@ services:
     ports:
       - 3001:3001
     environment:
-      API_URL: http://0.0.0.0:3000
+      API_URL: http://server:3000
