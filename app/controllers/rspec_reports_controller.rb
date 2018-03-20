@@ -18,7 +18,7 @@ class RspecReportsController < ApplicationController
   private
 
   def search_tags(per_page:, tags: nil)
-    rspec_reports = tags ? RspecReport.tags(tags) : RspecReport.all
+    rspec_reports = tags ? RspecReport.tags(tags) : RspecReport.with_summary
     @rspec_reports = paginate(rspec_reports.order('id desc'),
                               per_page: per_page)
   end

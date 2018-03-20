@@ -20,7 +20,7 @@ class ProjectRspecReportsController < BaseProjectsController
   def index
     per_page = params.fetch(:per_page, 30)
     search_tags(per_page: per_page, tags: params[:tags]&.map(&:downcase))
-    @rspec_reports = ensure_in_bounds(@rspec_reports).collect(&:reportable)
+    @rspec_reports = ensure_in_bounds(@rspec_reports)
     render jsonapi: @rspec_reports, status: :ok
   end
 
@@ -43,12 +43,16 @@ class ProjectRspecReportsController < BaseProjectsController
   private
 
   def search_tags(per_page:, tags: nil)
-    reports = tags ? Report.tags(tags) : Report.all
-    reports = reports.where(project_id: @project.id,
-                            reportable_type: 'RspecReport')
-                     .includes(:reportable)
-                     .order('id desc')
-    @rspec_reports = paginate(reports, per_page: per_page)
+    reports = tags ? reports_by_tags(tags) : all_reports
+    @rspec_reports = paginate(reports.order('id desc'), per_page: per_page)
+  end
+
+  def reports_by_tags(tags)
+    RspecReport.tags_by_project(@project.project_name, tags)
+  end
+
+  def all_reports
+    RspecReport.by_project(@project.project_name)
   end
 
   def valid_report?
