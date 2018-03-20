@@ -31,8 +31,9 @@ class ProjectRspecReportsController < BaseProjectsController
   end
 
   def create
-    @rspec_report = RspecReport.new(attributes(:rspec_report))
-    if save_rspec_report
+    return render_bad_report unless valid_report?
+    if new_rspec_report.save
+      new_report.save && new_user_report.save
       render jsonapi: @rspec_report, status: :created
     else
       render jsonapi_errors: @rspec_report.errors, status: :bad_request
@@ -50,9 +51,16 @@ class ProjectRspecReportsController < BaseProjectsController
     @rspec_reports = paginate(reports, per_page: per_page)
   end
 
-  def save_rspec_report
-    @rspec_report.save && new_report.save && new_rspec_summary.save &&
-      save_all_examples && new_user_report.save
+  def valid_report?
+    examples = attributes(:example, :examples)
+    attributes(:summary, :summary) &&
+      examples && examples.size.positive?
+  end
+
+  def new_rspec_report
+    @rspec_report = RspecReport.new(attributes(:rspec_report)
+      .merge(summary_attributes: attributes(:summary, :summary),
+             examples_attributes: rspec_examples_attributes))
   end
 
   def new_report
@@ -67,25 +75,15 @@ class ProjectRspecReportsController < BaseProjectsController
                                   report_id: @report.id)
   end
 
-  def new_rspec_summary
-    args = { rspec_report_id: @rspec_report.id }
-           .merge(attributes(:summary, :summary))
-    @rspec_summary = RspecSummary.new(args)
-  end
-
-  def save_all_examples
-    attributes(:example, :examples).each do |example_args|
-      args = { rspec_report_id: @rspec_report.id, spec_id: example_args[:id] }
-      formatted_args = args.merge(example_args).except('id', 'exception')
-      @rspec_example = RspecExample.new(formatted_args)
-      @rspec_example.save
-      save_exception(example_args['exception']) if example_args['exception']
+  def rspec_examples_attributes
+    attributes(:example, :examples).map do |example_args|
+      args = { spec_id: example_args[:id],
+               exception_attributes: { '0' => example_args[:exception] } }
+      args.merge(example_args).except('id', 'exception')
     end
   end
 
-  def save_exception(exception)
-    args = { rspec_example_id: @rspec_example.id,
-             classname: exception['class'] }
-    RspecException.new(args.merge(exception).except('class')).save
+  def render_bad_report
+    render json: { error: 'Bad report' }, status: :bad_request
   end
 end
