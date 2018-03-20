@@ -154,6 +154,93 @@ RSpec.describe 'ProjectRspecReports', :project_rspec_reports_api,
       expect(response.status).to eq(201)
       expect(response.body).to be_json_response_for('rspec_report')
     end
+
+    it 'does not allow an rspec report without summary', :fail do
+      post '/api/v1/projects/web-app/reports/rspec', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
+        data: {
+          type: 'rspec_report',
+          attributes: {
+            "version": '3.7.0',
+            "examples": [
+              {
+                "id": './spec/models/project_spec.rb[1:1]',
+                "description": 'is valid',
+                "full_description": 'Project is valid',
+                "status": 'passed',
+                "file_path": './spec/models/project_spec.rb',
+                "line_number": 8,
+                "run_time": 0.012945,
+                "pending_message": nil
+              },
+              {
+                "id": './spec/requests/rspec_reports_api_spec.rb[1:1:1]',
+                "description": 'gets all rspec reports within project',
+                "full_description": 'RspecReports GET index gets all '\
+                'rspec reports within project',
+                "status": 'failed',
+                "file_path": './spec/requests/rspec_reports_api_spec.rb',
+                "line_number": 11,
+                "run_time": 0.032876,
+                "pending_message": nil,
+                "exception": {
+                  "class": 'RSpec::Expectations::ExpectationNotMetError',
+                  "message": "\nexpected: 200\n    "\
+                  "got: 204\n\n(compared using ==)\n",
+                  "backtrace": [
+                    "./support.rb:97:in `block in \u003cmodule:Support\u003e'",
+                    "./support.rb:106:in `notify_failure'",
+                    "./expectations/fail_with.rb:35:in `fail_with'",
+                    "./expectations/handler.rb:38:in `handle_failure'",
+                    "./expectations/handler.rb:50:in `block in handle_matcher'",
+                    "./expectations/handler.rb:27:in `with_matcher'",
+                    "./expectations/handler.rb:48:in `handle_matcher'",
+                    "./expectations/expectation_target.rb:65:in `to'"
+                  ]
+                }
+              },
+              {
+                "id": './spec/models/project_spec.rb[1:2]',
+                "description": 'has :timestamps',
+                "full_description": 'Project has :timestamps',
+                "status": 'passed',
+                "file_path": './spec/models/project_spec.rb',
+                "line_number": 12,
+                "run_time": 0.004452,
+                "pending_message": nil
+              }
+            ],
+            "summary": nil,
+            "summary_line": '3 examples, 1 failures'
+          }
+        }
+      }
+      expect(response.status).to eq(400)
+    end
+
+    it 'does not allow a report without examples', :fail2 do
+      post '/api/v1/projects/web-app/reports/rspec', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: {
+        data: {
+          type: 'rspec_report',
+          attributes: {
+            "version": '3.7.0',
+            "examples": [],
+            "summary": {
+              "duration": 0.747558,
+              "example_count": 3,
+              "failure_count": 1,
+              "pending_count": 0,
+              "errors_outside_of_examples_count": 0
+            },
+            "summary_line": '3 examples, 1 failures'
+          }
+        }
+      }
+      expect(response.status).to eq(400)
+    end
   end
 
   describe 'GET show' do
