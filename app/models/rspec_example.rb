@@ -10,6 +10,6 @@ class RspecExample < ActiveRecord::Base
                                 reject_if: :no_exception?
 
   def no_exception?(attributes)
-    attributes['exception'].nil?
+    attributes['classname'].nil?
   end
 end

@@ -11,6 +11,7 @@ class RspecReport < ActiveRecord::Base
 
   scope :with_summary, lambda {
     left_outer_joins(:summary).where.not('rspec_summaries.id is null')
+      .includes(examples: :exception)
   }
   scope :by_project, lambda { |project|
     with_summary.joins(:project).where('projects.project_name = ?', project)
