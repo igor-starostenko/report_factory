@@ -20,7 +20,7 @@ class ProjectRspecReportsController < BaseProjectsController
   def index
     per_page = params.fetch(:per_page, 30)
     search_tags(per_page: per_page, tags: params[:tags]&.map(&:downcase))
-    @rspec_reports = ensure_in_bounds(@rspec_reports).collect(&:reportable)
+    @rspec_reports = ensure_in_bounds(@rspec_reports)
     render jsonapi: @rspec_reports, status: :ok
   end
 
@@ -31,8 +31,9 @@ class ProjectRspecReportsController < BaseProjectsController
   end
 
   def create
-    @rspec_report = RspecReport.new(attributes(:rspec_report))
-    if save_rspec_report
+    return render_bad_report unless valid_report?
+    if new_rspec_report.save
+      new_report.save && new_user_report.save
       render jsonapi: @rspec_report, status: :created
     else
       render jsonapi_errors: @rspec_report.errors, status: :bad_request
@@ -42,17 +43,28 @@ class ProjectRspecReportsController < BaseProjectsController
   private
 
   def search_tags(per_page:, tags: nil)
-    reports = tags ? Report.tags(tags) : Report.all
-    reports = reports.where(project_id: @project.id,
-                            reportable_type: 'RspecReport')
-                     .includes(:reportable)
-                     .order('id desc')
-    @rspec_reports = paginate(reports, per_page: per_page)
+    reports = tags ? reports_by_tags(tags) : all_reports
+    @rspec_reports = paginate(reports.order('id desc'), per_page: per_page)
   end
 
-  def save_rspec_report
-    @rspec_report.save && new_report.save && new_rspec_summary.save &&
-      save_all_examples && new_user_report.save
+  def reports_by_tags(tags)
+    RspecReport.tags_by_project(@project.project_name, tags)
+  end
+
+  def all_reports
+    RspecReport.by_project(@project.project_name)
+  end
+
+  def valid_report?
+    examples = attributes(:example, :examples)
+    attributes(:summary, :summary) &&
+      examples && examples.size.positive?
+  end
+
+  def new_rspec_report
+    @rspec_report = RspecReport.new(attributes(:rspec_report)
+      .merge(summary_attributes: attributes(:summary, :summary),
+             examples_attributes: rspec_examples_attributes))
   end
 
   def new_report
@@ -67,25 +79,21 @@ class ProjectRspecReportsController < BaseProjectsController
                                   report_id: @report.id)
   end
 
-  def new_rspec_summary
-    args = { rspec_report_id: @rspec_report.id }
-           .merge(attributes(:summary, :summary))
-    @rspec_summary = RspecSummary.new(args)
-  end
-
-  def save_all_examples
-    attributes(:example, :examples).each do |example_args|
-      args = { rspec_report_id: @rspec_report.id, spec_id: example_args[:id] }
-      formatted_args = args.merge(example_args).except('id', 'exception')
-      @rspec_example = RspecExample.new(formatted_args)
-      @rspec_example.save
-      save_exception(example_args['exception']) if example_args['exception']
+  def rspec_examples_attributes
+    attributes(:example, :examples).map do |example_args|
+      exception_attributes = rspec_exception_attributes(example_args[:exception])
+      args = { spec_id: example_args[:id],
+               exception_attributes: exception_attributes }
+      args.merge(example_args).except('id', 'exception')
     end
   end
 
-  def save_exception(exception)
-    args = { rspec_example_id: @rspec_example.id,
-             classname: exception['class'] }
-    RspecException.new(args.merge(exception).except('class')).save
+  def rspec_exception_attributes(exception_args)
+      return {} unless exception_args
+      { 'classname' => exception_args[:class] }.merge(exception_args).except('class')
+  end
+
+  def render_bad_report
+    render json: { error: 'Bad report' }, status: :bad_request
   end
 end
