@@ -6,6 +6,7 @@ class RspecExample < ActiveRecord::Base
   belongs_to :rspec_report
   has_one :exception, class_name: 'RspecException'
   validates :status, presence: true
+  default_scope { order(id: :asc) }
   accepts_nested_attributes_for :exception,
                                 reject_if: :no_exception?
 
