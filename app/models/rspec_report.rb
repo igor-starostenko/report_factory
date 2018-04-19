@@ -10,16 +10,16 @@ class RspecReport < ActiveRecord::Base
   accepts_nested_attributes_for :summary, :examples
 
   scope :with_summary, lambda {
-    left_outer_joins(:summary).where.not('rspec_summaries.id is null')
-      .includes(examples: :exception)
+    eager_load([{ examples: :exception }, :summary])
+      .where.not('rspec_summaries.id is null')
   }
   scope :by_project, lambda { |project|
-    with_summary.joins(:project).where('projects.project_name = ?', project)
+    with_summary.includes(:project).where('projects.project_name = ?', project)
   }
   scope :tags_by_project, lambda { |project, tag|
-    by_project(project).joins(:report).where('reports.tags @> ARRAY[?]', tag)
+    by_project(project).includes(:report).where('reports.tags @> ARRAY[?]', tag)
   }
   scope :tags, lambda { |tag|
-    with_summary.joins(:report).where('reports.tags @> ARRAY[?]', tag)
+    with_summary.includes(:report).where('reports.tags @> ARRAY[?]', tag)
   }
 end

@@ -5,7 +5,7 @@ class ProjectReportsController < BaseProjectsController
   before_action :set_project
 
   def index
-    @project_reports = Report.where(project_id: @project.id)
+    @project_reports = Report.includes(:project).where(project_id: @project.id)
     render jsonapi: @project_reports, status: :ok
   end
 end

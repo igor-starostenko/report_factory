@@ -44,7 +44,8 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def search_tags(per_page:, tags: nil)
     reports = tags ? reports_by_tags(tags) : all_reports
-    @rspec_reports = paginate(reports.order('id desc'), per_page: per_page)
+    reports_desc = reports.order('rspec_reports.id desc')
+    @rspec_reports = paginate(reports_desc, per_page: per_page)
   end
 
   def reports_by_tags(tags)
@@ -52,7 +53,7 @@ class ProjectRspecReportsController < BaseProjectsController
   end
 
   def all_reports
-    RspecReport.by_project(@project.project_name)
+    RspecReport.by_project(@project.project_name).includes(:report)
   end
 
   def valid_report?
