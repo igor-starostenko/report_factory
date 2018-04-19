@@ -16,7 +16,9 @@ Rails.application.routes.draw do
           put '/' => 'users#update'
           get '/' => 'users#show'
           delete '/' => 'users#destroy'
-          get '/reports' => 'user_reports#index'
+          scope '/reports' do
+            get '/' => 'user_reports#index'
+          end
         end
       end
       scope '/projects' do
