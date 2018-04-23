@@ -34,4 +34,9 @@ RSpec.describe UserReport, :user_report, type: :model do
   it 'belongs to report' do
     expect(user_report.report.reportable_type).to eql('RspecReport')
   end
+
+  it 'has RSpec scope' do
+    user_report.save
+    expect(described_class.rspec.size).to be_positive
+  end
 end

@@ -2,6 +2,8 @@
 
 # Formats User Reports JSON API
 class SerializableUserReport < JSONAPI::Serializable::Resource
+  include RspecReportSerializers
+
   type 'user_report'
 
   attribute :user_id do
@@ -12,15 +14,31 @@ class SerializableUserReport < JSONAPI::Serializable::Resource
   end
   attribute :report do
     report = @object.report
-    if report.reportable_type == 'RspecReport'
-      {
-        project_name: report.project.project_name,
-        project_id: report.project.id,
-        report_id: report.id,
-        report_type: 'RSpec',
-        date: { created_at: report.created_at,
-                updated_at: report.updated_at }
-      }
-    end
+    report_object = {
+      project_name: report.project.project_name,
+      project_id: report.project.id,
+      report_id: report.id,
+      report_type: report.reportable_type,
+      date: { created_at: report.created_at,
+              updated_at: report.updated_at }
+    }
+    type = @type || 'default'
+    __send__("#{type.underscore}_object", report_object, report)
+  end
+
+  private
+
+  def default_object(base_report_object, _report = {})
+    base_report_object
+  end
+
+  def rspec_object(base_report_object, report)
+    rspec_report = report.reportable
+    base_report_object.merge(
+      version: rspec_report.version,
+      examples: serialize_examples(rspec_report),
+      summary: serialize_summary(rspec_report),
+      summary_line: rspec_report.summary_line,
+    )
   end
 end

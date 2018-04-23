@@ -9,17 +9,17 @@ class RspecReport < ActiveRecord::Base
   has_one :summary, class_name: 'RspecSummary', dependent: :destroy
   accepts_nested_attributes_for :summary, :examples
 
-  scope :with_summary, lambda {
+  scope :with_summary, -> {
     eager_load([{ examples: :exception }, :summary])
       .where.not('rspec_summaries.id is null')
   }
-  scope :by_project, lambda { |project|
+  scope :by_project, ->(project) {
     with_summary.includes(:project).where('projects.project_name = ?', project)
   }
-  scope :tags_by_project, lambda { |project, tag|
+  scope :tags_by_project, ->(project, tag) {
     by_project(project).includes(:report).where('reports.tags @> ARRAY[?]', tag)
   }
-  scope :tags, lambda { |tag|
+  scope :tags, ->(tag) {
     with_summary.includes(:report).where('reports.tags @> ARRAY[?]', tag)
   }
 end

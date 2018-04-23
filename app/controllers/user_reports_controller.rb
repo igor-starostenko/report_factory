@@ -14,18 +14,7 @@ class UserReportsController < BaseUsersController
     UserReport.where(user_id: @user.id)
   end
 
-  def rspec_param
-    params[:details].to_s.casecmp?('rspec')
-  end
-
   def join_user_reports
     @user_reports = fetch_user_reports.includes([:user, report: [:project]])
-  end
-
-  # Not being used currently
-  def join_user_rspec_reports
-    rspec_report_join = [{ examples: :exception }, :summary]
-    @user_reports = fetch_user_reports
-      .includes([:user, report: [:project, { reportable: rspec_report_join }]])
   end
 end
