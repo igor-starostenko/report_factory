@@ -8,12 +8,18 @@ RSpec.describe RspecExample, :rspec_example, type: :model do
                       version: '1.0.0',
                       summary_line: '8 examples, 0 failures')
   end
-  let :spec_id { './spec/routing/reports_routes_spec.rb[1:3]' }
+  let :spec_id do
+    './spec/routing/reports_routes_spec.rb[1:3]'
+  end
   let :description do
     'routes GET /api/v1/projects/:project_name/reports/:id to reports#show'
   end
-  let :full_description { "routing to reports #{description}" }
-  let :file_path { './spec/routing/reports_routes_spec.rb' }
+  let :full_description do
+    "routing to reports #{description}"
+  end
+  let :file_path do
+    './spec/routing/reports_routes_spec.rb'
+  end
   let :rspec_example do
     FactoryBot.create(:rspec_example,
                       rspec_report_id: rspec_report.id,
