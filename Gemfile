@@ -9,8 +9,8 @@ gem 'pg', '~> 0.18'
 # Use Puma as the app server
 gem 'puma', '~> 3.11.4'
 # Build JSON APIs with ease
-gem 'jsonapi-rails'
 gem 'jbuilder'
+gem 'jsonapi-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Provides support for CORS for web applications

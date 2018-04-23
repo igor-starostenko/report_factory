@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def format_rspec_report(json, user_report)
   report = user_report.report
   rspec_report = report.reportable
@@ -37,7 +39,9 @@ def format_rspec_report(json, user_report)
     json.example_count summary.example_count
     json.failure_count summary.failure_count
     json.pending_count summary.pending_count
-    json.errors_outside_of_examples_count summary.errors_outside_of_examples_count
+
+    errors = summary.errors_outside_of_examples_count
+    json.errors_outside_of_examples_count errors
   end
   json.summary_line rspec_report.summary_line
   json.date do

@@ -2,6 +2,14 @@ AllCops:
   Exclude:
     - 'db/**/*.rb'
 
+Metrics/MethodLength:
+  Exclude:
+    - 'app/views/**/*.json.jbuilder'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/views/**/*.json.jbuilder'
+
 Style/BlockLength:
   Exclude:
     - 'Rakefile'

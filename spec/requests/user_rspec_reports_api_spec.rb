@@ -47,7 +47,7 @@ RSpec.describe 'UserRspecReports', :user_rspec_reports_api, type: :request do
 
       json_body = JSON.parse(response.body)
       summary_line = json_body.fetch('data').first
-        .dig('attributes', 'report', 'summary_line')
+                              .dig('attributes', 'report', 'summary_line')
       expect(summary_line).to eql('8 examples, 0 failures')
     end
   end

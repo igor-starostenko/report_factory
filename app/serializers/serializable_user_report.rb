@@ -38,7 +38,7 @@ class SerializableUserReport < JSONAPI::Serializable::Resource
       version: rspec_report.version,
       examples: serialize_examples(rspec_report),
       summary: serialize_summary(rspec_report),
-      summary_line: rspec_report.summary_line,
+      summary_line: rspec_report.summary_line
     )
   end
 end

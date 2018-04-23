@@ -2,22 +2,22 @@
 
 # Provides interface for User Rspec Reports API
 class UserRspecReportsController < BaseUsersController
-  before_action :set_user, :join_user_rspec_reports
+  before_action :set_user, :set_user_rspec_reports
 
   def index
-    render jsonapi: @user_reports, status: :ok,
-      expose: { type: 'Rspec' }
+    render jsonapi: @user_rspec_reports, status: :ok,
+           expose: { type: 'Rspec' }
   end
 
   private
 
-  def fetch_user_reports
-    UserReport.rspec.where(user_id: @user.id)
+  def set_user_rspec_reports
+    @user_rspec_reports = join_user_rspec_reports
   end
 
   def join_user_rspec_reports
-    rspec_report_join = [{ examples: :exception }, :summary]
-    @user_reports = fetch_user_reports
-      .includes([:user, report: [:project, { reportable: rspec_report_join }]])
+    rspec_report_join = { reportable: [{ examples: :exception }, :summary] }
+    UserReport.rspec.where(user_id: @user.id)
+              .includes([:user, report: [:project, rspec_report_join]])
   end
 end

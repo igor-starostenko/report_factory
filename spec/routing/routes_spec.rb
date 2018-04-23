@@ -74,7 +74,8 @@ RSpec.describe 'routing', :routing, type: :routing do
       )
     end
 
-    it 'routes GET /api/v1/users/:id/reports/rspec to user_rspec_reports#index' do
+    it 'routes GET /api/v1/users/:id/reports/rspec to'\
+       ' user_rspec_reports#index' do
       expect(get: '/api/v1/users/1/reports/rspec').to route_to(
         controller: 'user_rspec_reports',
         action: 'index',
