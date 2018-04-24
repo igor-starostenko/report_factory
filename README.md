@@ -104,6 +104,11 @@ _GET_  `/api/v1/users/:id/reports`
 
 ---
 
+To get all RSpec reports of a user:
+
+_GET_  `/api/v1/users/:id/reports/rspec`
+
+---
 To delete a user (Admin only):
 
 _DELETE_  `/api/v1/users/:id`
