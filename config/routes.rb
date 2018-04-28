@@ -37,6 +37,9 @@ Rails.application.routes.draw do
               get '/:id' => 'project_rspec_reports#show'
             end
           end
+          scope '/scenarios' do
+            get '/' => 'project_scenarios#index'
+          end
         end
       end
       scope '/reports' do

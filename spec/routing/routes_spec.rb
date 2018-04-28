@@ -124,8 +124,20 @@ RSpec.describe 'routing', :routing, type: :routing do
     end
   end
 
+  context '/api/v1/projects/:project_name/scenarios', :scenarios do
+    it 'routes GET /api/v1/projects/:project_name/scenarios'\
+       ' to project_scenarios#index' do
+      expect(get: '/api/v1/projects/web_project/scenarios').to route_to(
+        controller: 'project_scenarios',
+        action: 'index',
+        project_name: 'web_project'
+      )
+    end
+  end
+
   context '/api/v1/projects/:project_name/reports', :project_reports do
-    it 'routes GET /api/v1/projects/:project_name/reports to reports#index' do
+    it 'routes GET /api/v1/projects/:project_name/reports'\
+       ' to project_reports#index' do
       expect(get: '/api/v1/projects/web_project/reports').to route_to(
         controller: 'project_reports',
         action: 'index',
