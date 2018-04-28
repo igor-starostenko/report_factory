@@ -5,7 +5,8 @@ class ProjectScenariosController < BaseProjectsController
   before_action :set_project
 
   def index
-    @project_scenarios = RspecExample.all
-    # render jsonapi: @project_scenarios, status: :ok
+    render jsonapi: @project,
+           class: { Project: SerializableProjectScenario },
+           status: :ok
   end
 end

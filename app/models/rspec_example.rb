@@ -13,4 +13,6 @@ class RspecExample < ActiveRecord::Base
   def no_exception?(attributes)
     attributes['classname'].nil?
   end
+
+  scope :scenarios, -> { pluck(:full_description).uniq }
 end

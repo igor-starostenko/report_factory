@@ -7,6 +7,9 @@ class Project < ActiveRecord::Base
                            source: :reportable,
                            source_type: 'RspecReport',
                            dependent: :destroy
+  has_many :rspec_examples, through: :rspec_reports,
+                            source: :examples,
+                            dependent: :destroy
   VALID_PROJECT_REGEX = /\A[-a-zA-Z\d\s]*\z/
   validates :project_name,
             presence: true,
@@ -14,6 +17,13 @@ class Project < ActiveRecord::Base
             length: { minimum: 3, maximum: 15 },
             format: { with: VALID_PROJECT_REGEX }
   before_validation :set_formatted_project_name
+
+  scope :scenarios, lambda { |project_name|
+    where(project_name: project_name)
+      .includes(:rspec_examples)
+      .pluck('rspec_examples.full_description')
+      .uniq.reject { |d| d.nil? }
+  }
 
   private
 
