@@ -8,7 +8,7 @@ class ProjectsController < BaseProjectsController
   PROJECT_ATTRIBUTES = %i[project_name].freeze
 
   def index
-    @projects = Project.with_report_examples
+    @projects = Project.all
     render jsonapi: @projects, status: :ok
   end
 
@@ -38,12 +38,5 @@ class ProjectsController < BaseProjectsController
     @project.destroy
     text = "Project #{@project.project_name} was deleted successfully"
     render json: { message: text }, status: :ok
-  end
-
-  private
-
-  def set_project
-    @project = Project.with_report_examples.by_name(project_name)
-    return render_not_found(:project) unless @project
   end
 end

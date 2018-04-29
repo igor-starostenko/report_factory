@@ -6,7 +6,14 @@ class ProjectScenariosController < BaseProjectsController
 
   def index
     render jsonapi: @project,
-           class: { Project: SerializableProjectScenario },
+           class: { Project: SerializableScenario },
            status: :ok
+  end
+
+  private
+
+  def set_project
+    @project = Project.with_report_examples.by_name(project_name)
+    return render_not_found(:project) unless @project
   end
 end
