@@ -18,6 +18,14 @@ class Project < ActiveRecord::Base
             format: { with: VALID_PROJECT_REGEX }
   before_validation :set_formatted_project_name
 
+  scope :with_report_examples, lambda {
+    eager_load(rspec_examples: :report)
+  }
+
+  scope :by_name, lambda { |project_name|
+    find_by('lower(project_name) = ?', project_name.downcase)
+  }
+
   scope :scenarios, lambda { |project_name|
     where(project_name: project_name)
       .includes(:rspec_examples)

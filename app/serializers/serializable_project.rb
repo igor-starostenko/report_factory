@@ -36,6 +36,9 @@ class SerializableProject < JSONAPI::Serializable::Resource
     matched_examples = examples.select { |example| example.name == name }
     {
       name: name,
+      last_status: matched_examples.last.status,
+      last_run: matched_examples.last.report.created_at,
+      # last_run: @object.reports.detect { |report| report.reportable.examples.any? { |e| e.name == name } },
       count: matched_examples&.size || 0,
       passed: count_status(matched_examples, 'passed'),
       failed: count_status(matched_examples, 'failed'),

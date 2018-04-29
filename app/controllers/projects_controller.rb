@@ -2,13 +2,13 @@
 
 # Provides logic and interface for Projects API
 class ProjectsController < BaseProjectsController
-  before_action :set_project, only: %i[show update destroy]
+  before_action :set_project_details, only: %i[show update destroy]
   before_action :require_admin, only: %i[create destroy]
 
   PROJECT_ATTRIBUTES = %i[project_name].freeze
 
   def index
-    @projects = Project.includes(:rspec_examples, reports: :reportable)
+    @projects = Project.with_report_examples
     render jsonapi: @projects, status: :ok
   end
 
@@ -38,5 +38,12 @@ class ProjectsController < BaseProjectsController
     @project.destroy
     text = "Project #{@project.project_name} was deleted successfully"
     render json: { message: text }, status: :ok
+  end
+
+  private
+
+  def set_project_details
+    @project = Project.with_report_examples.by_name(project_name)
+    return render_not_found(:project) unless @project
   end
 end

@@ -6,7 +6,7 @@ class BaseProjectsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find_by('lower(project_name) = ?', project_name.downcase)
+    @project = Project.by_name(project_name)
     return render_not_found(:project) unless @project
   end
 
