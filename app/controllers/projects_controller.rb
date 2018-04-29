@@ -2,7 +2,7 @@
 
 # Provides logic and interface for Projects API
 class ProjectsController < BaseProjectsController
-  before_action :set_project_details, only: %i[show update destroy]
+  before_action :set_project, only: %i[show update destroy]
   before_action :require_admin, only: %i[create destroy]
 
   PROJECT_ATTRIBUTES = %i[project_name].freeze
@@ -42,7 +42,7 @@ class ProjectsController < BaseProjectsController
 
   private
 
-  def set_project_details
+  def set_project
     @project = Project.with_report_examples.by_name(project_name)
     return render_not_found(:project) unless @project
   end
