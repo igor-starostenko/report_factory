@@ -8,7 +8,7 @@ class ProjectsController < BaseProjectsController
   PROJECT_ATTRIBUTES = %i[project_name].freeze
 
   def index
-    @projects = Project.all
+    @projects = Project.includes(:rspec_examples, reports: :reportable)
     render jsonapi: @projects, status: :ok
   end
 

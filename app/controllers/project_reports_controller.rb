@@ -2,10 +2,15 @@
 
 # Provides logic and interface for Project Reports API
 class ProjectReportsController < BaseProjectsController
-  before_action :set_project
+  before_action :set_project, :set_project_report
 
   def index
-    @project_reports = Report.includes(:project).where(project_id: @project.id)
     render jsonapi: @project_reports, status: :ok
+  end
+
+  private
+
+  def set_project_report
+    @project_reports = Report.includes(:project).where(project_id: @project.id)
   end
 end

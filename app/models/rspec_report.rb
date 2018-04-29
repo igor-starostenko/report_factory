@@ -3,6 +3,8 @@
 # DB model that represents an RSpec tests
 # report submitted for a project
 class RspecReport < ActiveRecord::Base
+  # alias_attribute :tests, :examples
+
   has_one :report, as: :reportable
   has_one :project, through: :report
   has_many :examples, class_name: 'RspecExample', dependent: :destroy

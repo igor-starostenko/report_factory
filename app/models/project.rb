@@ -22,7 +22,7 @@ class Project < ActiveRecord::Base
     where(project_name: project_name)
       .includes(:rspec_examples)
       .pluck('rspec_examples.full_description')
-      .uniq.reject { |d| d.nil? }
+      .uniq.reject(&:nil?)
   }
 
   private

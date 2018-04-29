@@ -14,5 +14,21 @@ class RspecExample < ActiveRecord::Base
     attributes['classname'].nil?
   end
 
+  def name
+    full_description
+  end
+
+  def passed?
+    status.casecmp?('passed')
+  end
+
+  def failed?
+    status.casecmp?('failed')
+  end
+
+  def pending?
+    status.casecmp?('pending')
+  end
+
   scope :scenarios, -> { pluck(:full_description).uniq }
 end
