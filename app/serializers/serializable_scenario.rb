@@ -27,20 +27,34 @@ class SerializableScenario < JSONAPI::Serializable::Resource
   end
 
   def format_examples(names, examples)
-    names&.map { |name| format_scenario(name, examples) } || []
+    order_scenarios_by_runs(format_scenarios_by_names(names, examples))
+  end
+
+  def format_scenarios_by_names(names, examples)
+    return [] unless names
+    names.map do |name|
+      format_scenario(name, match_examples_by_name(name, examples))
+    end
+  end
+
+  def match_examples_by_name(name, examples)
+    examples.select { |example| example.name == name }
+  end
+
+  def order_scenarios_by_runs(scenarios)
+    scenarios.sort_by { |scenario| scenario[:total_runs] }.reverse
   end
 
   def format_scenario(name, examples)
-    matched_examples = examples.select { |example| example.name == name }
     { name: name,
-      last_status: matched_examples.last.status,
-      last_run: matched_examples.last.report.created_at,
-      last_passed: last_status(matched_examples, 'passed'),
-      last_failed: last_status(matched_examples, 'failed'),
-      total_runs: matched_examples&.size || 0,
-      total_passed: count_status(matched_examples, 'passed'),
-      total_failed: count_status(matched_examples, 'failed'),
-      total_pending: count_status(matched_examples, 'pending') }
+      last_status: examples.last.status,
+      last_run: examples.last.report.created_at,
+      last_passed: last_status(examples, 'passed'),
+      last_failed: last_status(examples, 'failed'),
+      total_runs: examples&.size || 0,
+      total_passed: count_status(examples, 'passed'),
+      total_failed: count_status(examples, 'failed'),
+      total_pending: count_status(examples, 'pending') }
   end
 
   def last_created_at(examples)
