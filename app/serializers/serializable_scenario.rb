@@ -11,7 +11,7 @@ class SerializableScenario < JSONAPI::Serializable::Resource
 
   attribute :scenarios do
     examples = @object.rspec_examples
-    scenario_names = examples&.map(&:name).uniq
+    scenario_names = examples&.map(&:name)&.uniq
     format_scenarios(scenario_names, examples)
   end
 
@@ -32,8 +32,7 @@ class SerializableScenario < JSONAPI::Serializable::Resource
 
   def format_scenario(name, examples)
     matched_examples = examples.select { |example| example.name == name }
-    {
-      name: name,
+    { name: name,
       last_status: matched_examples.last.status,
       last_run: matched_examples.last.report.created_at,
       last_passed: last_status(matched_examples, 'passed'),
@@ -41,8 +40,7 @@ class SerializableScenario < JSONAPI::Serializable::Resource
       total_runs: matched_examples&.size || 0,
       total_passed: count_status(matched_examples, 'passed'),
       total_failed: count_status(matched_examples, 'failed'),
-      total_pending: count_status(matched_examples, 'pending')
-    }
+      total_pending: count_status(matched_examples, 'pending') }
   end
 
   def last_created_at(examples)
