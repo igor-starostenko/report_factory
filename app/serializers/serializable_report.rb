@@ -9,6 +9,10 @@ class SerializableReport < JSONAPI::Serializable::Resource
   end
   attributes :project_id, :reportable_type, :reportable_id, :tags
 
+  attribute :status do
+    @object.reportable.status
+  end
+
   attribute :date do
     {
       created_at: @object.created_at,

@@ -30,4 +30,8 @@ class RspecReport < ActiveRecord::Base
   scope :scenarios_by_project, lambda { |project|
     by_project(project).pluck('rspec_examples.full_description').uniq
   }
+
+  def status
+    examples.any?(&:failed?) ? 'failed' : 'passed'
+  end
 end

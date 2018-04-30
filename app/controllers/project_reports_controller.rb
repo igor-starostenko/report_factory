@@ -11,6 +11,7 @@ class ProjectReportsController < BaseProjectsController
   private
 
   def set_project_report
-    @project_reports = Report.includes(:project).where(project_id: @project.id)
+    @project_reports = Report.includes(:project, reportable: :examples)
+                             .where(project_id: @project.id)
   end
 end
