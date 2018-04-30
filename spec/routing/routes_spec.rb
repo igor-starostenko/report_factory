@@ -213,4 +213,23 @@ RSpec.describe 'routing', :routing, type: :routing do
       )
     end
   end
+
+  context '/api/v1/scenarios', :scenarios do
+    it 'routes GET /api/v1/scenarios'\
+      'to scenarios#index' do
+      expect(get: '/api/v1/scenarios').to route_to(
+        controller: 'scenarios',
+        action: 'index'
+      )
+    end
+
+    it 'routes GET /api/v1/reports/rspec/:id'\
+      'to rspec_reports#show' do
+      expect(get: '/api/v1/reports/rspec/1').to route_to(
+        controller: 'rspec_reports',
+        action: 'show',
+        id: '1'
+      )
+    end
+  end
 end

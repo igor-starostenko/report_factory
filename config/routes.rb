@@ -50,6 +50,9 @@ Rails.application.routes.draw do
         end
         get '/:id' => 'reports#show'
       end
+      scope '/scenarios' do
+        get '/' => 'scenarios#index'
+      end
     end
   end
 end
