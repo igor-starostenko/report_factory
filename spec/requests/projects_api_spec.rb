@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe 'Projects', :projects_api, type: :request do
   before do
     FactoryBot.create(:tester,
-                      name: 'user',
-                      email: 'test@mailinator.com',
+                      name: 'ProjecsUser',
+                      email: 'projects@mailinator.com',
                       password: 'Qwerty12')
     FactoryBot.create(:admin,
-                      name: 'Admin Man',
-                      email: 'admin@mailinator.com',
+                      name: 'ProjectsAdm',
+                      email: 'projects_admin@mailinator.com',
                       password: 'AdminPass1')
     FactoryBot.create(:project, project_name: 'Web App')
   end

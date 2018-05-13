@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe 'UserReports', :user_reports_api, type: :request do
   before do
     user = FactoryBot.create(:tester,
-                             name: 'user',
-                             email: 'test@mailinator.com',
+                             name: 'UserTester1',
+                             email: 'user_reports@mailinator.com',
                              password: 'Qwerty12')
     project = FactoryBot.create(:project, project_name: 'Web App')
     rspec_report = FactoryBot.create(:rspec_report,
