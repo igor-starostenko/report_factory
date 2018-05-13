@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Admin, :admin, type: :model do
   let :admin do
     FactoryBot.create(:admin,
-                      name: 'Admin',
+                      name: 'New Admin',
                       email: 'test@mailinator.com',
                       password: 'Qwerty12')
   end

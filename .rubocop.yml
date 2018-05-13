@@ -1,8 +1,18 @@
 AllCops:
+  TargetRubyVersion: 2.4.1
   Exclude:
     - 'db/**/*.rb'
+    - 'vendor/**/*'
 
-Style/BlockLength:
+Metrics/MethodLength:
+  Exclude:
+    - 'app/views/**/*.json.jbuilder'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'app/views/**/*.json.jbuilder'
+
+Metrics/BlockLength:
   Exclude:
     - 'Rakefile'
     - '**/*.rake'

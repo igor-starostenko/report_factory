@@ -104,6 +104,11 @@ _GET_  `/api/v1/users/:id/reports`
 
 ---
 
+To get all RSpec reports of a user:
+
+_GET_  `/api/v1/users/:id/reports/rspec`
+
+---
 To delete a user (Admin only):
 
 _DELETE_  `/api/v1/users/:id`
@@ -248,6 +253,18 @@ _GET_  `/api/v1/reports`
 To get all RSpec reports:
 
 _GET_  `/api/v1/reports/rspec`
+
+### Scenarios
+
+To return all scenarios:
+
+_GET_  `/api/v1/scenarios`
+
+---
+
+To get all scenarios by project:
+
+_GET_  `/api/v1/projects/:project_name/scenarios`
 
 ## License
 

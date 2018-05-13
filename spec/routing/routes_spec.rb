@@ -66,9 +66,18 @@ RSpec.describe 'routing', :routing, type: :routing do
       )
     end
 
-    it 'routes GET /api/v1/users/:id to user_reports#index' do
+    it 'routes GET /api/v1/users/:id/reports to user_reports#index' do
       expect(get: '/api/v1/users/1/reports').to route_to(
         controller: 'user_reports',
+        action: 'index',
+        id: '1'
+      )
+    end
+
+    it 'routes GET /api/v1/users/:id/reports/rspec to'\
+       ' user_rspec_reports#index' do
+      expect(get: '/api/v1/users/1/reports/rspec').to route_to(
+        controller: 'user_rspec_reports',
         action: 'index',
         id: '1'
       )
@@ -115,8 +124,20 @@ RSpec.describe 'routing', :routing, type: :routing do
     end
   end
 
+  context '/api/v1/projects/:project_name/scenarios', :scenarios do
+    it 'routes GET /api/v1/projects/:project_name/scenarios'\
+       ' to project_scenarios#index' do
+      expect(get: '/api/v1/projects/web_project/scenarios').to route_to(
+        controller: 'project_scenarios',
+        action: 'index',
+        project_name: 'web_project'
+      )
+    end
+  end
+
   context '/api/v1/projects/:project_name/reports', :project_reports do
-    it 'routes GET /api/v1/projects/:project_name/reports to reports#index' do
+    it 'routes GET /api/v1/projects/:project_name/reports'\
+       ' to project_reports#index' do
       expect(get: '/api/v1/projects/web_project/reports').to route_to(
         controller: 'project_reports',
         action: 'index',
@@ -179,6 +200,25 @@ RSpec.describe 'routing', :routing, type: :routing do
       'to rspec_reports#index' do
       expect(get: '/api/v1/reports/rspec').to route_to(
         controller: 'rspec_reports',
+        action: 'index'
+      )
+    end
+
+    it 'routes GET /api/v1/reports/rspec/:id'\
+      'to rspec_reports#show' do
+      expect(get: '/api/v1/reports/rspec/1').to route_to(
+        controller: 'rspec_reports',
+        action: 'show',
+        id: '1'
+      )
+    end
+  end
+
+  context '/api/v1/scenarios', :scenarios do
+    it 'routes GET /api/v1/scenarios'\
+      'to scenarios#index' do
+      expect(get: '/api/v1/scenarios').to route_to(
+        controller: 'scenarios',
         action: 'index'
       )
     end

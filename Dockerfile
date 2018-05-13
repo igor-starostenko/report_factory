@@ -14,7 +14,7 @@ WORKDIR /app
 # Ensure gems are cached and only get updated when they change. This will
 # drastically increase build times when your gems do not change.
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --binstubs
+RUN bundle install --binstubs --without development test
 
 # Copy in the application code from your work station at the current directory
 # over to the working directory.
