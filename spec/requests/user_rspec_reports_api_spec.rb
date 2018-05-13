@@ -20,7 +20,7 @@ RSpec.describe 'UserRspecReports', :user_rspec_reports_api, type: :request do
                       user_id: user.id,
                       report_id: report.id)
   end
-  let(:user) { User.first }
+  let(:user) { User.find_by(name: 'RspecTester') }
   let(:report) { Report.first }
 
   describe 'GET index' do

@@ -18,8 +18,8 @@ RSpec.describe 'Users', :users_api, type: :request do
                       email: admin_email,
                       password: admin_password)
   end
-  let(:tester) { Tester.first }
-  let(:admin) { Admin.first }
+  let(:tester) { Tester.find_by(name: 'UsersTester') }
+  let(:admin) { Admin.find_by(name: 'UsersAdmin') }
 
   describe 'GET auth' do
     it 'is not authorized without X-API-KEY' do

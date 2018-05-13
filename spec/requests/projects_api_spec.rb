@@ -14,8 +14,8 @@ RSpec.describe 'Projects', :projects_api, type: :request do
                       password: 'AdminPass1')
     FactoryBot.create(:project, project_name: 'Web App')
   end
-  let(:tester) { Tester.first }
-  let(:admin) { Admin.first }
+  let(:tester) { Tester.find_by(name: 'ProjecsUser') }
+  let(:admin) { Admin.find_by(name: 'ProjectsAdm') }
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
