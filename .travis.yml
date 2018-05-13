@@ -1,6 +1,9 @@
 language: ruby
 rvm:
   - 2.5.0
+before_script:
+  - rails db:create
+  - rails db:migrate
 script:
   - bundle exec rubocop
   - bundle exec rspec
