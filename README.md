@@ -254,6 +254,18 @@ To get all RSpec reports:
 
 _GET_  `/api/v1/reports/rspec`
 
+### Scenarios
+
+To return all scenarios:
+
+_GET_  `/api/v1/scenarios`
+
+---
+
+To get all scenarios by project:
+
+_GET_  `/api/v1/projects/:project_name/scenarios`
+
 ## License
 
 The application is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
