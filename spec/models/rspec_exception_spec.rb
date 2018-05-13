@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RspecExample, :rspec_example, type: :model do
+RSpec.describe RspecException, :rspec_exception, type: :model do
   let :rspec_report do
     FactoryBot.create(:rspec_report,
                       version: '1.0.0',
@@ -13,7 +13,9 @@ RSpec.describe RspecExample, :rspec_example, type: :model do
                       rspec_report_id: rspec_report.id,
                       status: 'passed')
   end
-  let :exception_class { 'RSpec::Expectations::ExpectationNotMetError' }
+  let :exception_class do
+    'RSpec::Expectations::ExpectationNotMetError'
+  end
   let :exception_message do
     '\nexpected: 200\n     got: 204\n\n(compared using ==)\n'
   end

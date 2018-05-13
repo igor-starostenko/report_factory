@@ -3,18 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe 'Users', :users_api, type: :request do
+  let(:tester_email) { 'users1@mailinator.com' }
+  let(:tester_password) { 'Qwerty12' }
+  let(:admin_email) { 'users2@mailinator.com' }
+  let(:admin_password) { 'AdminPass1' }
+
   before do
     FactoryBot.create(:tester,
-                      name: 'user',
-                      email: 'test@mailinator.com',
-                      password: 'Qwerty12')
+                      name: 'UsersTester',
+                      email: tester_email,
+                      password: tester_password)
     FactoryBot.create(:admin,
-                      name: 'Admin Man',
-                      email: 'admin@mailinator.com',
-                      password: 'AdminPass1')
+                      name: 'UsersAdmin',
+                      email: admin_email,
+                      password: admin_password)
   end
-  let(:tester) { Tester.first }
-  let(:admin) { Admin.first }
+  let(:tester) { Tester.find_by(name: 'UsersTester') }
+  let(:admin) { Admin.find_by(name: 'UsersAdmin') }
 
   describe 'GET auth' do
     it 'is not authorized without X-API-KEY' do
@@ -84,8 +89,8 @@ RSpec.describe 'Users', :users_api, type: :request do
         data: {
           type: 'user',
           attributes: {
-            email: 'test@mailinator.com',
-            password: 'Qwerty12'
+            email: tester_email,
+            password: tester_password
           }
         }
       }

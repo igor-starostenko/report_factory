@@ -21,7 +21,7 @@ JSONAPI::Rails.configure do |config|
 
   # Set a default JSON API object.
   config.jsonapi_object = {
-    version: '1.0'
+    version: '1.1.0'
   }
 
   # Set default exposures.

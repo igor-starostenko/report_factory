@@ -30,7 +30,7 @@ class SerializableRspecReport < JSONAPI::Serializable::Resource
   attribute :examples do
     serialize_examples(@object)
   end
- 
+
   attribute :summary do
     serialize_summary(@object)
   end

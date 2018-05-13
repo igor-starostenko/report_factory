@@ -44,7 +44,8 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def search_tags(per_page:, tags: nil)
     reports = tags ? reports_by_tags(tags) : all_reports
-    @rspec_reports = paginate(reports.order('id desc'), per_page: per_page)
+    reports_desc = reports.order('rspec_reports.id desc')
+    @rspec_reports = paginate(reports_desc, per_page: per_page)
   end
 
   def reports_by_tags(tags)
@@ -52,7 +53,7 @@ class ProjectRspecReportsController < BaseProjectsController
   end
 
   def all_reports
-    RspecReport.by_project(@project.project_name)
+    RspecReport.by_project(@project.project_name).includes(:report)
   end
 
   def valid_report?
@@ -81,7 +82,8 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def rspec_examples_attributes
     attributes(:example, :examples).map do |example_args|
-      exception_attributes = rspec_exception_attributes(example_args[:exception])
+      exception_attributes =
+        rspec_exception_attributes(example_args[:exception])
       args = { spec_id: example_args[:id],
                exception_attributes: exception_attributes }
       args.merge(example_args).except('id', 'exception')
@@ -89,8 +91,9 @@ class ProjectRspecReportsController < BaseProjectsController
   end
 
   def rspec_exception_attributes(exception_args)
-      return {} unless exception_args
-      { 'classname' => exception_args[:class] }.merge(exception_args).except('class')
+    return {} unless exception_args
+    { 'classname' => exception_args[:class] }
+      .merge(exception_args).except('class')
   end
 
   def render_bad_report

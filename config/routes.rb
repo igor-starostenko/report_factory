@@ -16,7 +16,10 @@ Rails.application.routes.draw do
           put '/' => 'users#update'
           get '/' => 'users#show'
           delete '/' => 'users#destroy'
-          get '/reports' => 'user_reports#index'
+          scope '/reports' do
+            get '/' => 'user_reports#index'
+            get '/rspec' => 'user_rspec_reports#index'
+          end
         end
       end
       scope '/projects' do
@@ -34,6 +37,9 @@ Rails.application.routes.draw do
               get '/:id' => 'project_rspec_reports#show'
             end
           end
+          scope '/scenarios' do
+            get '/' => 'project_scenarios#index'
+          end
         end
       end
       scope '/reports' do
@@ -43,6 +49,9 @@ Rails.application.routes.draw do
           get '/:id' => 'rspec_reports#show'
         end
         get '/:id' => 'reports#show'
+      end
+      scope '/scenarios' do
+        get '/' => 'scenarios#index'
       end
     end
   end

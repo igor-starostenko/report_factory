@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Report, :report, type: :model do
-  let :project { FactoryBot.create(:project, project_name: 'Web App') }
+  let :project do
+    FactoryBot.create(:project, project_name: 'Web App')
+  end
   let :rspec_report do
     FactoryBot.create(:rspec_report,
                       version: '1.0.0',

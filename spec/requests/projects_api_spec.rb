@@ -5,17 +5,17 @@ require 'rails_helper'
 RSpec.describe 'Projects', :projects_api, type: :request do
   before do
     FactoryBot.create(:tester,
-                      name: 'user',
-                      email: 'test@mailinator.com',
+                      name: 'ProjecsUser',
+                      email: 'projects@mailinator.com',
                       password: 'Qwerty12')
     FactoryBot.create(:admin,
-                      name: 'Admin Man',
-                      email: 'admin@mailinator.com',
+                      name: 'ProjectsAdm',
+                      email: 'projects_admin@mailinator.com',
                       password: 'AdminPass1')
     FactoryBot.create(:project, project_name: 'Web App')
   end
-  let(:tester) { Tester.first }
-  let(:admin) { Admin.first }
+  let(:tester) { Tester.find_by(name: 'ProjecsUser') }
+  let(:admin) { Admin.find_by(name: 'ProjectsAdm') }
 
   describe 'GET index' do
     it 'is not authorized without X-API-KEY' do
