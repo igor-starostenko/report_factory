@@ -8,6 +8,8 @@ gem 'rails', '~> 5.2.0'
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
 gem 'puma', '~> 3.11.4'
+# Serve API with GraphQL
+gem 'graphql-preload' # includes the graphql gem
 # Build JSON APIs with ease
 gem 'jbuilder'
 gem 'jsonapi-rails'
@@ -29,6 +31,10 @@ group :development, :test do
   # and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
+  gem 'graphiql-rails'
+  gem 'sass-rails' # Dependency for GraphiQL
+  gem 'uglifier' # Dependency for GraphiQL
+  gem 'coffee-rails' # Dependency for GraphiQL
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rspec-rails'
   gem 'rubocop'
