@@ -15,7 +15,8 @@ RSpec.describe 'UserReports', :user_reports_api, type: :request do
     report = FactoryBot.create(:report,
                                project_id: project.id,
                                reportable_type: RspecReport,
-                               reportable_id: rspec_report.id)
+                               reportable_id: rspec_report.id,
+                               status: 'passed')
     FactoryBot.create(:user_report,
                       user_id: user.id,
                       report_id: report.id)

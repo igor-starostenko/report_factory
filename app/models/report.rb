@@ -8,6 +8,7 @@ class Report < ActiveRecord::Base
   belongs_to :project
   belongs_to :reportable, polymorphic: true
   validates :project_id, presence: true
+  validates :status, presence: true
 
   before_save { self.tags = tags&.map { |tag| tag.downcase } }
 

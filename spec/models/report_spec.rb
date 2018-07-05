@@ -15,7 +15,8 @@ RSpec.describe Report, :report, type: :model do
     FactoryBot.create(:report,
                       project_id: project.id,
                       reportable_type: RspecReport,
-                      reportable_id: rspec_report.id)
+                      reportable_id: rspec_report.id,
+                      status: 'passed')
   end
 
   it 'is valid' do
@@ -39,6 +40,11 @@ RSpec.describe Report, :report, type: :model do
 
   it 'is not valid without :reportable_id' do
     report.reportable_id = nil
+    expect(report).to_not be_valid
+  end
+
+  it 'is not valid without :status' do
+    report.status = nil
     expect(report).to_not be_valid
   end
 

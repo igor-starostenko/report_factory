@@ -15,8 +15,10 @@ RSpec.describe UserReport, :user_report, type: :model do
     FactoryBot.create(:report,
                       project_id: Project.last.id,
                       reportable_type: RspecReport,
-                      reportable_id: RspecReport.last.id)
+                      reportable_id: RspecReport.last.id,
+                      status: 'passed')
   end
+
   let(:user_report) do
     FactoryBot.create(:user_report,
                       user_id: User.last.id,

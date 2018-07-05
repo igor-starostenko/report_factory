@@ -14,9 +14,10 @@ RSpec.describe 'RspecReports', :rspec_reports_api, type: :request do
                                      summary_line: '8 examples, 0 failures')
     FactoryBot.create(:report,
                       project_id: project.id,
-                      tags: %w[High Full],
                       reportable_type: RspecReport,
-                      reportable_id: rspec_report.id)
+                      reportable_id: rspec_report.id,
+                      status: 'passed',
+                      tags: %w[High Full])
     FactoryBot.create(:rspec_summary,
                       rspec_report_id: rspec_report.id,
                       example_count: 53,
