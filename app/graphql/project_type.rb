@@ -8,6 +8,6 @@ ProjectType = GraphQL::ObjectType.define do
     description 'This project\'s reports,'\
                 ' or null if this project has no reports'
     preload :reports
-    resolve -> (obj, args, context) { obj.reports }
+    resolve -> (obj, args, ctx) { obj.reports }
   end
 end

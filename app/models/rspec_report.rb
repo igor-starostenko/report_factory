@@ -31,7 +31,9 @@ class RspecReport < ActiveRecord::Base
     by_project(project).pluck('rspec_examples.full_description').uniq
   }
 
+  # Using summary for better performance
   def status
-    examples.any?(&:failed?) ? 'failed' : 'passed'
+    # examples.any?(&:failed?) ? 'failed' : 'passed'
+    summary.failure_count.zero? ? 'passed' : 'failed'
   end
 end

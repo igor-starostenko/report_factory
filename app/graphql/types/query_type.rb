@@ -5,12 +5,12 @@ Types::QueryType = GraphQL::ObjectType.define do
   description 'The query root of this schema'
 
   # project field signature
-  field :project, !types[!ProjectType] do
+  field :project, !ProjectType do
     description 'Find a Project by projectName'
     argument :project_name, !types.String
 
     resolve -> (obj, args, context) {
-      Project.by_name(project_name)
+      Project.by_name(args.project_name)
     }
   end
 
