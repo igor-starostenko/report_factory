@@ -36,7 +36,7 @@ class RspecExample < ActiveRecord::Base
 
   scope :scenarios, -> {
     find_by_sql('SELECT DISTINCT ON (full_description)'\
-                ' full_description, status FROM rspec_examples')
+                " #{SCENARIO_FIELDS} FROM rspec_examples")
       .sort_by { |scenario| -scenario.id }
   }
 
