@@ -22,4 +22,12 @@ Types::QueryType = GraphQL::ObjectType.define do
       Project.all
     }
   end
+
+  field :scenarios, !types[!ScenarioType] do
+    description 'All Scenarios'
+
+    resolve -> (obj, args, context) {
+      RspecExample.scenarios
+    }
+  end
 end
