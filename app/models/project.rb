@@ -26,13 +26,6 @@ class Project < ActiveRecord::Base
     find_by('lower(project_name) = ?', project_name.downcase)
   }
 
-  scope :scenarios, lambda { |project_name|
-    where(project_name: project_name)
-      .includes(:rspec_examples)
-      .pluck('rspec_examples.full_description')
-      .uniq.reject(&:nil?)
-  }
-
   private
 
   def set_formatted_project_name

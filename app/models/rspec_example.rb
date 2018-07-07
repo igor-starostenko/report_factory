@@ -50,4 +50,8 @@ class RspecExample < ActiveRecord::Base
                 " reports.project_id = #{project_id}")
       .sort_by { |scenario| -scenario.id }
   }
+
+  scope :project_examples, -> (project_name) {
+    includes(report: :project).where(project_name: project_name)
+  }
 end

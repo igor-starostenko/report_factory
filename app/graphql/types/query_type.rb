@@ -30,4 +30,18 @@ Types::QueryType = GraphQL::ObjectType.define do
       RspecExample.scenarios
     }
   end
+
+  field :scenario, !ScenarioDetailsType do
+    description 'Statistics of all Scenario runs'
+
+    argument :scenario_name, !types.String
+    argument :project_name, !types.String
+
+    resolve -> (obj, args, context) {
+      # RspecExample.where(full_description: args.scenario_name)
+      Project.by_name(args.project_name)
+             .rspec_examples
+             .where(full_description: args.scenario_name)
+    }
+  end
 end
