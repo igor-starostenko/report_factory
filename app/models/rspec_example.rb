@@ -31,10 +31,11 @@ class RspecExample < ActiveRecord::Base
   end
 
   scope :scenarios, -> {
-    eager_load(report: :project)
+    joins(report: :project)
       .select('DISTINCT ON ('\
               'projects.project_name, rspec_examples.full_description'\
               ') rspec_examples.*')
+      .order('projects.project_name asc', full_description: :asc, id: :desc)
       .sort_by { |scenario| -scenario.id }
   }
 end
