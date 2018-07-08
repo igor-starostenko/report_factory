@@ -7,7 +7,6 @@ class RspecExample < ActiveRecord::Base
   has_one :report, through: :rspec_report
   has_one :exception, class_name: 'RspecException'
   validates :status, presence: true
-  default_scope { order(id: :asc) }
   accepts_nested_attributes_for :exception,
                                 reject_if: :no_exception?
 
@@ -35,9 +34,10 @@ class RspecExample < ActiveRecord::Base
   end
 
   scope :scenarios, -> {
-    find_by_sql('SELECT DISTINCT ON (full_description)'\
-                " #{SCENARIO_FIELDS} FROM rspec_examples")
-      .sort_by { |scenario| -scenario.id }
+    eager_load(report: :project)
+      .select('DISTINCT ON ('\
+              'projects.project_name, rspec_examples.full_description'\
+              ') rspec_examples.*')
   }
 
   scope :project_scenarios, -> (project_id) {
@@ -49,9 +49,5 @@ class RspecExample < ActiveRecord::Base
                 ' rspec_reports.id = reports.reportable_id WHERE'\
                 " reports.project_id = #{project_id}")
       .sort_by { |scenario| -scenario.id }
-  }
-
-  scope :project_examples, -> (project_name) {
-    includes(report: :project).where(project_name: project_name)
   }
 end
