@@ -34,11 +34,7 @@ class RspecExample < ActiveRecord::Base
     eager_load(report: :project)
       .select('DISTINCT ON ('\
               'projects.project_name, rspec_examples.full_description'\
-              ") rspec_examples.*")
-  }
-
-  scope :project_scenarios, -> (project_id) {
-    joins(report: :project).where("projects.id = #{project_id}")
-      .select("DISTINCT ON (full_description) rspec_examples.*")
+              ') rspec_examples.*')
+      .sort_by { |scenario| -scenario.id }
   }
 end

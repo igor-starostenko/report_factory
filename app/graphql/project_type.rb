@@ -12,6 +12,6 @@ ProjectType = GraphQL::ObjectType.define do
   end
   field :scenarios, !types[!ScenarioType] do
     description 'Test Scenarios executed for the Project'
-    resolve -> (obj, args, context) { RspecExample.project_scenarios(obj.id) }
+    resolve -> (obj, args, context) { obj.scenarios }
   end
 end

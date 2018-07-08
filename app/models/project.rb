@@ -26,6 +26,10 @@ class Project < ActiveRecord::Base
     find_by('lower(project_name) = ?', project_name.downcase)
   }
 
+  def scenarios
+    rspec_examples.select("DISTINCT ON (full_description) rspec_examples.*")
+  end
+
   private
 
   def set_formatted_project_name
