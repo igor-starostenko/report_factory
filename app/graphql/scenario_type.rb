@@ -17,7 +17,7 @@ ScenarioType = GraphQL::ObjectType.define do
   field :status, !types.String do
     resolve -> (obj, args, ctx) { obj.status }
   end
-  field :line_number, !types.String do
+  field :line_number, !types.Int do
     resolve -> (obj, args, ctx) { obj.line_number }
   end
 end
