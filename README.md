@@ -266,6 +266,17 @@ To get all scenarios by project:
 
 _GET_  `/api/v1/projects/:project_name/scenarios`
 
+## GraphQL
+
+Clients can fetch data using GraphQL from `/graphql' endpoint. Just make sure you pass `X-API-KEY` header with your user token.
+To acccess GraphiQL in development you need to set the token in the environment variable:
+
+```bash
+  export X_API_KEY={your_x_api_key}
+```
+
+Then youl'll be able to access `/graphiql` on your localhost.
+
 ## License
 
 The application is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
