@@ -10,9 +10,6 @@ class RspecExample < ActiveRecord::Base
   accepts_nested_attributes_for :exception,
                                 reject_if: :no_exception?
 
-  SCENARIO_FIELDS = %i[id spec_id description full_description status
-                       line_number].map { |f| "rspec_examples.#{f}" }.join(', ')
-
   def no_exception?(attributes)
     attributes['classname'].nil?
   end
@@ -37,17 +34,11 @@ class RspecExample < ActiveRecord::Base
     eager_load(report: :project)
       .select('DISTINCT ON ('\
               'projects.project_name, rspec_examples.full_description'\
-              ') rspec_examples.*')
+              ") rspec_examples.*")
   }
 
   scope :project_scenarios, -> (project_id) {
-    find_by_sql('SELECT DISTINCT ON (rspec_examples.full_description)'\
-                " #{SCENARIO_FIELDS} FROM rspec_examples"\
-                ' INNER JOIN rspec_reports ON'\
-                ' rspec_examples.rspec_report_id = rspec_reports.id'\
-                ' INNER JOIN reports ON'\
-                ' rspec_reports.id = reports.reportable_id WHERE'\
-                " reports.project_id = #{project_id}")
-      .sort_by { |scenario| -scenario.id }
+    joins(report: :project).where("projects.id = #{project_id}")
+      .select("DISTINCT ON (full_description) rspec_examples.*")
   }
 end
