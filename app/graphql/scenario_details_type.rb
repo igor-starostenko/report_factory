@@ -4,6 +4,9 @@ ScenarioDetailsType = GraphQL::ObjectType.define do
   field :name, !types.String do
     resolve -> (obj, args, ctx) { obj.last.full_description }
   end
+  field :project_name, !types.String do
+    resolve -> (obj, args, ctx) { obj.last.report.project.project_name }
+  end
   field :last_status, !types.String do
     resolve -> (obj, args, ctx) { obj.last.status }
   end

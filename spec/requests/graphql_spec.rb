@@ -221,6 +221,7 @@ RSpec.describe 'GraphQL', :graphql,
           scenario(project_name: "#{project.project_name}",
                    scenario_name: "#{scenario.full_description}") {
             name
+            project_name
             last_status
             last_run
             last_passed
