@@ -92,28 +92,28 @@ RSpec.describe 'GraphQL', :graphql,
       expect(response.status).to eq(200)
       projects = parse_json_type(response.body, 'projects')
       expect(projects.size).to be_positive
-      expect(projects.first).to match_json_object({
+      expect(projects.first).to match_json_object(
         id: project.id.to_s,
         project_name: project.project_name,
         created_at: project.created_at.to_s,
-        updated_at: project.updated_at.to_s,
-      })
-      expect(projects.first['reports'].first).to match_json_object({
+        updated_at: project.updated_at.to_s
+      )
+      expect(projects.first['reports'].first).to match_json_object(
         id: report.id.to_s,
         project_id: report.project_id.to_s,
         reportable_id: report.reportable_id.to_s,
         reportable_type: report.reportable_type,
         status: report.status,
         tags: report.tags
-      })
-      expect(projects.first['scenarios'].first).to match_json_object({
+      )
+      expect(projects.first['scenarios'].first).to match_json_object(
         project_name: project.project_name,
         spec_id: scenario.spec_id,
         description: scenario.description,
         full_description: scenario.full_description,
         status: scenario.status,
         line_number: scenario.line_number
-      })
+      )
     end
   end
 
@@ -155,28 +155,28 @@ RSpec.describe 'GraphQL', :graphql,
       }, params: { query: query }
       expect(response.status).to eq(200)
       actual_project = parse_json_type(response.body, 'project')
-      expect(actual_project).to match_json_object({
+      expect(actual_project).to match_json_object(
         id: project.id.to_s,
         project_name: project.project_name,
         created_at: project.created_at.to_s,
-        updated_at: project.updated_at.to_s,
-      })
-      expect(actual_project['reports'].first).to match_json_object({
+        updated_at: project.updated_at.to_s
+      )
+      expect(actual_project['reports'].first).to match_json_object(
         id: report.id.to_s,
         project_id: report.project_id.to_s,
         reportable_id: report.reportable_id.to_s,
         reportable_type: report.reportable_type,
         status: report.status,
         tags: report.tags
-      })
-      expect(actual_project['scenarios'].first).to match_json_object({
+      )
+      expect(actual_project['scenarios'].first).to match_json_object(
         project_name: project.project_name,
         spec_id: scenario.spec_id,
         description: scenario.description,
         full_description: scenario.full_description,
         status: scenario.status,
         line_number: scenario.line_number
-      })
+      )
     end
   end
 
@@ -203,14 +203,14 @@ RSpec.describe 'GraphQL', :graphql,
       expect(response.status).to eq(200)
       scenarios = parse_json_type(response.body, 'scenarios')
       expect(scenarios.size).to be_positive
-      expect(scenarios.first).to match_json_object({
+      expect(scenarios.first).to match_json_object(
         project_name: project.project_name,
         spec_id: scenario.spec_id,
         description: scenario.description,
         full_description: scenario.full_description,
         status: scenario.status,
         line_number: scenario.line_number
-      })
+      )
     end
   end
 
@@ -241,7 +241,7 @@ RSpec.describe 'GraphQL', :graphql,
       }, params: { query: query }
       expect(response.status).to eq(200)
       actual_scenario = parse_json_type(response.body, 'scenario')
-      expect(actual_scenario).to match_json_object({
+      expect(actual_scenario).to match_json_object(
         name: scenario.full_description,
         last_status: scenario.status,
         last_run: scenario.report.created_at.to_s,
@@ -251,7 +251,7 @@ RSpec.describe 'GraphQL', :graphql,
         total_passed: 0,
         total_failed: 1,
         total_pending: 0
-      })
+      )
     end
   end
 end

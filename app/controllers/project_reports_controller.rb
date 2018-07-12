@@ -7,6 +7,4 @@ class ProjectReportsController < BaseProjectsController
   def index
     render jsonapi: @project.reports, status: :ok
   end
-
-  private
 end

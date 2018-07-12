@@ -27,9 +27,9 @@ class Project < ActiveRecord::Base
   }
 
   def scenarios
-    rspec_examples.select("DISTINCT ON (full_description) rspec_examples.*")
-      .order(full_description: :asc, id: :desc)
-      .sort_by { |scenario| -scenario.id }
+    rspec_examples.select('DISTINCT ON (full_description) rspec_examples.*')
+                  .order(full_description: :asc, id: :desc)
+                  .sort_by { |scenario| -scenario.id }
   end
 
   private

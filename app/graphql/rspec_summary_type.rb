@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RspecSummaryType = GraphQL::ObjectType.define do
   name 'RspecSummary'
   description 'Summary of an Rspec Report'

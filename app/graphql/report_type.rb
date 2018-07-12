@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ReportType = GraphQL::ObjectType.define do
   name 'Report'
   description 'Reports of a Project'

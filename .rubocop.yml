@@ -17,3 +17,4 @@ Metrics/BlockLength:
     - 'Rakefile'
     - '**/*.rake'
     - 'spec/**/*_spec.rb'
+    - 'app/graphql/**/*_type.rb'

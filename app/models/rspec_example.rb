@@ -30,7 +30,7 @@ class RspecExample < ActiveRecord::Base
     status.casecmp?('pending')
   end
 
-  scope :scenarios, -> {
+  scope :scenarios, lambda {
     joins(report: :project)
       .select('DISTINCT ON ('\
               'projects.project_name, rspec_examples.full_description'\
