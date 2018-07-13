@@ -7,7 +7,6 @@ class RspecExample < ActiveRecord::Base
   has_one :report, through: :rspec_report
   has_one :exception, class_name: 'RspecException'
   validates :status, presence: true
-  default_scope { order(id: :asc) }
   accepts_nested_attributes_for :exception,
                                 reject_if: :no_exception?
 
@@ -31,5 +30,12 @@ class RspecExample < ActiveRecord::Base
     status.casecmp?('pending')
   end
 
-  scope :scenarios, -> { pluck(:full_description).uniq }
+  scope :scenarios, lambda {
+    joins(report: :project)
+      .select('DISTINCT ON ('\
+              'projects.project_name, rspec_examples.full_description'\
+              ') rspec_examples.*')
+      .order('projects.project_name asc', full_description: :asc, id: :desc)
+      .sort_by { |scenario| -scenario.id }
+  }
 end

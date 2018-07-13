@@ -15,7 +15,8 @@ RSpec.describe 'Scenarios', :scenarios_api, type: :request do
     FactoryBot.create(:report,
                       project_id: project.id,
                       reportable_type: RspecReport,
-                      reportable_id: rspec_report.id)
+                      reportable_id: rspec_report.id,
+                      status: 'passed')
   end
   let(:tester) { Tester.first }
 

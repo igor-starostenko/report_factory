@@ -26,12 +26,11 @@ class Project < ActiveRecord::Base
     find_by('lower(project_name) = ?', project_name.downcase)
   }
 
-  scope :scenarios, lambda { |project_name|
-    where(project_name: project_name)
-      .includes(:rspec_examples)
-      .pluck('rspec_examples.full_description')
-      .uniq.reject(&:nil?)
-  }
+  def scenarios
+    rspec_examples.select('DISTINCT ON (full_description) rspec_examples.*')
+                  .order(full_description: :asc, id: :desc)
+                  .sort_by { |scenario| -scenario.id }
+  end
 
   private
 

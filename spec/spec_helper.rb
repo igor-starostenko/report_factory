@@ -46,3 +46,7 @@ RSpec.configure do |config|
   # you configure your source control system to ignore this file.
   config.example_status_persistence_file_path = 'spec/examples.txt'
 end
+
+def parse_json_type(body, type)
+  JSON.parse(body).fetch('data').fetch(type)
+end

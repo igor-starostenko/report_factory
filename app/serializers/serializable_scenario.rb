@@ -2,6 +2,8 @@
 
 # Formats Project Scenario JSON API
 class SerializableScenario < JSONAPI::Serializable::Resource
+  include ScenarioSerializers
+
   type 'project_scenarios'
 
   attribute :project_name
@@ -55,21 +57,5 @@ class SerializableScenario < JSONAPI::Serializable::Resource
       total_passed: count_status(examples, 'passed'),
       total_failed: count_status(examples, 'failed'),
       total_pending: count_status(examples, 'pending') }
-  end
-
-  def last_created_at(examples)
-    examples.last&.report&.created_at
-  end
-
-  def last_status(examples, status)
-    last_created_at(select_examples(examples, status))
-  end
-
-  def select_examples(examples, status)
-    examples.select { |example| example.__send__("#{status}?") }
-  end
-
-  def count_status(examples, status)
-    examples&.count { |example| example.__send__("#{status}?") } || 0
   end
 end

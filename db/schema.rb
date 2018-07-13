@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180304025304) do
+ActiveRecord::Schema.define(version: 2018_07_05_030940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20180304025304) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "tags", default: [], array: true
+    t.string "status"
     t.index ["project_id"], name: "index_reports_on_project_id"
     t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable_type_and_reportable_id"
   end
@@ -66,6 +67,12 @@ ActiveRecord::Schema.define(version: 20180304025304) do
     t.integer "pending_count"
     t.integer "errors_outside_of_examples_count"
     t.index ["rspec_report_id"], name: "index_rspec_summaries_on_rspec_report_id"
+  end
+
+  create_table "scenarios", force: :cascade do |t|
+    t.bigint "project_id"
+    t.string "description"
+    t.index ["project_id"], name: "index_scenarios_on_project_id"
   end
 
   create_table "user_reports", force: :cascade do |t|

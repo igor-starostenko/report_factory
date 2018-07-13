@@ -71,6 +71,7 @@ class ProjectRspecReportsController < BaseProjectsController
   def new_report
     @report = Report.new(project_id: @project.id,
                          reportable_type: RspecReport,
+                         status: @rspec_report.status,
                          tags: attributes(:report).fetch(:tags, []),
                          reportable_id: @rspec_report.id)
   end

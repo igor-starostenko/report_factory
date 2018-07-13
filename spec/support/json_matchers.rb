@@ -19,3 +19,12 @@ RSpec::Matchers.define :have_json_api_format do |model|
     actual['type'] == model && actual['attributes'].is_a?(Hash)
   end
 end
+
+RSpec::Matchers.define :match_json_object do |hash|
+  match do |actual|
+    hash.each do |attribute, value|
+      parsed_actual = actual.fetch(attribute.to_s)
+      expect(parsed_actual).to eq(value)
+    end
+  end
+end

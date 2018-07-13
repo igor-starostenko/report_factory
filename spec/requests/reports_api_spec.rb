@@ -15,6 +15,7 @@ RSpec.describe 'Reports', :reports_api, type: :request do
     FactoryBot.create(:report,
                       project_id: project.id,
                       reportable_type: RspecReport,
+                      status: 'passed',
                       tags: %w[High Full],
                       reportable_id: rspec_report.id)
   end
