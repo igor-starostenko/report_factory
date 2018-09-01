@@ -10,10 +10,10 @@ ProjectType = GraphQL::ObjectType.define do
     description 'This project\'s reports,'\
                 ' or null if this project has no reports'
     preload :reports
-    resolve ->(obj, _args, _ctx) { obj.reports }
+    resolve ->(obj, _args, _ctx) { obj.cached_reports }
   end
   field :scenarios, !types[!ScenarioType] do
     description 'Test Scenarios executed for the Project'
-    resolve ->(obj, _args, _context) { obj.scenarios }
+    resolve ->(obj, _args, _context) { obj.cached_scenarios }
   end
 end
