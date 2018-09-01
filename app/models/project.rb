@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
 
   def cached_reports
     old_reports = Rails.cache.fetch("#{project_name}/reports") { reports }.sort_by(&:id)
-    new_reports = reports.where('updated_at > ?', old_reports.last.updated_at)
+    new_reports = reports.where('updated_at > ?', old_reports.last&.updated_at)
     return old_reports if new_reports.empty?
     all_reports = (new_reports + old_reports)
     Rails.cache.write("#{project_name}/reports", all_reports)
@@ -37,7 +37,7 @@ class Project < ActiveRecord::Base
 
   def cached_scenarios
     old_scenarios = Rails.cache.fetch("#{project_name}/scenarios") { scenarios }
-    new_scenarios = scenarios_from(old_scenarios.first.report.updated_at)
+    new_scenarios = scenarios_from(old_scenarios.first&.report&.updated_at)
     return old_scenarios if new_scenarios.empty?
     all_scenarios = merge_scenarios(new_scenarios, old_scenarios)
     Rails.cache.write("#{project_name}/scenarios", all_scenarios)
