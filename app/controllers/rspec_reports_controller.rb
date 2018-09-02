@@ -18,15 +18,14 @@ class RspecReportsController < ApplicationController
   private
 
   def set_rspec_reports
-    rspec_reports = select_rspec_reports
-    @rspec_reports = paginate(rspec_reports.order('rspec_reports.id desc'),
-                              per_page: fetch_per_page)
+    rspec_reports = select_rspec_reports.order('rspec_reports.id desc')
+    @rspec_reports = paginate(rspec_reports, per_page: fetch_per_page)
   end
 
   def select_rspec_reports
     tags = fetch_tags
-    rspec_reports = tags ? RspecReport.tags(tags) : RspecReport.with_summary
-    @rspec_reports = rspec_reports.includes(:project, :report)
+    rspec_reports = RspecReport.with_summary.includes(:project, :report)
+    tags ? rspec_reports.tags(tags) : rspec_reports
   end
 
   def fetch_per_page
