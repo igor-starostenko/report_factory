@@ -68,6 +68,6 @@ class Project < ActiveRecord::Base
   end
 
   def cache_key
-    @cache_key ||= "#{project_name}/#{created_at}"
+    @cache_key ||= "#{project_name}/#{created_at.to_s(:number)}"
   end
 end
