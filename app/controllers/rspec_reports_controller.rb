@@ -5,34 +5,30 @@ class RspecReportsController < ApplicationController
   before_action :set_rspec_reports, only: %i[index]
 
   def index
-    rspec_reports = ensure_in_bounds(@rspec_reports)
-    render jsonapi: rspec_reports, status: :ok
+    render jsonapi: ensure_in_bounds(@rspec_reports), status: :ok
   end
 
   def show
-    @rspec_report = RspecReport.includes(examples: :exception)
-                               .find(params.fetch(:id))
+    @rspec_report = RspecReport.with_exceptions.find(params.fetch(:id))
     render jsonapi: @rspec_report, status: :ok
   end
 
   private
 
   def set_rspec_reports
-    rspec_reports = select_rspec_reports.order('rspec_reports.id desc')
-    @rspec_reports = paginate(rspec_reports, per_page: fetch_per_page)
+    @rspec_reports = paginate(select_rspec_reports, per_page: per_page)
   end
 
   def select_rspec_reports
-    tags = fetch_tags
-    rspec_reports = RspecReport.with_summary.includes(:project, :report)
+    rspec_reports = RspecReport.all_details
     tags ? rspec_reports.tags(tags) : rspec_reports
   end
 
-  def fetch_per_page
-    params.fetch(:per_page, 30)
+  def per_page
+    @par_page ||= params.fetch(:per_page, 30)
   end
 
-  def fetch_tags
-    params[:tags]&.map(&:downcase)
+  def tags
+    @tags ||= params[:tags]&.map(&:downcase)
   end
 end

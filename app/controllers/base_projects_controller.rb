@@ -11,6 +11,6 @@ class BaseProjectsController < ApplicationController
   end
 
   def project_name
-    params.fetch(:project_name)
+    @project_name ||= params.fetch(:project_name)
   end
 end

@@ -2,6 +2,7 @@
 
 # Provides logic and interface for Project Rspec Reports API
 class ProjectRspecReportsController < BaseProjectsController
+  before_action :search_tags, only: %i[index]
   before_action :set_project
 
   REPORT_ATTRIBUTES = { tags: [] }.freeze
@@ -18,10 +19,7 @@ class ProjectRspecReportsController < BaseProjectsController
   }.freeze
 
   def index
-    per_page = params.fetch(:per_page, 30)
-    search_tags(per_page: per_page, tags: params[:tags]&.map(&:downcase))
-    @rspec_reports = ensure_in_bounds(@rspec_reports)
-    render jsonapi: @rspec_reports, status: :ok
+    render jsonapi: ensure_in_bounds(@rspec_reports), status: :ok
   end
 
   def show
@@ -42,18 +40,18 @@ class ProjectRspecReportsController < BaseProjectsController
 
   private
 
-  def search_tags(per_page:, tags: nil)
+  def search_tags
     reports = tags ? reports_by_tags(tags) : all_reports
     reports_desc = reports.order('rspec_reports.id desc')
     @rspec_reports = paginate(reports_desc, per_page: per_page)
   end
 
   def reports_by_tags(tags)
-    RspecReport.tags_by_project(@project.project_name, tags)
+    RspecReport.all_details.tags_by_project(@project.project_name, tags)
   end
 
   def all_reports
-    RspecReport.by_project(@project.project_name).includes(:report)
+    RspecReport.all_details.by_project(@project.project_name).includes(:report)
   end
 
   def valid_report?
@@ -99,5 +97,13 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def render_bad_report
     render json: { error: 'Bad report' }, status: :bad_request
+  end
+
+  def per_page
+    @per_page ||= params.fetch(:per_page, 30)
+  end
+
+  def tags
+    @tags ||= params[:tags]&.map(&:downcase)
   end
 end
