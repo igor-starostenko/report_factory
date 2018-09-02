@@ -93,13 +93,13 @@ RSpec.describe 'GraphQL', :graphql,
       projects = parse_json_type(response.body, 'projects')
       expect(projects.size).to be_positive
       expect(projects.first).to match_json_object(
-        id: project.id.to_s,
+        id: project.id,
         project_name: project.project_name,
         created_at: project.created_at.to_s,
         updated_at: project.updated_at.to_s
       )
       expect(projects.first['reports'].first).to match_json_object(
-        id: report.id.to_s,
+        id: report.id,
         project_id: report.project_id.to_s,
         reportable_id: report.reportable_id.to_s,
         reportable_type: report.reportable_type,
@@ -156,13 +156,13 @@ RSpec.describe 'GraphQL', :graphql,
       expect(response.status).to eq(200)
       actual_project = parse_json_type(response.body, 'project')
       expect(actual_project).to match_json_object(
-        id: project.id.to_s,
+        id: project.id,
         project_name: project.project_name,
         created_at: project.created_at.to_s,
         updated_at: project.updated_at.to_s
       )
       expect(actual_project['reports'].first).to match_json_object(
-        id: report.id.to_s,
+        id: report.id,
         project_id: report.project_id.to_s,
         reportable_id: report.reportable_id.to_s,
         reportable_type: report.reportable_type,
