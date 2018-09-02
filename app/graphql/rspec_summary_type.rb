@@ -2,8 +2,8 @@
 
 RspecSummaryType = GraphQL::ObjectType.define do
   name 'RspecSummary'
-  description 'Summary of an Rspec Report'
-  field :id, !types.ID
+  description 'Summary of an RspecReport'
+  field :id, !types.Int
   field :rspec_report_id, !types.Int
   field :duration, !types.Float
   field :example_count, !types.Int

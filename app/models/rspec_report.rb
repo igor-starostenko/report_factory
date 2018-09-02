@@ -3,8 +3,6 @@
 # DB model that represents an RSpec tests
 # report submitted for a project
 class RspecReport < ActiveRecord::Base
-  # alias_attribute :tests, :examples
-
   has_one :report, as: :reportable
   has_one :project, through: :report
   has_many :examples, class_name: 'RspecExample', dependent: :destroy
@@ -14,6 +12,9 @@ class RspecReport < ActiveRecord::Base
   scope :with_summary, lambda {
     eager_load([{ examples: :exception }, :summary])
       .where.not('rspec_summaries.id is null')
+  }
+  scope :all_details, lambda {
+    with_summary.includes(:project, :report).order(id: :desc)
   }
   scope :by_project, lambda { |project|
     with_summary.includes(:project).where('projects.project_name = ?', project)
