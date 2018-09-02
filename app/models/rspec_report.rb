@@ -9,24 +9,35 @@ class RspecReport < ActiveRecord::Base
   has_one :summary, class_name: 'RspecSummary', dependent: :destroy
   accepts_nested_attributes_for :summary, :examples
 
+  scope :prepare, lambda {
+    includes(:project, :report).order(id: :desc)
+  }
+  scope :with_exceptions, lambda {
+    eager_load(examples: :exception)
+  }
   scope :with_summary, lambda {
-    eager_load([{ examples: :exception }, :summary])
-      .where.not('rspec_summaries.id is null')
+    eager_load(:summary).where.not('rspec_summaries.id is null')
+  }
+  scope :for_connection, lambda {
+    prepare.with_summary.eager_load(:examples)
+  }
+  scope :for_connection, lambda {
+    prepare.with_summary.eager_load(:examples)
   }
   scope :all_details, lambda {
-    with_summary.includes(:project, :report).order(id: :desc)
+    prepare.with_summary.with_exceptions
   }
   scope :by_project, lambda { |project|
-    with_summary.includes(:project).where('projects.project_name = ?', project)
+    where('projects.project_name = ?', project)
   }
   scope :tags, lambda { |tag|
-    with_summary.includes(:report).where('reports.tags @> ARRAY[?]', tag)
+    where('reports.tags @> ARRAY[?]', tag)
   }
   scope :tags_by_project, lambda { |project, tag|
-    by_project(project).includes(:report).where('reports.tags @> ARRAY[?]', tag)
+    by_project(project).where('reports.tags @> ARRAY[?]', tag)
   }
   scope :scenarios, lambda {
-    with_summary.pluck('rspec_examples.full_description').uniq
+    pluck('rspec_examples.full_description').uniq
   }
   scope :scenarios_by_project, lambda { |project|
     by_project(project).pluck('rspec_examples.full_description').uniq

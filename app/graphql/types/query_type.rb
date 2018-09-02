@@ -23,19 +23,19 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
-  field :reports, !types[!ReportType] do
-    description 'All Reports'
+  connection :reports_connection, !ReportType.connection_type do
+    description 'Reports Pagination'
 
     resolve lambda { |_obj, _args, _context|
       Report.order(id: :desc)
     }
   end
 
-  field :rspec_reports, !types[!RspecReportType] do
-    description 'All Rspec Reports'
+  connection :rspec_reports_connection, !RspecReportType.connection_type do
+    description 'Rspec Reports Pagination'
 
     resolve lambda { |_obj, _args, _context|
-      RspecReport.all_details
+      RspecReport.for_connection
     }
   end
 
