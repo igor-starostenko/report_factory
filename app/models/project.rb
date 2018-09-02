@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
   }
 
   def cached_reports
-    old_reports = Rails.cache.fetch("#{cache_key}/reports") { reports }.sort_by(&:id)
+    old_reports = fetch_from_cache(:reports).sort_by(&:id)
     new_reports = reports.updated_since(old_reports.last&.updated_at)
     return old_reports if new_reports.empty?
     all_reports = (new_reports + old_reports)
@@ -37,10 +37,10 @@ class Project < ActiveRecord::Base
   end
 
   def cached_scenarios
-    old_scenarios = Rails.cache.fetch("#{cache_key}/scenarios") { scenarios }
+    old_scenarios = fetch_from_cache(:scenarios)
     new_scenarios = scenarios_from(old_scenarios.first&.report&.updated_at)
     return old_scenarios if new_scenarios.empty?
-    all_scenarios = merge_scenarios(new_scenarios, old_scenarios)
+    all_scenarios = (new_scenarios + old_scenarios).uniq(&:full_description)
     Rails.cache.write("#{cache_key}/scenarios", all_scenarios)
     all_scenarios
   end
@@ -63,11 +63,11 @@ class Project < ActiveRecord::Base
     project_name&.tr(' ', '-')
   end
 
-  def cache_key
-    @cache_key ||= "#{project_name}/#{created_at}"
+  def fetch_from_cache(relative)
+    Rails.cache.fetch("#{cache_key}/#{relative}") { __send__(relative) }
   end
 
-  def merge_scenarios(new_scenarios, old_scenarios)
-    (new_scenarios + old_scenarios).uniq { |scenario| scenario.full_description }
+  def cache_key
+    @cache_key ||= "#{project_name}/#{created_at}"
   end
 end

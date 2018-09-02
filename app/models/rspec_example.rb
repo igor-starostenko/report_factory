@@ -31,7 +31,7 @@ class RspecExample < ActiveRecord::Base
   end
 
   scope :updated_since, lambda { |date|
-    where('updated_at > ?', date || DateTime.new)
+    where('updated_at > ?', date || Time.at(0))
   }
 
   scope :project_scenarios, lambda {
