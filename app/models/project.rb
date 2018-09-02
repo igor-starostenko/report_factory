@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :reports, dependent: :destroy
   has_many :rspec_reports, through: :reports,
                            source: :reportable,
+                           class_name: 'RspecReport',
                            source_type: 'RspecReport',
                            dependent: :destroy
   has_many :rspec_examples, through: :rspec_reports,
@@ -27,29 +28,29 @@ class Project < ActiveRecord::Base
   }
 
   def cached_reports
-    old_reports = Rails.cache.fetch("#{project_name}/reports") { reports }.sort_by(&:id)
-    new_reports = reports.where('updated_at > ?', old_reports.last&.updated_at)
+    old_reports = Rails.cache.fetch("#{cache_key}/reports") { reports }.sort_by(&:id)
+    new_reports = reports.updated_since(old_reports.last&.updated_at)
     return old_reports if new_reports.empty?
     all_reports = (new_reports + old_reports)
-    Rails.cache.write("#{project_name}/reports", all_reports)
+    Rails.cache.write("#{cache_key}/reports", all_reports)
     all_reports
   end
 
   def cached_scenarios
-    old_scenarios = Rails.cache.fetch("#{project_name}/scenarios") { scenarios }
+    old_scenarios = Rails.cache.fetch("#{cache_key}/scenarios") { scenarios }
     new_scenarios = scenarios_from(old_scenarios.first&.report&.updated_at)
     return old_scenarios if new_scenarios.empty?
     all_scenarios = merge_scenarios(new_scenarios, old_scenarios)
-    Rails.cache.write("#{project_name}/scenarios", all_scenarios)
+    Rails.cache.write("#{cache_key}/scenarios", all_scenarios)
     all_scenarios
   end
 
   def scenarios
-    filter_scenarios(rspec_examples)
+    rspec_examples.project_scenarios
   end
 
   def scenarios_from(date)
-    filter_scenarios(rspec_examples.where('updated_at > ?', date))
+    rspec_examples.updated_since(date).project_scenarios
   end
 
   private
@@ -62,10 +63,8 @@ class Project < ActiveRecord::Base
     project_name&.tr(' ', '-')
   end
 
-  def filter_scenarios(examples)
-    examples.select('DISTINCT ON (full_description) rspec_examples.*')
-            .order(full_description: :asc, id: :desc)
-            .sort_by { |scenario| -scenario.id }
+  def cache_key
+    @cache_key ||= "#{project_name}/#{created_at}"
   end
 
   def merge_scenarios(new_scenarios, old_scenarios)

@@ -30,6 +30,16 @@ class RspecExample < ActiveRecord::Base
     status.casecmp?('pending')
   end
 
+  scope :updated_since, lambda { |date|
+    where('updated_at > ?', date || DateTime.new)
+  }
+
+  scope :project_scenarios, lambda {
+    select('DISTINCT ON (full_description) rspec_examples.*')
+      .order(full_description: :asc, id: :desc)
+      .sort_by { |scenario| -scenario.id }
+  }
+
   scope :scenarios, lambda {
     joins(report: :project)
       .select('DISTINCT ON ('\
