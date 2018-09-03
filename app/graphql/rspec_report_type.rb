@@ -15,5 +15,5 @@ RspecReportType = GraphQL::ObjectType.define do
     preload :summary
     resolve ->(obj, _args, _ctx) { obj.summary }
   end
-  field :summary_line, types.String
+  field :summaryLine, types.String, property: :summary_line
 end

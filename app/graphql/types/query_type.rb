@@ -23,7 +23,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
-  connection :reports_connection, !ReportsConnection do
+  connection :reportsConnection, !ReportsConnection do
     description 'Reports Pagination'
 
     resolve lambda { |_obj, _args, _context|
@@ -31,7 +31,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
-  connection :rspec_reports_connection, !RspecReportsConnection do
+  connection :rspecReportsConnection, !RspecReportsConnection do
     description 'Rspec Reports Pagination'
     argument :tags, types[types.String], default_value: nil
 
@@ -42,9 +42,9 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
-  field :rspec_exception, !RspecExceptionType do
+  field :rspecException, !RspecExceptionType do
     description 'Rspec Exception by Example Id'
-    argument :example_id, !types.Int
+    argument :exampleId, !types.Int
 
     resolve lambda { |_obj, args, _context|
       RspecExample.find(args.example_id).exception
