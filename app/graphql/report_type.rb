@@ -11,7 +11,7 @@ ReportType = GraphQL::ObjectType.define do
   end
   field :reportable_id, !types.String
   field :reportable_type, !types.String
-  field :reportable, !RspecReportType do
+  field :reportable, RspecReportType do
     description 'This report\'s details based on type'
     preload :reportable
     resolve ->(obj, _args, _ctx) { obj.reportable }

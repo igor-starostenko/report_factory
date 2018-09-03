@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ReportsConnection = RspecReportType.define_connection do
+ReportsConnection = ReportType.define_connection do
   name 'ReportsConnection'
 
   field :totalCount, !types.Int do

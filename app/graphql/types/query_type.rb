@@ -33,9 +33,12 @@ Types::QueryType = GraphQL::ObjectType.define do
 
   connection :rspec_reports_connection, !RspecReportsConnection do
     description 'Rspec Reports Pagination'
+    argument :tags, types[types.String], default_value: nil
 
-    resolve lambda { |_obj, _args, _context|
-      RspecReport.for_connection
+    resolve lambda { |_obj, args, _context|
+      tags = args.tags&.map(&:downcase)
+      rspec_reports = RspecReport.all_details
+      tags ? rspec_reports.tags(tags) : rspec_reports
     }
   end
 

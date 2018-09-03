@@ -9,20 +9,10 @@ class RspecReport < ActiveRecord::Base
   has_one :summary, class_name: 'RspecSummary', dependent: :destroy
   accepts_nested_attributes_for :summary, :examples
 
-  scope :prepare, lambda {
-    includes(:project, :report).order(id: :desc)
-  }
-  scope :with_exceptions, lambda {
-    eager_load(examples: :exception)
-  }
-  scope :with_summary, lambda {
-    eager_load(:summary).where.not('rspec_summaries.id is null')
-  }
-  scope :for_connection, lambda {
-    prepare.with_summary.eager_load(:examples)
-  }
   scope :all_details, lambda {
-    prepare.with_summary.with_exceptions
+    eager_load([{ examples: :exception }, :summary])
+      .where.not('rspec_summaries.id is null')
+      .includes(:project, :report).order(id: :desc)
   }
   scope :by_project, lambda { |project|
     where('projects.project_name = ?', project)
