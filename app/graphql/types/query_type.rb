@@ -23,7 +23,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
-  connection :reports_connection, !ReportType.connection_type do
+  connection :reports_connection, !ReportsConnection do
     description 'Reports Pagination'
 
     resolve lambda { |_obj, _args, _context|
@@ -31,7 +31,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
-  connection :rspec_reports_connection, !RspecReportType.connection_type do
+  connection :rspec_reports_connection, !RspecReportsConnection do
     description 'Rspec Reports Pagination'
 
     resolve lambda { |_obj, _args, _context|

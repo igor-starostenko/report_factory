@@ -21,9 +21,6 @@ class RspecReport < ActiveRecord::Base
   scope :for_connection, lambda {
     prepare.with_summary.eager_load(:examples)
   }
-  scope :for_connection, lambda {
-    prepare.with_summary.eager_load(:examples)
-  }
   scope :all_details, lambda {
     prepare.with_summary.with_exceptions
   }

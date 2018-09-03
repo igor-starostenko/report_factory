@@ -25,7 +25,7 @@ class RspecReportsController < ApplicationController
   end
 
   def per_page
-    @par_page ||= params.fetch(:per_page, 30)
+    @per_page ||= params.fetch(:per_page, 30)
   end
 
   def tags

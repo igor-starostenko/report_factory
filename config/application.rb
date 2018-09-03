@@ -23,6 +23,7 @@ module ReportFactory
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
+    config.autoload_paths << Rails.root.join('app/graphql/connections')
     if ENV['RAILS_ENV'] == 'production'
       # Custom logger which logs to STDOUT.
       # Docker expects your application to log to STDOUT/STDERR and to be ran
