@@ -8,8 +8,7 @@ UserType = GraphQL::ObjectType.define do
   field :email, !types.String
   field :reports, !types[!ReportType] do
     description 'This user\'s reports'
-    preload :reports
-    resolve ->(obj, _args, _ctx) { obj.reports }
+    resolve ->(obj, _args, _ctx) { obj.cached_reports }
   end
   field :createdAt, !types.String, property: :created_at 
   field :updatedAt, !types.String, property: :updated_at

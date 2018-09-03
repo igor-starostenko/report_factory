@@ -11,7 +11,6 @@ class UserReportsController < BaseUsersController
   private
 
   def set_user_reports
-    @user_reports = UserReport.where(user_id: @user.id)
-                              .includes([:user, report: [:project]])
+    @user_reports = @user.user_reports.with_project
   end
 end

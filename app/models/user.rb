@@ -28,6 +28,15 @@ class User < ApplicationRecord
     descendants.map(&:to_s).sort
   end
 
+  def cached_reports
+    old_reports = fetch_cached_reports.sort_by(&:id)
+    new_reports = reports.updated_since(old_reports.last&.updated_at)
+    return old_reports if new_reports.empty?
+    all_reports = (new_reports + old_reports).uniq
+    Rails.cache.write("#{cache_key}/reports", all_reports)
+    all_reports
+  end
+
   private
 
   def set_api_key
@@ -36,5 +45,13 @@ class User < ApplicationRecord
 
   def generate_api_key
     SecureRandom.uuid
+  end
+
+  def fetch_cached_reports
+    Rails.cache.fetch("#{cache_key}/reports") { reports }
+  end
+
+  def cache_key
+    @cache_key ||= "#{name}/#{created_at.to_s(:number)}"
   end
 end

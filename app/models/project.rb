@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
     old_reports = fetch_from_cache(:reports).sort_by(&:id)
     new_reports = reports.updated_since(old_reports.last&.updated_at)
     return old_reports if new_reports.empty?
-    all_reports = (new_reports + old_reports)
+    all_reports = (new_reports + old_reports).uniq
     Rails.cache.write("#{cache_key}/reports", all_reports)
     all_reports
   end
