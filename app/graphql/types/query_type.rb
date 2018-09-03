@@ -46,7 +46,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     description 'All Scenarios'
 
     resolve lambda { |_obj, _args, _context|
-      RspecExample.scenarios
+      RspecExample.cached_scenarios
     }
   end
 

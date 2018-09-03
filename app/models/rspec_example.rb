@@ -30,6 +30,16 @@ class RspecExample < ActiveRecord::Base
     status.casecmp?('pending')
   end
 
+  def self.cached_scenarios
+    old_scenarios = Rails.cache.fetch('all_scenarios') { scenarios }
+    last_updated = old_scenarios.first&.report&.updated_at
+    new_scenarios = joins(:report).updated_since(last_updated)
+    return old_scenarios if new_scenarios.empty?
+    all_scenarios = (new_scenarios + old_scenarios).uniq(&:full_description)
+    Rails.cache.write('all_scenarios', all_scenarios)
+    all_scenarios
+  end
+
   scope :updated_since, lambda { |date|
     where('updated_at > ?', date || Time.at(0))
   }
