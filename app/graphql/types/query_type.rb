@@ -16,7 +16,7 @@ Types::QueryType = GraphQL::ObjectType.define do
 
   field :project, !ProjectType do
     description 'Find a Project by projectName'
-    argument :project_name, !types.String
+    argument :projectName, !types.String
 
     resolve lambda { |_obj, args, _context|
       Project.by_name(args.project_name)
@@ -53,8 +53,8 @@ Types::QueryType = GraphQL::ObjectType.define do
   field :scenario, !ScenarioDetailsType do
     description 'Statistics of all Scenario runs'
 
-    argument :scenario_name, !types.String
-    argument :project_name, !types.String
+    argument :scenarioName, !types.String
+    argument :projectName, !types.String
 
     resolve lambda { |_obj, args, _context|
       Project.by_name(args.project_name)

@@ -4,13 +4,13 @@ ReportType = GraphQL::ObjectType.define do
   name 'Report'
   description 'Reports of a Project'
   field :id, !types.Int
-  field :project_id, !types.String
-  field :project_name, !types.String do
+  field :projectId, !types.String, property: :project_id
+  field :projectName, !types.String do
     preload :project
     resolve ->(obj, _args, _ctx) { obj.project.project_name }
   end
-  field :reportable_id, !types.String
-  field :reportable_type, !types.String
+  field :reportableId, !types.String, property: :reportable_id
+  field :reportableType, !types.String, property: :reportable_type
   field :reportable, RspecReportType do
     description 'This report\'s details based on type'
     preload :reportable
@@ -18,6 +18,6 @@ ReportType = GraphQL::ObjectType.define do
   end
   field :status, !types.String
   field :tags, !types[!types.String]
-  field :created_at, !types.String
-  field :updated_at, !types.String
+  field :createdAt, !types.String, property: :created_at
+  field :updatedAt, !types.String, property: :updated_at
 end
