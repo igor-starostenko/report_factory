@@ -6,6 +6,6 @@ class UserReport < ApplicationRecord
   belongs_to :report
 
   scope :rspec, lambda {
-    joins([:report]).where('reports.reportable_type' => 'RspecReport')
+    joins(:report).where('reports.reportable_type' => 'RspecReport')
   }
 end
