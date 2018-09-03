@@ -62,4 +62,21 @@ Types::QueryType = GraphQL::ObjectType.define do
              .where(full_description: args.scenario_name)
     }
   end
+
+  field :users, !types[!UserType] do
+    description 'All Users'
+
+    resolve lambda { |_obj, _args, _context|
+      User.all
+    }
+  end
+
+  field :user, !UserType do
+    description 'User'
+    argument :id, !types.Int
+
+    resolve lambda { |_obj, args, _context|
+      User.find(args.id)
+    }
+  end
 end
