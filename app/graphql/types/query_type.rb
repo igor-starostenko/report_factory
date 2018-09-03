@@ -42,15 +42,6 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
-  field :rspecException, !RspecExceptionType do
-    description 'Rspec Exception by Example Id'
-    argument :exampleId, !types.Int
-
-    resolve lambda { |_obj, args, _context|
-      RspecExample.find(args.example_id).exception
-    }
-  end
-
   field :scenarios, !types[!ScenarioType] do
     description 'All Scenarios'
 
