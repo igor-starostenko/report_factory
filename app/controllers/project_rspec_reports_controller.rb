@@ -2,8 +2,8 @@
 
 # Provides logic and interface for Project Rspec Reports API
 class ProjectRspecReportsController < BaseProjectsController
-  before_action :search_tags, only: %i[index]
   before_action :set_project
+  before_action :search_tags, only: %i[index]
 
   REPORT_ATTRIBUTES = { tags: [] }.freeze
   RSPEC_REPORT_ATTRIBUTES = %i[version summary_line].freeze

@@ -9,7 +9,7 @@ class RspecReportsController < ApplicationController
   end
 
   def show
-    @rspec_report = RspecReport.with_exceptions.find(params.fetch(:id))
+    @rspec_report = RspecReport.all_details.find(params.fetch(:id))
     render jsonapi: @rspec_report, status: :ok
   end
 

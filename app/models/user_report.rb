@@ -7,7 +7,7 @@ class UserReport < ApplicationRecord
 
   scope :rspec, lambda {
     joins(:report).where('reports.reportable_type' => 'RspecReport')
-  } 
+  }
 
   scope :with_project, lambda {
     eager_load(report: :project)

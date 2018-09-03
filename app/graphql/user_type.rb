@@ -10,6 +10,6 @@ UserType = GraphQL::ObjectType.define do
     description 'This user\'s reports'
     resolve ->(obj, _args, _ctx) { obj.cached_reports }
   end
-  field :createdAt, !types.String, property: :created_at 
+  field :createdAt, !types.String, property: :created_at
   field :updatedAt, !types.String, property: :updated_at
 end
