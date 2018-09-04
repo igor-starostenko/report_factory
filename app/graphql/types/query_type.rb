@@ -37,7 +37,7 @@ Types::QueryType = GraphQL::ObjectType.define do
 
     resolve lambda { |_obj, args, _context|
       tags = args.tags&.map(&:downcase)
-      rspec_reports = RspecReport.all_details
+      rspec_reports = RspecReport.query_details
       tags ? rspec_reports.tags(tags) : rspec_reports
     }
   end
