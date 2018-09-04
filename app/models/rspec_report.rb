@@ -9,10 +9,9 @@ class RspecReport < ActiveRecord::Base
   has_one :summary, class_name: 'RspecSummary', dependent: :destroy
   accepts_nested_attributes_for :summary, :examples
 
-  scope :query_details, lambda {
-    joins([{ examples: :exception }, :summary])
-      .where.not('rspec_summaries.id is null')
-      .order(id: :desc)
+  scope :with_summary, lambda {
+    joins(:summary).where.not('rspec_summaries.id is null')
+      .includes(:project, :report).order(id: :desc)
   }
   scope :all_details, lambda {
     eager_load([{ examples: :exception }, :summary])
