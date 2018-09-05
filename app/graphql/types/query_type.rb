@@ -25,20 +25,26 @@ Types::QueryType = GraphQL::ObjectType.define do
 
   connection :reportsConnection, !ReportsConnection do
     description 'Reports Pagination'
+    argument :tags, types[types.String], default_value: nil
 
     resolve lambda { |_obj, _args, _context|
-      Report.order(id: :desc)
+      tags = args.tags&.map(&:downcase)
+      reports = Report.order(id: :desc)
+      tags.blank? ? reports : reports.tags(tags)
     }
   end
 
   connection :rspecReportsConnection, !RspecReportsConnection do
     description 'Rspec Reports Pagination'
+    argument :projectName, types.String, default_value: nil
     argument :tags, types[types.String], default_value: nil
 
     resolve lambda { |_obj, args, _context|
+      project_name = args.projectName
       tags = args.tags&.map(&:downcase)
       rspec_reports = RspecReport.with_summary
-      tags ? rspec_reports.tags(tags) : rspec_reports
+      rspec_reports = rspec_reports.by_project(project_name) if project_name
+      tags.blank? ? rspec_reports : rspec_reports.tags(tags)
     }
   end
 

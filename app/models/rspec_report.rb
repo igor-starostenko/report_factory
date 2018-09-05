@@ -10,7 +10,7 @@ class RspecReport < ActiveRecord::Base
   accepts_nested_attributes_for :summary, :examples
 
   scope :with_summary, lambda {
-    joins(:summary).where.not('rspec_summaries.id is null')
+    eager_load(:summary).where.not('rspec_summaries.id is null')
       .includes(:project, :report).order(id: :desc)
   }
   scope :all_details, lambda {
