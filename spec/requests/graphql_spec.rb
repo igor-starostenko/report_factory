@@ -102,7 +102,7 @@ RSpec.describe 'GraphQL', :graphql,
         id: report.id,
         projectId: report.project_id.to_s,
         reportableId: report.reportable_id.to_s,
-        reportableType: report.reportable_type,
+        reportableType: 'Rspec',
         status: report.status,
         tags: report.tags
       )
@@ -165,7 +165,7 @@ RSpec.describe 'GraphQL', :graphql,
         id: report.id,
         projectId: report.project_id.to_s,
         reportableId: report.reportable_id.to_s,
-        reportableType: report.reportable_type,
+        reportableType: 'Rspec',
         status: report.status,
         tags: report.tags
       )

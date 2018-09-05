@@ -11,7 +11,7 @@ class RspecReport < ActiveRecord::Base
 
   scope :with_summary, lambda {
     eager_load(:summary).where.not('rspec_summaries.id is null')
-      .includes(:project, :report).order(id: :desc)
+                        .includes(:project, :report).order(id: :desc)
   }
   scope :all_details, lambda {
     eager_load([{ examples: :exception }, :summary])

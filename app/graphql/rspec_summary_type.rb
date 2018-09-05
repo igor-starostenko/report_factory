@@ -10,5 +10,5 @@ RspecSummaryType = GraphQL::ObjectType.define do
   field :failureCount, !types.Int, property: :failure_count
   field :pendingCount, !types.Int, property: :pending_count
   field :errorsOutsideOfExamplesCount, !types.Int,
-    property: :errors_outside_of_examples_count
+        property: :errors_outside_of_examples_count
 end
