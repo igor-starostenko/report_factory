@@ -6,6 +6,14 @@ class UserReport < ApplicationRecord
   belongs_to :report
 
   scope :rspec, lambda {
-    joins([:report]).where('reports.reportable_type' => 'RspecReport')
+    joins(:report).where('reports.reportable_type' => 'RspecReport')
+  }
+
+  scope :with_project, lambda {
+    eager_load(report: :project)
+  }
+
+  scope :updated_since, lambda { |date|
+    joins(:report).where('updated_at > ?', date || Time.at(0))
   }
 end

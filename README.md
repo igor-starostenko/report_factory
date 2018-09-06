@@ -1,8 +1,11 @@
 # Report Factory
 
+[![Build Status](https://travis-ci.org/igor-starostenko/report_factory.svg?branch=master)](https://travis-ci.org/igor-starostenko/report_factory)
+
 *Report Factory* is a storage for your test reports with intuitive API to manage all your projects test results.
 
 The provided API are based on the [JSON API](http://jsonapi.org) convention.
+Currently migrating to [GraphQL](https://graphql.org).
 
 ## Getting Started
 

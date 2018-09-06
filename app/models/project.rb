@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :reports, dependent: :destroy
   has_many :rspec_reports, through: :reports,
                            source: :reportable,
+                           class_name: 'RspecReport',
                            source_type: 'RspecReport',
                            dependent: :destroy
   has_many :rspec_examples, through: :rspec_reports,
@@ -26,10 +27,30 @@ class Project < ActiveRecord::Base
     find_by('lower(project_name) = ?', project_name.downcase)
   }
 
+  def cached_reports
+    old_reports = fetch_from_cache(:reports).sort_by(&:id)
+    new_reports = reports.updated_since(old_reports.last&.updated_at)
+    return old_reports if new_reports.empty?
+    all_reports = (new_reports + old_reports).uniq
+    Rails.cache.write("#{cache_key}/reports", all_reports)
+    all_reports
+  end
+
+  def cached_scenarios
+    old_scenarios = fetch_from_cache(:scenarios)
+    new_scenarios = scenarios_from(old_scenarios.first&.report&.updated_at)
+    return old_scenarios if new_scenarios.empty?
+    all_scenarios = (new_scenarios + old_scenarios).uniq(&:full_description)
+    Rails.cache.write("#{cache_key}/scenarios", all_scenarios)
+    all_scenarios
+  end
+
   def scenarios
-    rspec_examples.select('DISTINCT ON (full_description) rspec_examples.*')
-                  .order(full_description: :asc, id: :desc)
-                  .sort_by { |scenario| -scenario.id }
+    rspec_examples.project_scenarios
+  end
+
+  def scenarios_from(date)
+    rspec_examples.updated_since(date).project_scenarios
   end
 
   private
@@ -40,5 +61,13 @@ class Project < ActiveRecord::Base
 
   def format_project_name
     project_name&.tr(' ', '-')
+  end
+
+  def fetch_from_cache(relative)
+    Rails.cache.fetch("#{cache_key}/#{relative}") { __send__(relative) }
+  end
+
+  def cache_key
+    @cache_key ||= "#{project_name}/#{created_at.to_s(:number)}"
   end
 end

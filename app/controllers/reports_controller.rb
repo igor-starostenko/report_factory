@@ -2,12 +2,10 @@
 
 # Provides logic and interface for Reports API
 class ReportsController < ApplicationController
+  before_action :search_tags, only: %i[index]
+
   def index
-    per_page = params.fetch(:per_page, 30)
-    search_tags(per_page: per_page,
-                tags: params[:tags]&.map(&:downcase))
-    @reports = ensure_in_bounds(@reports)
-    render jsonapi: @reports, status: :ok
+    render jsonapi: ensure_in_bounds(@reports), status: :ok
   end
 
   def show
@@ -17,9 +15,17 @@ class ReportsController < ApplicationController
 
   private
 
-  def search_tags(per_page:, tags: nil)
+  def search_tags
     reports = tags ? Report.tags(tags) : Report.all
     @reports = paginate(reports.order('id desc'),
                         per_page: per_page)
+  end
+
+  def per_page
+    @per_page ||= params.fetch(:per_page, 30)
+  end
+
+  def tags
+    @tags ||= params[:tags]&.map(&:downcase)
   end
 end

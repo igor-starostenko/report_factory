@@ -6,41 +6,41 @@ ScenarioDetailsType = GraphQL::ObjectType.define do
   field :name, !types.String do
     resolve ->(obj, _args, _context) { obj.last.full_description }
   end
-  field :project_name, !types.String do
+  field :projectName, !types.String do
     resolve lambda { |obj, _args, _context|
       obj.last.report.project.project_name
     }
   end
-  field :last_status, !types.String do
+  field :lastStatus, !types.String do
     resolve ->(obj, _args, _context) { obj.last.status }
   end
-  field :last_run, !types.String do
+  field :lastRun, !types.String do
     resolve ->(obj, _args, _context) { obj.last.report.created_at }
   end
-  field :last_passed, types.String do
+  field :lastPassed, types.String do
     resolve lambda { |obj, _args, _context|
       ScenarioSerializers.last_status(obj, 'passed')
     }
   end
-  field :last_failed, types.String do
+  field :lastFailed, types.String do
     resolve lambda { |obj, _args, _context|
       ScenarioSerializers.last_status(obj, 'failed')
     }
   end
-  field :total_runs, !types.Int do
+  field :totalRuns, !types.Int do
     resolve ->(obj, _args, _context) { obj&.size || 0 }
   end
-  field :total_passed, !types.Int do
+  field :totalPassed, !types.Int do
     resolve lambda { |obj, _args, _context|
       ScenarioSerializers.count_status(obj, 'passed')
     }
   end
-  field :total_failed, !types.Int do
+  field :totalFailed, !types.Int do
     resolve lambda { |obj, _args, _context|
       ScenarioSerializers.count_status(obj, 'failed')
     }
   end
-  field :total_pending, !types.Int do
+  field :totalPending, !types.Int do
     resolve lambda { |obj, _args, _context|
       ScenarioSerializers.count_status(obj, 'pending')
     }

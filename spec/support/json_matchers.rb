@@ -22,8 +22,8 @@ end
 
 RSpec::Matchers.define :match_json_object do |hash|
   match do |actual|
-    hash.each do |attribute, value|
-      parsed_actual = actual.fetch(attribute.to_s)
+    hash.with_indifferent_access.each do |attribute, value|
+      parsed_actual = actual.fetch(attribute)
       expect(parsed_actual).to eq(value)
     end
   end
