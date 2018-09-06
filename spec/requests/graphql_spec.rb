@@ -49,6 +49,7 @@ RSpec.describe 'GraphQL', :graphql,
   let(:tester) { Tester.first }
   let(:project) { Project.first }
   let(:report) { Report.last }
+  let(:rspec_report) { RspecReport.last }
   let(:scenario) { RspecExample.last }
   let(:summary) { RspecSummary.last }
 
@@ -182,7 +183,7 @@ RSpec.describe 'GraphQL', :graphql,
     end
   end
 
-  describe 'reports' do
+  describe 'reportsConnection' do
     let(:query) do
       <<-GRAPHQL
         {
@@ -222,11 +223,11 @@ RSpec.describe 'GraphQL', :graphql,
         'X-API-KEY' => tester.api_key
       }, params: { query: query }
       expect(response.status).to eq(200)
-      reports_connection = parse_json_type(response.body, :reportsConnection)
-      expect(reports_connection.fetch(:totalCount)).to eql(Report.all.count)
-      expect(reports_connection.fetch(:pageInfo).keys.map(&:to_sym))
+      connection = parse_json_type(response.body, :reportsConnection)
+      expect(connection.fetch(:totalCount)).to eql(Report.all.count)
+      expect(connection.fetch(:pageInfo).keys.map(&:to_sym))
         .to match(%i[startCursor endCursor hasNextPage hasPreviousPage])
-      first_report = reports_connection.fetch(:edges).first.fetch(:node)
+      first_report = connection.fetch(:edges).first.fetch(:node)
       expect(first_report).to match_json_object(
         id: report.id,
         projectName: project.project_name,
@@ -240,6 +241,71 @@ RSpec.describe 'GraphQL', :graphql,
             pendingCount: summary.pending_count,
             failureCount: summary.failure_count
           }
+        }
+      )
+    end
+  end
+
+  describe 'rspecReportsConnection' do
+    let(:query) do
+      <<-GRAPHQL
+        {
+          rspecReportsConnection(projectName: "#{project.project_name}") {
+            totalCount
+            pageInfo {
+              startCursor
+              endCursor
+              hasNextPage
+              hasPreviousPage
+            }
+            edges {
+              cursor
+              node {
+                id
+                version
+                summaryLine
+                report {
+                  projectName
+                  reportableType
+                  createdAt
+                }
+                summary {
+                  duration
+                  exampleCount
+                  pendingCount
+                  failureCount
+                }
+              }
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'gets all available attributes' do
+      post '/graphql', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: { query: query }
+      expect(response.status).to eq(200)
+      connection = parse_json_type(response.body, :rspecReportsConnection)
+      expect(connection.fetch(:totalCount)).to eql(RspecReport.count)
+      expect(connection.fetch(:pageInfo).keys.map(&:to_sym))
+        .to match(%i[startCursor endCursor hasNextPage hasPreviousPage])
+      first_report = connection.fetch(:edges).first.fetch(:node)
+      expect(first_report).to match_json_object(
+        id: rspec_report.id,
+        version: rspec_report.version,
+        summaryLine: rspec_report.summary_line,
+        report: {
+          projectName: project.project_name,
+          reportableType: 'Rspec',
+          createdAt: report.created_at.to_s,
+        },
+        summary: {
+          duration: summary.duration,
+          exampleCount: summary.example_count,
+          pendingCount: summary.pending_count,
+          failureCount: summary.failure_count
         }
       )
     end
