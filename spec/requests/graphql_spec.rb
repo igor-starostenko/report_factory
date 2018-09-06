@@ -13,12 +13,15 @@ RSpec.describe 'GraphQL', :graphql,
     rspec_report = FactoryBot.create(:rspec_report,
                                      version: '1.0.0',
                                      summary_line: '2 examples, 1 failures')
-    FactoryBot.create(:report,
-                      project_id: project.id,
-                      tags: %w[High Full],
-                      reportable_type: RspecReport,
-                      reportable_id: rspec_report.id,
-                      status: 'failed')
+    report = FactoryBot.create(:report,
+                               project_id: project.id,
+                               tags: %w[High Full],
+                               reportable_type: RspecReport,
+                               reportable_id: rspec_report.id,
+                               status: 'failed')
+    FactoryBot.create(:user_report,
+                      user_id: tester.id,
+                      report_id: report.id)
     FactoryBot.create(:rspec_summary,
                       rspec_report_id: rspec_report.id,
                       duration: 0.054,
@@ -382,6 +385,77 @@ RSpec.describe 'GraphQL', :graphql,
         totalPassed: 0,
         totalFailed: 1,
         totalPending: 0
+      )
+    end
+  end
+
+  describe 'users' do
+    let(:query) do
+      <<-GRAPHQL
+        {
+          users {
+            id
+            email
+            name
+            reports {
+              projectName
+              createdAt
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'gets all available attributes' do
+      post '/graphql', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: { query: query }
+      expect(response.status).to eq(200)
+      users = parse_json_type(response.body, :users)
+      expect(users.size).to be_positive
+      expect(users.first).to match_json_object(
+        id: tester.id,
+        email: tester.email,
+        name: tester.name,
+        reports: [{
+          projectName: project.project_name,
+          createdAt: report.created_at.to_s,
+        }]
+      )
+    end
+  end
+
+  describe 'user' do
+    let(:query) do
+      <<-GRAPHQL
+        {
+          user(id: #{tester.id}) {
+            id
+            email
+            name
+            reports {
+              projectName
+              createdAt
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'gets all available attributes' do
+      post '/graphql', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: { query: query }
+      expect(response.status).to eq(200)
+      user = parse_json_type(response.body, :user)
+      expect(user).to match_json_object(
+        id: tester.id,
+        email: tester.email,
+        name: tester.name,
+        reports: [{
+          projectName: project.project_name,
+          createdAt: report.created_at.to_s,
+        }]
       )
     end
   end
