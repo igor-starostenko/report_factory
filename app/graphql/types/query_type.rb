@@ -27,7 +27,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     description 'Reports Pagination'
     argument :tags, types[types.String], default_value: nil
 
-    resolve lambda { |_obj, _args, _context|
+    resolve lambda { |_obj, args, _context|
       tags = args.tags&.map(&:downcase)
       reports = Report.order(id: :desc)
       tags.blank? ? reports : reports.tags(tags)

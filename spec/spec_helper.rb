@@ -48,5 +48,5 @@ RSpec.configure do |config|
 end
 
 def parse_json_type(body, type)
-  JSON.parse(body).fetch('data').fetch(type)
+  JSON.parse(body).with_indifferent_access.fetch(:data).fetch(type)
 end

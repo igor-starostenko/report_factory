@@ -21,6 +21,7 @@ RSpec.describe 'GraphQL', :graphql,
                       status: 'failed')
     FactoryBot.create(:rspec_summary,
                       rspec_report_id: rspec_report.id,
+                      duration: 0.054,
                       example_count: 2,
                       failure_count: 1,
                       pending_count: 0)
@@ -49,6 +50,7 @@ RSpec.describe 'GraphQL', :graphql,
   let(:project) { Project.first }
   let(:report) { Report.last }
   let(:scenario) { RspecExample.last }
+  let(:summary) { RspecSummary.last }
 
   it 'is not authorized without X-API-KEY' do
     post '/graphql'
@@ -176,6 +178,69 @@ RSpec.describe 'GraphQL', :graphql,
         fullDescription: scenario.full_description,
         status: scenario.status,
         lineNumber: scenario.line_number
+      )
+    end
+  end
+
+  describe 'reports' do
+    let(:query) do
+      <<-GRAPHQL
+        {
+          reportsConnection(first: 10, tags: ["#{report.tags.first}"]) {
+            totalCount
+            pageInfo {
+              startCursor
+              endCursor
+              hasNextPage
+              hasPreviousPage
+            }
+            edges {
+              cursor
+              node {
+                id
+                projectName
+                status
+                reportableType
+                createdAt
+                reportable {
+                  summary {
+                    duration
+                    exampleCount
+                    pendingCount
+                    failureCount
+                  }
+                }
+              }
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'gets all available attributes' do
+      post '/graphql', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: { query: query }
+      expect(response.status).to eq(200)
+      reports_connection = parse_json_type(response.body, :reportsConnection)
+      expect(reports_connection.fetch(:totalCount)).to eql(Report.all.count)
+      expect(reports_connection.fetch(:pageInfo).keys.map(&:to_sym))
+        .to match(%i[startCursor endCursor hasNextPage hasPreviousPage])
+      first_report = reports_connection.fetch(:edges).first.fetch(:node)
+      expect(first_report).to match_json_object(
+        id: report.id,
+        projectName: project.project_name,
+        status: scenario.status,
+        reportableType: 'Rspec',
+        createdAt: report.created_at.to_s,
+        reportable: {
+          summary: {
+            duration: summary.duration,
+            exampleCount: summary.example_count,
+            pendingCount: summary.pending_count,
+            failureCount: summary.failure_count
+          }
+        }
       )
     end
   end
