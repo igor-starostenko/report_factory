@@ -96,7 +96,7 @@ RSpec.describe 'GraphQL', :graphql,
         'X-API-KEY' => tester.api_key
       }, params: { query: query }
       expect(response.status).to eq(200)
-      projects = parse_json_type(response.body, 'projects')
+      projects = parse_json_type(response.body, :projects)
       expect(projects.size).to be_positive
       expect(projects.first).to match_json_object(
         id: project.id,
@@ -104,7 +104,7 @@ RSpec.describe 'GraphQL', :graphql,
         createdAt: project.created_at.to_s,
         updatedAt: project.updated_at.to_s
       )
-      expect(projects.first['reports'].first).to match_json_object(
+      expect(projects.first[:reports].first).to match_json_object(
         id: report.id,
         projectId: report.project_id.to_s,
         reportableId: report.reportable_id.to_s,
@@ -112,7 +112,7 @@ RSpec.describe 'GraphQL', :graphql,
         status: report.status,
         tags: report.tags
       )
-      expect(projects.first['scenarios'].first).to match_json_object(
+      expect(projects.first[:scenarios].first).to match_json_object(
         projectName: project.project_name,
         specId: scenario.spec_id,
         description: scenario.description,
@@ -160,14 +160,14 @@ RSpec.describe 'GraphQL', :graphql,
         'X-API-KEY' => tester.api_key
       }, params: { query: query }
       expect(response.status).to eq(200)
-      actual_project = parse_json_type(response.body, 'project')
+      actual_project = parse_json_type(response.body, :project)
       expect(actual_project).to match_json_object(
         id: project.id,
         projectName: project.project_name,
         createdAt: project.created_at.to_s,
         updatedAt: project.updated_at.to_s
       )
-      expect(actual_project['reports'].first).to match_json_object(
+      expect(actual_project[:reports].first).to match_json_object(
         id: report.id,
         projectId: report.project_id.to_s,
         reportableId: report.reportable_id.to_s,
@@ -175,7 +175,7 @@ RSpec.describe 'GraphQL', :graphql,
         status: report.status,
         tags: report.tags
       )
-      expect(actual_project['scenarios'].first).to match_json_object(
+      expect(actual_project[:scenarios].first).to match_json_object(
         projectName: project.project_name,
         specId: scenario.spec_id,
         description: scenario.description,
@@ -302,7 +302,7 @@ RSpec.describe 'GraphQL', :graphql,
         report: {
           projectName: project.project_name,
           reportableType: 'Rspec',
-          createdAt: report.created_at.to_s,
+          createdAt: report.created_at.to_s
         },
         summary: {
           duration: summary.duration,
@@ -335,7 +335,7 @@ RSpec.describe 'GraphQL', :graphql,
         'X-API-KEY' => tester.api_key
       }, params: { query: query }
       expect(response.status).to eq(200)
-      scenarios = parse_json_type(response.body, 'scenarios')
+      scenarios = parse_json_type(response.body, :scenarios)
       expect(scenarios.size).to be_positive
       expect(scenarios.first).to match_json_object(
         projectName: project.project_name,
@@ -374,7 +374,7 @@ RSpec.describe 'GraphQL', :graphql,
         'X-API-KEY' => tester.api_key
       }, params: { query: query }
       expect(response.status).to eq(200)
-      actual_scenario = parse_json_type(response.body, 'scenario')
+      actual_scenario = parse_json_type(response.body, :scenario)
       expect(actual_scenario).to match_json_object(
         name: scenario.full_description,
         lastStatus: scenario.status,
@@ -419,7 +419,7 @@ RSpec.describe 'GraphQL', :graphql,
         name: tester.name,
         reports: [{
           projectName: project.project_name,
-          createdAt: report.created_at.to_s,
+          createdAt: report.created_at.to_s
         }]
       )
     end
@@ -454,7 +454,7 @@ RSpec.describe 'GraphQL', :graphql,
         name: tester.name,
         reports: [{
           projectName: project.project_name,
-          createdAt: report.created_at.to_s,
+          createdAt: report.created_at.to_s
         }]
       )
     end
