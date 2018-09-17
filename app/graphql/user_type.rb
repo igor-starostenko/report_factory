@@ -16,12 +16,12 @@ UserType = GraphQL::ObjectType.define do
 
     preload :reports
 
-    resolve lambda do |obj, args, _ctx|
+    resolve lambda { |obj, args, _ctx|
       time_ago = args[:lastDays]&.days&.ago
       time_ago ||= args[:lastMonths]&.months&.ago
       return obj.cached_reports unless time_ago
       obj.reports.updated_since(time_ago)
-    end
+    }
   end
   field :createdAt, !types.String, property: :created_at
   field :updatedAt, !types.String, property: :updated_at
