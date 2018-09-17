@@ -132,6 +132,7 @@ RSpec.describe 'GraphQL', :graphql,
             projectName
             createdAt
             updatedAt
+            reportsCount
             reports {
               id
               projectId
@@ -165,7 +166,8 @@ RSpec.describe 'GraphQL', :graphql,
         id: project.id,
         projectName: project.project_name,
         createdAt: project.created_at.to_s,
-        updatedAt: project.updated_at.to_s
+        updatedAt: project.updated_at.to_s,
+        reportsCount: project.reports.count
       )
       expect(actual_project[:reports].first).to match_json_object(
         id: report.id,
@@ -433,6 +435,7 @@ RSpec.describe 'GraphQL', :graphql,
             id
             email
             name
+            reportsCount
             reports {
               projectName
               createdAt
@@ -452,6 +455,7 @@ RSpec.describe 'GraphQL', :graphql,
         id: tester.id,
         email: tester.email,
         name: tester.name,
+        reportsCount: tester.reports.count,
         reports: [{
           projectName: project.project_name,
           createdAt: report.created_at.to_s
