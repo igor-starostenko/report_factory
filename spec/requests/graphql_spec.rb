@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe 'GraphQL', :graphql,
                type: :request do
   before do
+    Rails.cache.clear
     FactoryBot.create(:tester,
                       name: 'user',
                       email: 'test@mailinator.com',
