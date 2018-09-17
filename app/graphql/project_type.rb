@@ -14,7 +14,7 @@ ProjectType = GraphQL::ObjectType.define do
 
     preload :reports
 
-    resolve ->(obj, args, _ctx) do
+    resolve lambda do |obj, args, _ctx|
       time_ago = args[:lastDays]&.days&.ago
       time_ago ||= args[:lastMonths]&.months&.ago
       return obj.cached_reports unless time_ago
@@ -26,7 +26,7 @@ ProjectType = GraphQL::ObjectType.define do
     argument :lastDays, types.Int
     argument :lastMonths, types.Int
 
-    resolve ->(obj, args, _context) do
+    resolve lambda do |obj, args, _context|
       time_ago = args[:lastDays]&.days&.ago
       time_ago ||= args[:lastMonths]&.months&.ago
       return obj.cached_scenarios unless time_ago

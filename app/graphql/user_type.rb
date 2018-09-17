@@ -16,7 +16,7 @@ UserType = GraphQL::ObjectType.define do
 
     preload :reports
 
-    resolve ->(obj, args, _ctx) do
+    resolve lambda do |obj, args, _ctx|
       time_ago = args[:lastDays]&.days&.ago
       time_ago ||= args[:lastMonths]&.months&.ago
       return obj.cached_reports unless time_ago
