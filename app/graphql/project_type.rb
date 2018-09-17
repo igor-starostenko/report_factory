@@ -5,7 +5,6 @@ ProjectType = GraphQL::ObjectType.define do
   field :id, !types.Int
   field :projectName, !types.String, property: :project_name
   field :reportsCount, !types.Int do
-    preload :reports
     resolve ->(obj, _args, _ctx) { obj.reports.count }
   end
   field :reports, !types[!ReportType] do

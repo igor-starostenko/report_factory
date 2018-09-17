@@ -6,9 +6,22 @@ UserType = GraphQL::ObjectType.define do
   field :name, !types.String
   field :type, !types.String
   field :email, !types.String
+  field :reportsCount, !types.Int do
+    resolve ->(obj, _args, _ctx) { obj.reports.count }
+  end
   field :reports, !types[!ReportType] do
     description 'This user\'s reports'
-    resolve ->(obj, _args, _ctx) { obj.cached_reports }
+    argument :lastDays, types.Int
+    argument :lastMonths, types.Int
+
+    preload :reports
+
+    resolve ->(obj, args, _ctx) do
+      time_ago = args[:lastDays]&.days&.ago
+      time_ago ||= args[:lastMonths]&.months&.ago
+      return obj.cached_reports unless time_ago
+      obj.reports.updated_since(time_ago)
+    end
   end
   field :createdAt, !types.String, property: :created_at
   field :updatedAt, !types.String, property: :updated_at
