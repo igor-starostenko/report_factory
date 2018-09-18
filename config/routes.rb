@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   end
   scope '/api' do
     scope '/v1' do
+      scope '/cache' do
+        get '/clear' => 'application#cache_evict'
+      end
       get '/user' => 'users#auth'
       scope '/users' do
         get '/' => 'users#index'
