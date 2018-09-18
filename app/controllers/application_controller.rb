@@ -2,7 +2,12 @@
 
 # Main abstract class that owns common behavior
 class ApplicationController < ActionController::API
-  before_action :require_log_in, except: %i[login]
+  before_action :require_log_in, except: %i[cache_evict login]
+
+  def cache_evict
+    Rails.cache.clear
+    render json: { message: 'Cache has been cleared successfully' }, status: 200
+  end
 
   private
 
