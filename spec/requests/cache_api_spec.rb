@@ -25,7 +25,7 @@ RSpec.describe 'Application', :application, type: :request do
       let(:cache_key) { 'test_cache' }
 
       before do
-        Rails.cache.write(cache_key, { message: 'Test' })
+        Rails.cache.write(cache_key, message: 'Test')
       end
 
       it 'clears cache' do
