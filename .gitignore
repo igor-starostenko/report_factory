@@ -29,3 +29,6 @@
 
 # Ignore test results and logs
 /spec/examples.txt
+
+# Ignore coverage reports
+coverage

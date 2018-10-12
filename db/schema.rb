@@ -69,12 +69,6 @@ ActiveRecord::Schema.define(version: 2018_07_05_030940) do
     t.index ["rspec_report_id"], name: "index_rspec_summaries_on_rspec_report_id"
   end
 
-  create_table "scenarios", force: :cascade do |t|
-    t.bigint "project_id"
-    t.string "description"
-    t.index ["project_id"], name: "index_scenarios_on_project_id"
-  end
-
   create_table "user_reports", force: :cascade do |t|
     t.integer "user_id"
     t.integer "report_id"
