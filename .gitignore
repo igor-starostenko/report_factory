@@ -7,10 +7,8 @@
 # Ignore environment configuration
 .env
 
-# Ignore system files
-*.swp
+# Ignore vim files
 *.vim
-/tags
 
 # Ignore bundler config.
 /.bundle
