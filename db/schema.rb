@@ -10,10 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_05_030940) do
+ActiveRecord::Schema.define(version: 2019_01_21_231227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "mocha_reports", force: :cascade do |t|
+    t.integer "suites"
+    t.integer "total"
+    t.integer "passes"
+    t.integer "pending"
+    t.integer "failures"
+    t.integer "duration"
+    t.datetime "started"
+    t.datetime "ended"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mocha_tests", force: :cascade do |t|
+    t.bigint "mocha_report_id"
+    t.string "title"
+    t.string "full_title"
+    t.string "body"
+    t.integer "duration"
+    t.string "status"
+    t.string "speed"
+    t.string "file"
+    t.boolean "timed_out"
+    t.boolean "pending"
+    t.boolean "sync"
+    t.integer "async"
+    t.integer "current_retry"
+    t.string "err"
+    t.index ["mocha_report_id"], name: "index_mocha_tests_on_mocha_report_id"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.string "project_name"
