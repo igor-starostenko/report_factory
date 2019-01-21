@@ -38,6 +38,11 @@ Rails.application.routes.draw do
           delete '/' => 'projects#destroy'
           scope '/reports' do
             get '/' => 'project_reports#index'
+            scope '/mocha' do
+              get '/' => 'project_mocha_reports#index'
+              post '/' => 'project_mocha_reports#create'
+              get '/:id' => 'project_mocha_reports#show'
+            end
             scope '/rspec' do
               get '/' => 'project_rspec_reports#index'
               post '/' => 'project_rspec_reports#create'
