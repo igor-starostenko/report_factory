@@ -2,7 +2,7 @@
 
 # Provides logic and interface for Project Mocha Reports API
 class ProjectMochaReportsController < BaseProjectsController
-  include ProjectReportsHelper
+  include ProjectReportsHelpers
 
   before_action :set_project
   before_action :search_tags, only: %i[index]
@@ -28,7 +28,7 @@ class ProjectMochaReportsController < BaseProjectsController
   def create
     return render_bad_report unless valid_report?
     if new_mocha_report.save
-      new_report.save && new_user_report.save
+      new_report(@mocha_report).save && new_user_report.save
       render jsonapi: @mocha_report, status: :created
     else
       render jsonapi_errors: @mocha_report.errors, status: :bad_request
@@ -61,19 +61,6 @@ class ProjectMochaReportsController < BaseProjectsController
       .merge(tests_attributes: mocha_tests_attributes))
   end
 
-  def new_report
-    @report = Report.new(project_id: @project.id,
-                         reportable_type: MochaReport,
-                         status: @mocha_report.status,
-                         tags: attributes(:report).fetch(:tags, []),
-                         reportable_id: @mocha_report.id)
-  end
-
-  def new_user_report
-    @user_report = UserReport.new(user_id: @auth_user.id,
-                                  report_id: @report.id)
-  end
-
   def mocha_tests_attributes
     attributes(:test, :tests).map do |test_args|
       { 'full_title' => test_args[:fullTitle],
@@ -81,18 +68,6 @@ class ProjectMochaReportsController < BaseProjectsController
         'current_retry' => test_args[:currentRetry] }
         .merge(test_args).except('fullTile', 'timedOut', 'currentRetry')
     end
-  end
-
-  def render_bad_report
-    render json: { error: 'Bad report' }, status: :bad_request
-  end
-
-  def per_page
-    @per_page ||= params.fetch(:per_page, 30)
-  end
-
-  def tags
-    @tags ||= params[:tags]&.map(&:downcase)
   end
 end
 

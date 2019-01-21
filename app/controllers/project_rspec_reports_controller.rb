@@ -2,6 +2,8 @@
 
 # Provides logic and interface for Project Rspec Reports API
 class ProjectRspecReportsController < BaseProjectsController
+  include ProjectReportsHelpers
+
   before_action :set_project
   before_action :search_tags, only: %i[index]
 
@@ -31,7 +33,7 @@ class ProjectRspecReportsController < BaseProjectsController
   def create
     return render_bad_report unless valid_report?
     if new_rspec_report.save
-      new_report.save && new_user_report.save
+      new_report(@rspec_report).save && new_user_report.save
       render jsonapi: @rspec_report, status: :created
     else
       render jsonapi_errors: @rspec_report.errors, status: :bad_request
@@ -66,19 +68,6 @@ class ProjectRspecReportsController < BaseProjectsController
              examples_attributes: rspec_examples_attributes))
   end
 
-  def new_report
-    @report = Report.new(project_id: @project.id,
-                         reportable_type: RspecReport,
-                         status: @rspec_report.status,
-                         tags: attributes(:report).fetch(:tags, []),
-                         reportable_id: @rspec_report.id)
-  end
-
-  def new_user_report
-    @user_report = UserReport.new(user_id: @auth_user.id,
-                                  report_id: @report.id)
-  end
-
   def rspec_examples_attributes
     attributes(:example, :examples).map do |example_args|
       exception_attributes =
@@ -93,17 +82,5 @@ class ProjectRspecReportsController < BaseProjectsController
     return {} unless exception_args
     { 'classname' => exception_args[:class] }
       .merge(exception_args).except('class')
-  end
-
-  def render_bad_report
-    render json: { error: 'Bad report' }, status: :bad_request
-  end
-
-  def per_page
-    @per_page ||= params.fetch(:per_page, 30)
-  end
-
-  def tags
-    @tags ||= params[:tags]&.map(&:downcase)
   end
 end
