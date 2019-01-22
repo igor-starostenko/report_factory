@@ -57,6 +57,10 @@ Rails.application.routes.draw do
       end
       scope '/reports' do
         get '/' => 'reports#index'
+        scope '/mocha' do
+          get '/' => 'mocha_reports#index'
+          get '/:id' => 'mocha_reports#show'
+        end
         scope '/rspec' do
           get '/' => 'rspec_reports#index'
           get '/:id' => 'rspec_reports#show'
