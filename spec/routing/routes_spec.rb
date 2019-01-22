@@ -146,6 +146,36 @@ RSpec.describe 'routing', :routing, type: :routing do
     end
   end
 
+  context '/api/v1/projects/:project_name/reports/mocha', :mocha_reports do
+    it 'routes GET /api/v1/projects/:project_name/reports/mocha'\
+      'to project_mocha_reports#index' do
+      expect(get: '/api/v1/projects/web_project/reports/mocha').to route_to(
+        controller: 'project_mocha_reports',
+        action: 'index',
+        project_name: 'web_project'
+      )
+    end
+
+    it 'routes POST /api/v1/projects/:project_name/reports/mocha'\
+      'to project_mocha_reports#create' do
+      expect(post: '/api/v1/projects/web_project/reports/mocha').to route_to(
+        controller: 'project_mocha_reports',
+        action: 'create',
+        project_name: 'web_project'
+      )
+    end
+
+    it 'routes GET /api/v1/projects/:project_name/reports/:id'\
+      'to project_mocha_reports#show' do
+      expect(get: '/api/v1/projects/web_project/reports/mocha/1').to route_to(
+        controller: 'project_mocha_reports',
+        action: 'show',
+        project_name: 'web_project',
+        id: '1'
+      )
+    end
+  end
+
   context '/api/v1/projects/:project_name/reports/rspec', :rspec_reports do
     it 'routes GET /api/v1/projects/:project_name/reports/rspec'\
       'to rspec_reports#index' do
