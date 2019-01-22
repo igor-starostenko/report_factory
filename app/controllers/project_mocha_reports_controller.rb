@@ -66,7 +66,7 @@ class ProjectMochaReportsController < BaseProjectsController
       { 'full_title' => test_args[:fullTitle],
         'timed_out' => test_args[:timedOut],
         'current_retry' => test_args[:currentRetry] }
-        .merge(test_args).except('fullTile', 'timedOut', 'currentRetry')
+        .merge(test_args).except('fullTitle', 'timedOut', 'currentRetry')
     end
   end
 end

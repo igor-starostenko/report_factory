@@ -7,8 +7,8 @@ class CreateMochaReports < ActiveRecord::Migration[5.2]
       t.integer :pending
       t.integer :failures
       t.integer :duration
-      t.datetime :started
-      t.datetime :ended
+      t.datetime :start
+      t.datetime :end
       t.datetime :created_at
       t.datetime :updated_at
     end
