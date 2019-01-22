@@ -25,6 +25,7 @@ Rails.application.routes.draw do
           delete '/' => 'users#destroy'
           scope '/reports' do
             get '/' => 'user_reports#index'
+            get '/mocha' => 'user_mocha_reports#index'
             get '/rspec' => 'user_rspec_reports#index'
           end
         end

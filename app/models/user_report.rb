@@ -5,6 +5,10 @@ class UserReport < ApplicationRecord
   belongs_to :user
   belongs_to :report
 
+  scope :mocha, lambda {
+    joins(:report).where('reports.reportable_type' => 'MochaReport')
+  }
+
   scope :rspec, lambda {
     joins(:report).where('reports.reportable_type' => 'RspecReport')
   }
