@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 2019_01_21_231227) do
     t.integer "pending"
     t.integer "failures"
     t.integer "duration"
-    t.datetime "start"
-    t.datetime "end"
+    t.datetime "started"
+    t.datetime "ended"
   end
 
   create_table "mocha_tests", force: :cascade do |t|

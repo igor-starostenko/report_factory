@@ -34,8 +34,8 @@ class SerializableMochaReport < JSONAPI::Serializable::Resource
   attribute :pending
   attribute :failures
   attribute :duration
-  attribute :start
-  attribute :end
+  attribute :started
+  attribute :ended
 
   attribute :date do
     {

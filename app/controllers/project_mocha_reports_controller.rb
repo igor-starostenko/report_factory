@@ -8,8 +8,8 @@ class ProjectMochaReportsController < BaseProjectsController
   before_action :search_tags, only: %i[index]
 
   REPORT_ATTRIBUTES = { tags: [] }.freeze
-  MOCHA_REPORT_ATTRIBUTES = %i[suites total passes pending failures start end
-                               duration].freeze
+  MOCHA_REPORT_ATTRIBUTES = %i[suites total passes pending failures started
+                               ended duration].freeze
   TEST_ATTRIBUTES = {
     tests: [:title, :fullTitle, :body, :duration, :status, :speed, :file,
             :timedOut, :pending, :sync, :async, :currentRetry, :err]

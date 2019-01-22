@@ -49,7 +49,7 @@ RSpec.describe MochaReport, :mocha_report, type: :model do
     expect(mocha_report).to_not be_valid
   end
 
-  it 'is valid without :start' do
+  it 'is valid without :started' do
     mocha_report.started = nil
     expect(mocha_report).to be_valid
   end
