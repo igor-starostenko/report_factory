@@ -4,7 +4,7 @@ class CreateMochaTests < ActiveRecord::Migration[5.2]
       t.belongs_to :mocha_report, index: true
       t.string :title
       t.string :full_title
-      t.string :body
+      t.text :body
       t.integer :duration
       t.string :status
       t.string :speed

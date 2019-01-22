@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2019_01_21_231227) do
     t.bigint "mocha_report_id"
     t.string "title"
     t.string "full_title"
-    t.string "body"
+    t.text "body"
     t.integer "duration"
     t.string "status"
     t.string "speed"
