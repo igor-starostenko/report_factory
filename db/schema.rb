@@ -24,8 +24,6 @@ ActiveRecord::Schema.define(version: 2019_01_21_231227) do
     t.integer "duration"
     t.datetime "start"
     t.datetime "end"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "mocha_tests", force: :cascade do |t|
