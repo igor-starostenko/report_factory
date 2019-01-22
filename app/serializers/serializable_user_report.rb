@@ -34,10 +34,10 @@ class SerializableUserReport < JSONAPI::Serializable::Resource
 
   def mocha_object(base_report_object, report)
     mocha_report = report.reportable
-    hash = mocha_report.serializable_hash.merge!(
-      tests: mocha_report.tests&.map(&:serializable_hash)
+    hash = mocha_report&.serializable_hash&.merge(
+      tests: mocha_report&.tests&.map(&:serializable_hash)
     )
-    base_report_object.merge(hash)
+    base_report_object.merge(hash || {})
   end
 
   def rspec_object(base_report_object, report)
