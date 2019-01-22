@@ -13,7 +13,7 @@ ReportType = GraphQL::ObjectType.define do
   field :reportableType, !types.String do
     resolve ->(obj, _args, _ctx) { obj.reportable_type.gsub('Report', '') }
   end
-  field :reportable, RspecReportType do
+  field :reportable, ReportableType do
     description 'This report\'s details based on type'
     preload :reportable
     resolve ->(obj, _args, _ctx) { obj.reportable }
