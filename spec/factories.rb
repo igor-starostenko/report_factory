@@ -11,4 +11,6 @@ FactoryBot.define do
   factory :rspec_summary
   factory :rspec_example
   factory :rspec_exception
+  factory :mocha_report
+  factory :mocha_test
 end

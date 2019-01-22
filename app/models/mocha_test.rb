@@ -4,6 +4,8 @@
 class MochaTest < ActiveRecord::Base
   belongs_to :mocha_report
   has_one :report, through: :mocha_report
+  validates :title, presence: true
+  validates :full_title, presence: true
   validates :status, presence: true
 
   def name
