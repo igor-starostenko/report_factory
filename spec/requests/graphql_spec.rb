@@ -429,7 +429,20 @@ RSpec.describe 'GraphQL', :graphql,
                   createdAt
                 }
                 tests {
+                  id
+                  title
                   fullTitle
+                  body
+                  duration
+                  status
+                  speed
+                  file
+                  timedOut
+                  pending
+                  sync
+                  async
+                  currentRetry
+                  err
                 }
               }
             }
@@ -465,7 +478,20 @@ RSpec.describe 'GraphQL', :graphql,
           createdAt: second_report.created_at.to_s
         },
         tests: [{
+          id: mocha_test.id,
+          title: mocha_test.title,
           fullTitle: mocha_test.full_title,
+          body: mocha_test.body,
+          duration: mocha_test.duration,
+          status: mocha_test.status,
+          speed: mocha_test.speed,
+          file: mocha_test.file,
+          timedOut: mocha_test.timed_out,
+          pending: mocha_test.pending,
+          sync: mocha_test.sync,
+          async: mocha_test.async,
+          currentRetry: mocha_test.current_retry,
+          err: mocha_test.err
         }]
       )
     end
