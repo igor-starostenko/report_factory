@@ -210,11 +210,25 @@ RSpec.describe 'GraphQL', :graphql,
                 reportableType
                 createdAt
                 reportable {
-                  summary {
+                  ...on MochaReport {
+                    id
+                    total
+                    status
+                    passes
+                    failures
+                    pending
+                    suites
                     duration
-                    exampleCount
-                    pendingCount
-                    failureCount
+                    started
+                    ended
+                  }
+                  ...on RspecReport {
+                    summary {
+                      duration
+                      exampleCount
+                      pendingCount
+                      failureCount
+                    }
                   }
                 }
               }
