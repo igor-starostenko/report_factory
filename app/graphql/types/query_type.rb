@@ -48,6 +48,20 @@ Types::QueryType = GraphQL::ObjectType.define do
     }
   end
 
+  connection :mochaReportsConnection, !MochaReportsConnection do
+    description 'Mocha Reports Pagination'
+    argument :projectName, types.String, default_value: nil
+    argument :tags, types[types.String], default_value: nil
+
+    resolve lambda { |_obj, args, _context|
+      project_name = args.projectName
+      tags = args.tags&.map(&:downcase)
+      mocha_reports = MochaReport.all_details
+      mocha_reports = mocha_reports.by_project(project_name) if project_name
+      tags.blank? ? mocha_reports : mocha_reports.tags(tags)
+    }
+  end
+
   field :scenarios, !types[!ScenarioType] do
     description 'All Scenarios'
 

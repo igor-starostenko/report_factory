@@ -101,6 +101,7 @@ RSpec.describe 'GraphQL', :graphql,
   let(:mocha_report) { MochaReport.last }
   let(:scenario) { RspecExample.last }
   let(:summary) { RspecSummary.last }
+  let(:mocha_test) { MochaTest.last }
 
   it 'is not authorized without X-API-KEY' do
     post '/graphql'
@@ -377,8 +378,8 @@ RSpec.describe 'GraphQL', :graphql,
       expect(connection.fetch(:totalCount)).to eql(RspecReport.count)
       expect(connection.fetch(:pageInfo).keys.map(&:to_sym))
         .to match(%i[startCursor endCursor hasNextPage hasPreviousPage])
-      report_two = connection.fetch(:edges).last.fetch(:node)
-      expect(report_two).to match_json_object(
+      report = connection.fetch(:edges).last.fetch(:node)
+      expect(report).to match_json_object(
         id: rspec_report.id,
         version: rspec_report.version,
         summaryLine: rspec_report.summary_line,
@@ -393,6 +394,79 @@ RSpec.describe 'GraphQL', :graphql,
           pendingCount: summary.pending_count,
           failureCount: summary.failure_count
         }
+      )
+    end
+  end
+
+  describe 'mochaReportsConnection' do
+    let(:query) do
+      <<-GRAPHQL
+        {
+          mochaReportsConnection(projectName: "#{project.project_name}") {
+            totalCount
+            pageInfo {
+              startCursor
+              endCursor
+              hasNextPage
+              hasPreviousPage
+            }
+            edges {
+              cursor
+              node {
+                id
+                total
+                status
+                passes
+                failures
+                pending
+                suites
+                duration
+                started
+                ended
+                report {
+                  projectName
+                  reportableType
+                  createdAt
+                }
+                tests {
+                  fullTitle
+                }
+              }
+            }
+          }
+        }
+      GRAPHQL
+    end
+
+    it 'gets all available attributes' do
+      post '/graphql', headers: {
+        'X-API-KEY' => tester.api_key
+      }, params: { query: query }
+      expect(response.status).to eq(200)
+      connection = parse_json_type(response.body, :mochaReportsConnection)
+      expect(connection.fetch(:totalCount)).to eql(MochaReport.count)
+      expect(connection.fetch(:pageInfo).keys.map(&:to_sym))
+        .to match(%i[startCursor endCursor hasNextPage hasPreviousPage])
+      report = connection.fetch(:edges).last.fetch(:node)
+      expect(report).to match_json_object(
+        id: mocha_report.id,
+        total: mocha_report.total,
+        status: mocha_report.status,
+        passes: mocha_report.passes,
+        failures: mocha_report.failures,
+        pending: mocha_report.pending,
+        suites: mocha_report.suites,
+        duration: mocha_report.duration,
+        started: mocha_report.started.to_s,
+        ended: mocha_report.ended.to_s,
+        report: {
+          projectName: project.project_name,
+          reportableType: 'Mocha',
+          createdAt: second_report.created_at.to_s
+        },
+        tests: [{
+          fullTitle: mocha_test.full_title,
+        }]
       )
     end
   end

@@ -11,6 +11,14 @@ class Project < ActiveRecord::Base
   has_many :rspec_examples, through: :rspec_reports,
                             source: :examples,
                             dependent: :destroy
+  has_many :mocha_reports, through: :reports,
+                           source: :reportable,
+                           class_name: 'MochaReport',
+                           source_type: 'MochaReport',
+                           dependent: :destroy
+  has_many :mocha_tests, through: :mocha_reports,
+                         source: :tests,
+                         dependent: :destroy
   VALID_PROJECT_REGEX = /\A[-a-zA-Z\d\s]*\z/
   validates :project_name,
             presence: true,
