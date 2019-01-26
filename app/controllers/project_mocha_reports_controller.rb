@@ -11,8 +11,8 @@ class ProjectMochaReportsController < BaseProjectsController
   MOCHA_REPORT_ATTRIBUTES = %i[suites total passes pending failures started
                                ended duration].freeze
   TEST_ATTRIBUTES = {
-    tests: [:title, :fullTitle, :body, :duration, :status, :speed, :file,
-            :timedOut, :pending, :sync, :async, :currentRetry, :err]
+    tests: %i[title fullTitle body duration status speed file
+              timedOut pending sync async currentRetry err]
   }.freeze
 
   def index
@@ -53,7 +53,7 @@ class ProjectMochaReportsController < BaseProjectsController
 
   def valid_report?
     tests = attributes(:test, :tests)
-    tests && tests.size.positive?
+    tests&.size&.positive?
   end
 
   def new_mocha_report
@@ -70,4 +70,3 @@ class ProjectMochaReportsController < BaseProjectsController
     end
   end
 end
-

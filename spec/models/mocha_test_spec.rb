@@ -30,7 +30,7 @@ RSpec.describe MochaTest, :mocha_test, type: :model do
     '/Users/username/ReportFactory/report-factory-mocha/test/api_test.js'
   end
   let :err do
-    'ReferenceError: response is not defined\nat Context.beforeEach (test/api_test.js:10:21) } ]'
+    'ReferenceError: response is not defined\n (test/api_test.js:10:21) } ]'
   end
   let :mocha_test do
     FactoryBot.create(:mocha_test,

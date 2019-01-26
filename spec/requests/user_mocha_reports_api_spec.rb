@@ -10,14 +10,14 @@ RSpec.describe 'UserMochaReports', :user_mocha_reports_api, type: :request do
                              password: 'Qwerty12')
     project = FactoryBot.create(:project, project_name: 'Web App')
     mocha_report = FactoryBot.create(:mocha_report,
-                                      suites: 2,
-                                      total: 2,
-                                      passes: 1,
-                                      pending: 0,
-                                      failures: 1,
-                                      duration: 8,
-                                      started: '2019-01-20T04:28:34.861Z',
-                                      ended: '2019-01-20T04:28:34.867Z')
+                                     suites: 2,
+                                     total: 2,
+                                     passes: 1,
+                                     pending: 0,
+                                     failures: 1,
+                                     duration: 8,
+                                     started: '2019-01-20T04:28:34.861Z',
+                                     ended: '2019-01-20T04:28:34.867Z')
     report = FactoryBot.create(:report,
                                project_id: project.id,
                                reportable_type: MochaReport,
@@ -55,7 +55,7 @@ RSpec.describe 'UserMochaReports', :user_mocha_reports_api, type: :request do
 
       json_body = JSON.parse(response.body)
       duration = json_body.fetch('data').first
-                              .dig('attributes', 'report', 'duration')
+                          .dig('attributes', 'report', 'duration')
       expect(duration).to eql(mocha_report.duration)
     end
   end

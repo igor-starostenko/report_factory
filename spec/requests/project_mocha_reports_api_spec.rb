@@ -57,19 +57,19 @@ RSpec.describe 'ProjectMochaReports', :project_mocha_reports_api,
         data: {
           type: 'mocha_report',
           attributes: {
-            "suites":2,
-            "tests":[
+            "suites": 2,
+            "tests": [
               {
-                "title": "submits a failed test report",
-                "fullTitle": "ReportFactory API submits a failed test report",
-                "body": "() => {\\n return sendReport(failedReport)\\n    }",
+                "title": 'submits a failed test report',
+                "fullTitle": 'ReportFactory API submits a failed test report',
+                "body": '() => {\\n return sendReport(failedReport)\\n    }',
                 "duration": 28,
-                "status": "failed",
-                "speed": "fast",
-                "file": "/ReportFactory/report-factory-mocha/test/api_test.js",
+                "status": 'failed',
+                "speed": 'fast',
+                "file": '/ReportFactory/report-factory-mocha/test/api_test.js',
                 "timedOut": false,
                 "pending": false,
-                "sync":true,
+                "sync": true,
                 "async": 0,
                 "currentRetry": 0,
                 "err": "AssertionError: expected 'OK' to equal 'NO'"
@@ -78,16 +78,16 @@ RSpec.describe 'ProjectMochaReports', :project_mocha_reports_api,
             "passes": 1,
             "pending": 0,
             "failures": 1,
-            "started": "2019-01-21T23:42:40.010Z",
-            "ended": "2019-01-21T23:42:40.039Z",
+            "started": '2019-01-21T23:42:40.010Z',
+            "ended": '2019-01-21T23:42:40.039Z',
             "duration": 29,
             "total": 1,
-            "tags": ["test"]
+            "tags": ['test']
           }
         }
       }
     end
-  
+
     it 'is not authorized without X-API-KEY' do
       post '/api/v1/projects/web-app/reports/mocha', params: request_body
       expect(response.status).to eq(401)
