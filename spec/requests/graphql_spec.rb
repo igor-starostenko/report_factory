@@ -308,6 +308,27 @@ RSpec.describe 'GraphQL', :graphql,
           }
         }
       )
+
+      report_one = connection.fetch(:edges).first.fetch(:node)
+      expect(report_one).to match_json_object(
+        id: second_report.id,
+        projectName: project.project_name,
+        status: second_report.status,
+        reportableType: 'Mocha',
+        createdAt: second_report.created_at.to_s,
+        reportable: {
+          id: mocha_report.id,
+          total: mocha_report.total,
+          status: mocha_report.status,
+          passes: mocha_report.passes,
+          failures: mocha_report.failures,
+          pending: mocha_report.pending,
+          suites: mocha_report.suites,
+          duration: mocha_report.duration,
+          started: mocha_report.started.to_s,
+          ended: mocha_report.ended.to_s
+        }
+      )
     end
   end
 
