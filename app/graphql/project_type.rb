@@ -30,7 +30,7 @@ ProjectType = GraphQL::ObjectType.define do
       time_ago = args[:lastDays]&.days&.ago
       time_ago ||= args[:lastMonths]&.months&.ago
       return obj.cached_scenarios unless time_ago
-      obj.scenarios_from(time_ago)
+      obj.scenarios(time_ago)
     }
   end
   field :createdAt, !types.String, property: :created_at

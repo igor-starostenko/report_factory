@@ -27,6 +27,8 @@ class Project < ActiveRecord::Base
             format: { with: VALID_PROJECT_REGEX }
   before_validation :set_formatted_project_name
 
+  REPORT_TYPES = %w[Rspec Mocha]
+
   scope :with_report_examples, lambda {
     eager_load(rspec_examples: :report)
   }
@@ -46,25 +48,47 @@ class Project < ActiveRecord::Base
 
   def cached_scenarios
     old_scenarios = fetch_from_cache(:scenarios)
-    new_scenarios = scenarios_from(old_scenarios.first&.report&.updated_at)
+    new_scenarios = scenarios(old_scenarios.first&.report&.updated_at)
     return old_scenarios if new_scenarios.empty?
     all_scenarios = (new_scenarios + old_scenarios).uniq(&:full_description)
     Rails.cache.write("#{cache_key}/scenarios", all_scenarios)
     all_scenarios
   end
 
-  def scenarios
-    rspec_examples.project_scenarios
+  def scenario(type, title)
+    valid = REPORT_TYPES.any? { |report_type| report_type.casecmp?(type) }
+    return [] unless valid
+
+    __send__("#{type.downcase}_scenario", title)
   end
 
-  def scenarios_from(date)
-    rspec_examples.updated_since(date).project_scenarios
+  def rspec_scenario(title)
+    rspec_examples.where(full_description: title)
+  end
+
+  def mocha_scenario(title)
+    mocha_tests.where(full_title: title)
+  end
+
+  def scenarios(date = nil)
+    project_scenarios = REPORT_TYPES.map { |type| scenarios_by(type, date) }
+    project_scenarios.flatten.sort_by(&:full_description)
   end
 
   private
 
   def set_formatted_project_name
     self.project_name = format_project_name
+  end
+
+  def scenarios_by(type, date = nil)
+    tests = __send__("#{type.downcase}_tests")
+    tests = tests.updated_since(date) if date
+    tests.project_scenarios
+  end
+
+  def rspec_tests
+    rspec_examples
   end
 
   def format_project_name

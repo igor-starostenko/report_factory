@@ -75,17 +75,21 @@ Types::QueryType = GraphQL::ObjectType.define do
     description 'Statistics of all Scenario runs'
 
     argument :scenarioName, !types.String
+    argument :scenarioType, types.String
     argument :projectName, !types.String
 
     resolve lambda { |_obj, args, _context|
       project = Project.by_name(args.project_name)
-      mocha_scenario = project.mocha_tests.where(full_title: args.scenario_name)
-      return mocha_scenario if mocha_scenario.size.positive?
 
-      rspec_scenario = project
-                       .rspec_examples
-                       .where(full_description: args.scenario_name)
-      return rspec_scenario if rspec_scenario.size.positive?
+      if args.scenario_type
+        scenario = project.scenario(args.scenario_type, args.scenario_name)
+      else
+        scenario = project.mocha_scenario(args.scenario_name)
+        return scenario if scenario.size.positive?
+
+        scenario = project.rspec_scenario(args.scenario_name)
+      end
+      return scenario if scenario.size.positive?
 
       error = "Unable to find scenario: \"#{args.scenario_name}\""\
               " within #{args.project_name}"
