@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
             format: { with: VALID_PROJECT_REGEX }
   before_validation :set_formatted_project_name
 
-  REPORT_TYPES = %w[Rspec Mocha]
+  REPORT_TYPES = %w[Rspec Mocha].freeze
 
   scope :with_report_examples, lambda {
     eager_load(rspec_examples: :report)
