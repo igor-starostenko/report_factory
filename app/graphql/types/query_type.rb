@@ -78,9 +78,14 @@ Types::QueryType = GraphQL::ObjectType.define do
     argument :projectName, !types.String
 
     resolve lambda { |_obj, args, _context|
-      Project.by_name(args.project_name)
-             .rspec_examples
-             .where(full_description: args.scenario_name)
+      scenario = Project.by_name(args.project_name)
+                        .rspec_examples
+                        .where(full_description: args.scenario_name)
+      return scenario if scenario.size.positive?
+
+      error = "Unable to find scenario: \"#{args.scenario_name}\""\
+              " within #{args.project_name}"
+      raise GraphQL::ExecutionError.new(error)
     }
   end
 
