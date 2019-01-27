@@ -67,7 +67,7 @@ Types::QueryType = GraphQL::ObjectType.define do
 
     resolve lambda { |_obj, _args, _context|
       scenarios = [RspecExample, MochaTest].map(&:cached_scenarios).flatten
-      scenarios.sort_by(&:full_description)
+      scenarios.sort_by(&:full_description).uniq(&:full_description)
     }
   end
 
@@ -78,14 +78,18 @@ Types::QueryType = GraphQL::ObjectType.define do
     argument :projectName, !types.String
 
     resolve lambda { |_obj, args, _context|
-      scenario = Project.by_name(args.project_name)
-                        .rspec_examples
-                        .where(full_description: args.scenario_name)
-      return scenario if scenario.size.positive?
+      project = Project.by_name(args.project_name)
+      mocha_scenario = project.mocha_tests.where(full_title: args.scenario_name)
+      return mocha_scenario if mocha_scenario.size.positive?
+
+      rspec_scenario = project
+                       .rspec_examples
+                       .where(full_description: args.scenario_name)
+      return rspec_scenario if rspec_scenario.size.positive?
 
       error = "Unable to find scenario: \"#{args.scenario_name}\""\
               " within #{args.project_name}"
-      raise GraphQL::ExecutionError.new(error)
+      raise GraphQL::ExecutionError, error
     }
   end
 

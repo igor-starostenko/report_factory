@@ -541,43 +541,87 @@ RSpec.describe 'GraphQL', :graphql,
   end
 
   describe 'scenario' do
-    let(:query) do
-      <<-GRAPHQL
-        {
-          scenario(projectName: "#{project.project_name}",
-                   scenarioName: "#{rspec_example.full_description}") {
-            name
-            projectName
-            lastStatus
-            lastRun
-            lastPassed
-            lastFailed
-            totalRuns
-            totalPassed
-            totalFailed
-            totalPending
+    context RspecExample do
+      let(:query) do
+        <<-GRAPHQL
+          {
+            scenario(projectName: "#{project.project_name}",
+                     scenarioName: "#{rspec_example.full_description}") {
+              name
+              projectName
+              lastStatus
+              lastRun
+              lastPassed
+              lastFailed
+              totalRuns
+              totalPassed
+              totalFailed
+              totalPending
+            }
           }
-        }
-      GRAPHQL
+        GRAPHQL
+      end
+
+      it 'gets all available attributes' do
+        post '/graphql', headers: {
+          'X-API-KEY' => tester.api_key
+        }, params: { query: query }
+        expect(response.status).to eq(200)
+        actual_scenario = parse_json_type(response.body, :scenario)
+        expect(actual_scenario).to match_json_object(
+          name: rspec_example.full_description,
+          lastStatus: rspec_example.status,
+          lastRun: rspec_example.report.created_at.to_s,
+          lastPassed: nil,
+          lastFailed: first_report.created_at.to_s,
+          totalRuns: 1,
+          totalPassed: 0,
+          totalFailed: 1,
+          totalPending: 0
+        )
+      end
     end
 
-    it 'gets all available attributes' do
-      post '/graphql', headers: {
-        'X-API-KEY' => tester.api_key
-      }, params: { query: query }
-      expect(response.status).to eq(200)
-      actual_scenario = parse_json_type(response.body, :scenario)
-      expect(actual_scenario).to match_json_object(
-        name: rspec_example.full_description,
-        lastStatus: rspec_example.status,
-        lastRun: rspec_example.report.created_at.to_s,
-        lastPassed: nil,
-        lastFailed: first_report.created_at.to_s,
-        totalRuns: 1,
-        totalPassed: 0,
-        totalFailed: 1,
-        totalPending: 0
-      )
+    context MochaTest do
+      let(:query) do
+        <<-GRAPHQL
+          {
+            scenario(projectName: "#{project.project_name}",
+                     scenarioName: "#{mocha_test.full_title}") {
+              name
+              projectName
+              lastStatus
+              lastRun
+              lastPassed
+              lastFailed
+              totalRuns
+              totalPassed
+              totalFailed
+              totalPending
+            }
+          }
+        GRAPHQL
+      end
+
+      it 'gets all available attributes' do
+        post '/graphql', headers: {
+          'X-API-KEY' => tester.api_key
+        }, params: { query: query }
+        expect(response.status).to eq(200)
+        actual_scenario = parse_json_type(response.body, :scenario)
+        expect(actual_scenario).to match_json_object(
+          name: mocha_test.full_title,
+          projectName: project.project_name,
+          lastStatus: mocha_test.status,
+          lastRun: mocha_test.report.created_at.to_s,
+          lastPassed: second_report.created_at.to_s,
+          lastFailed: nil,
+          totalRuns: 1,
+          totalPassed: 1,
+          totalFailed: 0,
+          totalPending: 0
+        )
+      end
     end
   end
 

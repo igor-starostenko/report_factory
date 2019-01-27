@@ -19,7 +19,7 @@ class MochaTest < ActiveRecord::Base
   def name
     full_title
   end
-  alias_method :full_description, :name
+  alias full_description name
 
   def line_number
     nil
