@@ -66,7 +66,8 @@ Types::QueryType = GraphQL::ObjectType.define do
     description 'All Scenarios'
 
     resolve lambda { |_obj, _args, _context|
-      RspecExample.cached_scenarios
+      scenarios = [RspecExample, MochaTest].map(&:cached_scenarios).flatten
+      scenarios.sort_by(&:full_description)
     }
   end
 

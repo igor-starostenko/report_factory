@@ -8,8 +8,21 @@ class MochaTest < ActiveRecord::Base
   validates :full_title, presence: true
   validates :status, presence: true
 
+  def spec_id
+    file
+  end
+
+  def description
+    title
+  end
+
   def name
     full_title
+  end
+  alias_method :full_description, :name
+
+  def line_number
+    nil
   end
 
   def passed?
