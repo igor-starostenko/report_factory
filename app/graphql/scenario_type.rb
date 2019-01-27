@@ -7,6 +7,9 @@ ScenarioType = GraphQL::ObjectType.define do
     preload(report: :project)
     resolve ->(obj, _args, _ctx) { obj.report.project.project_name }
   end
+  field :type, !types.String do
+    resolve ->(obj, _args, _ctx) { obj.report.reportable_type.chomp('Report') }
+  end
   field :specId, !types.String do
     resolve ->(obj, _args, _ctx) { obj.spec_id }
   end

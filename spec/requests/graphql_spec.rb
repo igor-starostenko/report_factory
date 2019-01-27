@@ -128,6 +128,7 @@ RSpec.describe 'GraphQL', :graphql,
             }
             scenarios {
               projectName
+              type
               specId
               status
               description
@@ -162,6 +163,7 @@ RSpec.describe 'GraphQL', :graphql,
       )
       expect(projects.first[:scenarios].first).to match_json_object(
         projectName: project.project_name,
+        type: 'Rspec',
         specId: rspec_example.spec_id,
         description: rspec_example.description,
         fullDescription: rspec_example.full_description,
@@ -193,6 +195,7 @@ RSpec.describe 'GraphQL', :graphql,
             }
             scenarios {
               projectName
+              type
               specId
               status
               description
@@ -227,6 +230,7 @@ RSpec.describe 'GraphQL', :graphql,
       )
       expect(actual_project[:scenarios].first).to match_json_object(
         projectName: project.project_name,
+        type: 'Rspec',
         specId: rspec_example.spec_id,
         description: rspec_example.description,
         fullDescription: rspec_example.full_description,
@@ -504,6 +508,7 @@ RSpec.describe 'GraphQL', :graphql,
         {
           scenarios {
             projectName
+            type
             specId
             description
             fullDescription
@@ -523,6 +528,7 @@ RSpec.describe 'GraphQL', :graphql,
       expect(scenarios.size).to be_positive
       expect(scenarios.second).to match_json_object(
         projectName: project.project_name,
+        type: 'Rspec',
         specId: rspec_example.spec_id,
         description: rspec_example.description,
         fullDescription: rspec_example.full_description,
@@ -531,6 +537,7 @@ RSpec.describe 'GraphQL', :graphql,
       )
       expect(scenarios.first).to match_json_object(
         projectName: project.project_name,
+        type: 'Mocha',
         specId: mocha_test.spec_id,
         description: mocha_test.description,
         fullDescription: mocha_test.full_description,
