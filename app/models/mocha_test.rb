@@ -48,7 +48,7 @@ class MochaTest < ActiveRecord::Base
   end
 
   scope :updated_since, lambda { |date|
-    where('updated_at > ?', date || Time.at(0))
+    where('reports.updated_at > ?', date || Time.at(0))
   }
 
   scope :project_scenarios, lambda {

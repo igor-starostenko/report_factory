@@ -99,7 +99,8 @@ RSpec.describe 'GraphQL', :graphql,
   let(:second_report) { Report.last }
   let(:rspec_report) { RspecReport.last }
   let(:mocha_report) { MochaReport.last }
-  let(:scenario) { RspecExample.last }
+  let(:rspec_example) { RspecExample.last }
+  let(:mocha_test) { RspecExample.last }
   let(:summary) { RspecSummary.last }
   let(:mocha_test) { MochaTest.last }
 
@@ -161,11 +162,11 @@ RSpec.describe 'GraphQL', :graphql,
       )
       expect(projects.first[:scenarios].first).to match_json_object(
         projectName: project.project_name,
-        specId: scenario.spec_id,
-        description: scenario.description,
-        fullDescription: scenario.full_description,
-        status: scenario.status,
-        lineNumber: scenario.line_number
+        specId: rspec_example.spec_id,
+        description: rspec_example.description,
+        fullDescription: rspec_example.full_description,
+        status: rspec_example.status,
+        lineNumber: rspec_example.line_number
       )
     end
   end
@@ -226,11 +227,11 @@ RSpec.describe 'GraphQL', :graphql,
       )
       expect(actual_project[:scenarios].first).to match_json_object(
         projectName: project.project_name,
-        specId: scenario.spec_id,
-        description: scenario.description,
-        fullDescription: scenario.full_description,
-        status: scenario.status,
-        lineNumber: scenario.line_number
+        specId: rspec_example.spec_id,
+        description: rspec_example.description,
+        fullDescription: rspec_example.full_description,
+        status: rspec_example.status,
+        lineNumber: rspec_example.line_number
       )
     end
   end
@@ -297,7 +298,7 @@ RSpec.describe 'GraphQL', :graphql,
       expect(report_two).to match_json_object(
         id: first_report.id,
         projectName: project.project_name,
-        status: scenario.status,
+        status: rspec_example.status,
         reportableType: 'Rspec',
         createdAt: first_report.created_at.to_s,
         reportable: {
@@ -520,13 +521,21 @@ RSpec.describe 'GraphQL', :graphql,
       expect(response.status).to eq(200)
       scenarios = parse_json_type(response.body, :scenarios)
       expect(scenarios.size).to be_positive
+      expect(scenarios.second).to match_json_object(
+        projectName: project.project_name,
+        specId: rspec_example.spec_id,
+        description: rspec_example.description,
+        fullDescription: rspec_example.full_description,
+        status: rspec_example.status,
+        lineNumber: rspec_example.line_number
+      )
       expect(scenarios.first).to match_json_object(
         projectName: project.project_name,
-        specId: scenario.spec_id,
-        description: scenario.description,
-        fullDescription: scenario.full_description,
-        status: scenario.status,
-        lineNumber: scenario.line_number
+        specId: mocha_test.spec_id,
+        description: mocha_test.description,
+        fullDescription: mocha_test.full_description,
+        status: mocha_test.status,
+        lineNumber: mocha_test.line_number
       )
     end
   end
@@ -536,7 +545,7 @@ RSpec.describe 'GraphQL', :graphql,
       <<-GRAPHQL
         {
           scenario(projectName: "#{project.project_name}",
-                   scenarioName: "#{scenario.full_description}") {
+                   scenarioName: "#{rspec_example.full_description}") {
             name
             projectName
             lastStatus
@@ -559,9 +568,9 @@ RSpec.describe 'GraphQL', :graphql,
       expect(response.status).to eq(200)
       actual_scenario = parse_json_type(response.body, :scenario)
       expect(actual_scenario).to match_json_object(
-        name: scenario.full_description,
-        lastStatus: scenario.status,
-        lastRun: scenario.report.created_at.to_s,
+        name: rspec_example.full_description,
+        lastStatus: rspec_example.status,
+        lastRun: rspec_example.report.created_at.to_s,
         lastPassed: nil,
         lastFailed: first_report.created_at.to_s,
         totalRuns: 1,
