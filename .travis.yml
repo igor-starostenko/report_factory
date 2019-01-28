@@ -1,11 +1,19 @@
 language: ruby
 rvm:
   - 2.5.0
+env:
+  global:
+    - CC_TEST_REPORTER_ID=222922f453a9a8a50a96768c1704881dce6c756867c704a360b1202a996e9d49
 services:
   - postgresql
 before_script:
   - bundle exec rake db:create
   - bundle exec rake db:migrate
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - bundle exec rubocop
   - bundle exec rspec
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

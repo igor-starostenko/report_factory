@@ -1,6 +1,8 @@
 # Report Factory
 
 [![Build Status](https://travis-ci.org/igor-starostenko/report_factory.svg?branch=master)](https://travis-ci.org/igor-starostenko/report_factory)
+[![Maintainability](https://api.codeclimate.com/v1/badges/5dcc1e927ff6ed345791/maintainability)](https://codeclimate.com/github/igor-starostenko/report_factory/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/5dcc1e927ff6ed345791/test_coverage)](https://codeclimate.com/github/igor-starostenko/report_factory/test_coverage)
 
 *Report Factory* is a storage for your test reports with intuitive API to manage all your projects test results.
 
