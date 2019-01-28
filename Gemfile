@@ -9,7 +9,7 @@ gem 'pg', '~> 0.18'
 # Use Puma as the app server
 gem 'puma', '~> 3.12.0'
 # Serve API with GraphQL
-gem 'graphql-preload' # includes the graphql gem
+gem 'graphql-preload', '~> 2.0.1' # includes the graphql gem
 # Build JSON APIs with ease
 gem 'jbuilder'
 gem 'jsonapi-rails'
