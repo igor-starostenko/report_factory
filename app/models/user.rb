@@ -11,13 +11,13 @@ class User < ApplicationRecord
             presence: true,
             uniqueness: { case_sensitive: false },
             length: { minimum: 3, maximum: 11 }
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
   validates :email,
             uniqueness: { case_sensitive: false },
             length: { maximum: 105 },
             format: { with: VALID_EMAIL_REGEX }
   before_save { self.email = email.downcase }
-  VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,105}\z/
+  VALID_PASSWORD_REGEX = /\A(?=.*[a-zA-Z])(?=.*[0-9]).{8,105}\z/.freeze
   validates :password,
             allow_nil: true,
             format: { with: VALID_PASSWORD_REGEX }
@@ -32,6 +32,7 @@ class User < ApplicationRecord
     old_reports = fetch_cached_reports.sort_by(&:id)
     new_reports = reports.updated_since(old_reports.last&.updated_at)
     return old_reports if new_reports.empty?
+
     all_reports = (new_reports + old_reports).uniq
     Rails.cache.write("#{cache_key}/reports", all_reports)
     all_reports

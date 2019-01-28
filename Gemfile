@@ -3,13 +3,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 5.2.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.11.4'
+gem 'puma', '~> 3.12.0'
 # Serve API with GraphQL
-gem 'graphql-preload' # includes the graphql gem
+gem 'graphql-preload', '~> 2.0.1' # includes the graphql gem
 # Build JSON APIs with ease
 gem 'jbuilder'
 gem 'jsonapi-rails'

@@ -20,6 +20,7 @@ UserType = GraphQL::ObjectType.define do
       time_ago = args[:lastDays]&.days&.ago
       time_ago ||= args[:lastMonths]&.months&.ago
       return obj.cached_reports unless time_ago
+
       obj.reports.updated_since(time_ago)
     }
   end

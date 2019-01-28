@@ -30,6 +30,7 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def create
     return render_bad_report unless valid_report?
+
     if new_rspec_report.save
       new_report.save && new_user_report.save
       render jsonapi: @rspec_report, status: :created
@@ -91,6 +92,7 @@ class ProjectRspecReportsController < BaseProjectsController
 
   def rspec_exception_attributes(exception_args)
     return {} unless exception_args
+
     { 'classname' => exception_args[:class] }
       .merge(exception_args).except('class')
   end

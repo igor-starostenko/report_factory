@@ -11,7 +11,7 @@ class Project < ActiveRecord::Base
   has_many :rspec_examples, through: :rspec_reports,
                             source: :examples,
                             dependent: :destroy
-  VALID_PROJECT_REGEX = /\A[-a-zA-Z\d\s]*\z/
+  VALID_PROJECT_REGEX = /\A[-a-zA-Z\d\s]*\z/.freeze
   validates :project_name,
             presence: true,
             uniqueness: { case_sensitive: false },
@@ -31,6 +31,7 @@ class Project < ActiveRecord::Base
     old_reports = fetch_from_cache(:reports).sort_by(&:id)
     new_reports = reports.updated_since(old_reports.last&.updated_at)
     return old_reports if new_reports.empty?
+
     all_reports = (new_reports + old_reports).uniq
     Rails.cache.write("#{cache_key}/reports", all_reports)
     all_reports
@@ -40,6 +41,7 @@ class Project < ActiveRecord::Base
     old_scenarios = fetch_from_cache(:scenarios)
     new_scenarios = scenarios_from(old_scenarios.first&.report&.updated_at)
     return old_scenarios if new_scenarios.empty?
+
     all_scenarios = (new_scenarios + old_scenarios).uniq(&:full_description)
     Rails.cache.write("#{cache_key}/scenarios", all_scenarios)
     all_scenarios
