@@ -38,6 +38,7 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'sass-rails' # Dependency for GraphiQL
+  gem 'simplecov', '~> 0.16.1'
   gem 'uglifier' # Dependency for GraphiQL
   # Spring speeds up development by keeping your application running
   # in the background. Read more: https://github.com/rails/spring
