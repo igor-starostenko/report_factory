@@ -22,6 +22,7 @@ class ApplicationController < ActionController::API
 
   def ensure_in_bounds(records)
     return records unless records.out_of_bounds?
+
     response.headers['Page'] = records.total_pages
     records.paginate(page: records.total_pages)
   end

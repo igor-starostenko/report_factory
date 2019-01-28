@@ -34,6 +34,7 @@ class SerializableScenario < JSONAPI::Serializable::Resource
 
   def format_scenarios_by_names(names, examples)
     return [] unless names
+
     names.map do |name|
       format_scenario(name, match_examples_by_name(name, examples))
     end

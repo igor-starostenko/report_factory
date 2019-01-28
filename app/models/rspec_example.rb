@@ -35,6 +35,7 @@ class RspecExample < ActiveRecord::Base
     last_updated = old_scenarios.first&.report&.updated_at
     new_scenarios = joins(:report).updated_since(last_updated)
     return old_scenarios if new_scenarios.empty?
+
     all_scenarios = (new_scenarios + old_scenarios).uniq(&:full_description)
     Rails.cache.write('all_scenarios', all_scenarios)
     all_scenarios

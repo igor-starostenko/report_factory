@@ -35,6 +35,7 @@ class GraphqlController < ApplicationController
 
   def format_to_hash(ambiguous_param)
     return {} unless ambiguous_param.present?
+
     ensure_hash(JSON.parse(ambiguous_param))
   end
 end
